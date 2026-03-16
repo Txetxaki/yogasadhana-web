@@ -1,0 +1,9 @@
+{
+  "name": "boty-app-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/boty-app-e2e/src",
+  "implicitDependencies": ["boty-app"],
+  "// targets": "to see all targets run: nx show project boty-app-e2e --web",
+  "targets": {}
+}
