@@ -1,0 +1,28 @@
+<section class="therapy-hero"><img class="hero-banner" src="images/yoga/headers/schedule.png" alt="" aria-hidden="true" /><img class="hero-banner" src="images/yoga/headers/schedule.png" alt="" aria-hidden="true" loading="eager" /><div class="therapy-inner"><span class="label">HORARIOS 2026</span><h1>Horario de Clases de Yoga</h1><p class="hero-sub">Encuentra el mejor momento para tu práctica. Clases de mañana y tarde, de lunes a viernes. Grupos reducidos de máximo 10 alumnos.</p></div></section>
+<section class="therapy-about"><div class="therapy-inner">
+<div class="schedule-table-wrap">
+<table class="schedule-table">
+  <thead><tr><th>Hora</th><th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th></tr></thead>
+  <tbody>
+    @for (row of schedule; track row.time) {
+      <tr>
+        <td class="time-cell">{{ row.time }}</td>
+        @for (day of ['mon','tue','wed','thu','fri']; track day) {
+          @if (routeMap[$any(row)[day]]) {
+            <td class="active"><a [routerLink]="routeMap[$any(row)[day]]">{{ $any(row)[day] }}</a></td>
+          } @else {
+            <td>{{ $any(row)[day] }}</td>
+          }
+        }
+      </tr>
+    }
+  </tbody>
+</table>
+</div>
+<div class="schedule-info">
+  <div class="schedule-note-card card-3d"><span class="material-symbols-outlined">info</span><p><strong>Masajes y Osteopatía:</strong> Con cita previa. Escríbenos por <a href="https://wa.me/+34600582381" target="_blank">WhatsApp</a> para reservar tu sesión.</p></div>
+  <div class="schedule-note-card card-3d"><span class="material-symbols-outlined">people</span><p><strong>Grupos Reducidos:</strong> Máximo 10 alumnos por clase para garantizar atención personalizada. Reserva con antelación para asegurar tu plaza.</p></div>
+  <div class="schedule-note-card card-3d"><span class="material-symbols-outlined">card_giftcard</span><p><strong>Primera Clase Gratis:</strong> Prueba cualquier disciplina sin compromiso. Solo necesitas ropa cómoda y ganas de cuidarte.</p></div>
+</div>
+</div></section>
+<section class="therapy-cta"><div class="therapy-inner therapy-cta-inner"><h2>Reserva tu plaza</h2><p>Los grupos son reducidos. Reserva con antelación para garantizar tu sitio en la clase que prefieras.</p><div class="cta-row"><a routerLink="/yoga-sadhana/contacto" class="btn-primary">Reservar</a><a routerLink="/yoga-sadhana/clases" class="btn-text">Ver Clases <span class="material-symbols-outlined">arrow_forward</span></a></div></div></section>

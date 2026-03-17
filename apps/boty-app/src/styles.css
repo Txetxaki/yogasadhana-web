@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-base: #0a0e14;
+  --bg-surface: #0f1419;
+  --bg-card: #141a22;
+  --bg-card-hover: #1a222c;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(0,230,180,0.3);
+  --accent: #00e6b4;
+  --accent-dim: rgba(0,230,180,0.15);
+  --accent-glow: rgba(0,230,180,0.25);
+  --accent-2: #00b4d8;
+  --accent-3: #7c3aed;
+  --text: #e8eaed;
+  --text-muted: #6b7a8d;
+  --text-dim: #3d4a5a;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-base);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-base);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }

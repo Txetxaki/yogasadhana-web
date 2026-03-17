@@ -1,0 +1,91 @@
+<nav class="ys-nav">
+  <div class="ys-nav-inner">
+    <a routerLink="/yoga-sadhana" class="ys-brand">
+      <img src="images/yoga/logo.png" alt="YogaSadhana" class="ys-logo" width="36" height="36" />
+      YogaSadhana
+    </a>
+
+    <!-- Hamburger toggle (mobile only) -->
+    <button class="ys-hamburger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-label="Menú">
+      <span class="material-symbols-outlined">{{ menuOpen ? 'close' : 'menu' }}</span>
+    </button>
+
+    <div class="ys-nav-links" [class.ys-nav-open]="menuOpen">
+      <a routerLink="/yoga-sadhana" routerLinkActive="ys-active" [routerLinkActiveOptions]="{exact: true}" (click)="menuOpen=false">Inicio</a>
+
+      <!-- Dropdown: Disciplinas -->
+      <div class="ys-dropdown">
+        <a routerLink="/yoga-sadhana/clases" routerLinkActive="ys-active" class="ys-dropdown-trigger">Disciplinas <span class="material-symbols-outlined dd-arrow">expand_more</span></a>
+        <div class="ys-dropdown-menu">
+          @for (sub of subLinks; track sub.route) {
+            <a [routerLink]="sub.route" routerLinkActive="ys-sub-active" (click)="menuOpen=false">
+              <span class="material-symbols-outlined sub-icon">{{ sub.icon }}</span>
+              {{ sub.label }}
+            </a>
+          }
+          <div class="ys-dropdown-divider"></div>
+          <a routerLink="/yoga-sadhana/clases" class="ys-dropdown-all" (click)="menuOpen=false">Ver Todas las Clases <span class="material-symbols-outlined">arrow_forward</span></a>
+        </div>
+      </div>
+
+      <a routerLink="/yoga-sadhana/horarios" routerLinkActive="ys-active" (click)="menuOpen=false">Horarios</a>
+      <a routerLink="/yoga-sadhana/formacion" routerLinkActive="ys-active" (click)="menuOpen=false">Formación</a>
+      <a routerLink="/yoga-sadhana/nosotros" routerLinkActive="ys-active" (click)="menuOpen=false">Nosotros</a>
+      <a routerLink="/yoga-sadhana/contacto" class="ys-nav-cta" (click)="menuOpen=false">Reservar Clase</a>
+    </div>
+  </div>
+</nav>
+
+<main class="ys-main">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="ys-footer">
+  <div class="ys-footer-inner">
+    <div class="ys-footer-grid">
+      <div class="ys-footer-col">
+        <span class="ys-footer-brand">
+          <img src="images/yoga/logo.png" alt="" class="ys-footer-logo" width="28" height="28" />
+          YogaSadhana
+        </span>
+        <p>Tu santuario de yoga en Ciudad Real. Paz en ti mismo, paz en el mundo.</p>
+      </div>
+      <div class="ys-footer-col">
+        <h4>Disciplinas</h4>
+        <a routerLink="/yoga-sadhana/hatha-yoga">Hatha Yoga</a>
+        <a routerLink="/yoga-sadhana/vinyasa-yoga">Vinyasa Flow</a>
+        <a routerLink="/yoga-sadhana/yin-yoga">Yin Yoga</a>
+        <a routerLink="/yoga-sadhana/yoga-suave">Yoga Suave</a>
+        <a routerLink="/yoga-sadhana/khatva-yoga">Khatva Yoga</a>
+        <a routerLink="/yoga-sadhana/osteopatia">Osteopatía</a>
+      </div>
+      <div class="ys-footer-col">
+        <h4>Centro</h4>
+        <a routerLink="/yoga-sadhana/nosotros">Sobre Nosotros</a>
+        <a routerLink="/yoga-sadhana/clases">Clases</a>
+        <a routerLink="/yoga-sadhana/horarios">Horarios</a>
+        <a routerLink="/yoga-sadhana/formacion">Formación</a>
+        <a routerLink="/yoga-sadhana/contacto">Contacto</a>
+      </div>
+      <div class="ys-footer-col">
+        <h4>Contacto</h4>
+        <a href="https://wa.me/+34600582381" target="_blank">+34 600 582 381</a>
+        <a href="mailto:info@yogasadhana.xyz">info&#64;yogasadhana.xyz</a>
+        <p>Ciudad Real, España</p>
+        <div class="ys-footer-social">
+          <a href="https://www.facebook.com/share/1BJ7boYPDM/" target="_blank">Facebook</a>
+          <a href="https://www.instagram.com/yogasadhana_es" target="_blank">Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div class="ys-footer-bottom">
+      <span>© 2026 YogaSadhana · Ciudad Real</span>
+      <div class="ys-footer-legal">
+        <a href="https://www.yogasadhana.xyz/aviso-legal/" target="_blank">Aviso Legal</a>
+        <a href="https://www.yogasadhana.xyz/politica-privacidad/" target="_blank">Privacidad</a>
+        <a href="https://www.yogasadhana.xyz/declaracion-de-accesibilidad/" target="_blank">Accesibilidad</a>
+      </div>
+      <a routerLink="/projects" class="ys-footer-agency">Hecho por Boty Agency</a>
+    </div>
+  </div>
+</footer>

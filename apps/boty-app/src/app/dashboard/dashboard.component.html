@@ -1,0 +1,155 @@
+<!-- ========================================= -->
+<!-- BOTY AGENCY — DASHBOARD-STYLE LANDING     -->
+<!-- Inspired by Stitch project design         -->
+<!-- ========================================= -->
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">B</div>
+      <span class="logo-name">boty-agency</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/" class="nav-item active">
+        <span class="nav-icon">◉</span>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/projects" class="nav-item">
+        <span class="nav-icon">◆</span>
+        <span>Projects</span>
+      </a>
+      <a href="#agents" class="nav-item">
+        <span class="nav-icon">◎</span>
+        <span>Agents</span>
+      </a>
+      <a href="#monitor" class="nav-item">
+        <span class="nav-icon">⚙</span>
+        <span>Live Monitor</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">🤖</div>
+      <div class="user-info">
+        <span class="user-name">Lead Architect</span>
+        <span class="user-role">Admin Access</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-status">
+        <span class="status-dot"></span>
+        System Health: <strong>Optimal</strong>
+      </div>
+      <div class="topbar-actions">
+        <span class="badge-agents">{{ agents.length }} Active Agents</span>
+      </div>
+    </header>
+
+    <!-- STATS ROW -->
+    <section class="stats-row">
+      @for (stat of stats; track stat.label) {
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">{{ stat.label }}</span>
+            <span class="stat-icon" [style.color]="stat.color">{{ stat.icon }}</span>
+          </div>
+          <div class="stat-value" [style.color]="stat.color">
+            {{ stat.value }}<span class="stat-unit">{{ stat.unit || '' }}</span>
+          </div>
+        </div>
+      }
+    </section>
+
+    <!-- MAIN GRID -->
+    <section class="dashboard-grid">
+      <!-- 3D TOPOLOGY -->
+      <div class="card card-3d" id="monitor">
+        <div class="card-header">
+          <h3>Swarm Topology</h3>
+          <span class="card-subtitle">Real-time agent cluster visualization</span>
+        </div>
+        <div class="spline-container">
+          <spline-viewer 
+            url="https://prod.spline.design/PyzDhHNnpFIbJBbT/scene.splinecode"
+            loading-anim-type="spinner-big-dark"
+            style="width:100%;height:100%;border-radius:12px;">
+          </spline-viewer>
+        </div>
+        <div class="card-footer">
+          <span class="cluster-label">CLUSTER ALPHA</span>
+          <span class="cluster-status">Status: <span class="text-accent">operational</span></span>
+        </div>
+      </div>
+
+      <!-- ACTIVITY STREAM -->
+      <div class="card card-activity">
+        <div class="card-header">
+          <h3>Activity Stream</h3>
+        </div>
+        <div class="activity-list">
+          @for (act of activities; track act.action) {
+            <div class="activity-item">
+              <span class="activity-dot" 
+                [class.dot-success]="act.status === 'success'"
+                [class.dot-active]="act.status === 'active'"
+                [class.dot-waiting]="act.status === 'waiting'">
+              </span>
+              <div class="activity-content">
+                <span class="activity-title">
+                  <strong>{{ act.agent }}</strong> · {{ act.action }}
+                </span>
+                <span class="activity-time">{{ act.time }} ago</span>
+              </div>
+            </div>
+          }
+        </div>
+        <button class="btn-view-log">View Audit Log</button>
+      </div>
+    </section>
+
+    <!-- AGENT ROSTER -->
+    <section class="agent-section" id="agents">
+      <div class="section-header-row">
+        <h3>Active Agent Swarm</h3>
+      </div>
+      <div class="agent-roster">
+        @for (agent of agents; track agent.name) {
+          <div class="agent-chip" [style.border-color]="agent.status === 'ACTIVE' ? agent.color : 'var(--border)'">
+            <span class="agent-chip-icon">{{ agent.icon }}</span>
+            <div class="agent-chip-info">
+              <span class="agent-chip-name">{{ agent.name }}</span>
+              <span class="agent-chip-role">{{ agent.role }}</span>
+            </div>
+            <span class="agent-chip-status" 
+              [style.color]="agent.status === 'ACTIVE' ? agent.color : 'var(--text-dim)'"
+              [style.background]="agent.status === 'ACTIVE' ? agent.color + '15' : 'transparent'">
+              {{ agent.status }}
+            </span>
+            <span class="agent-chip-tasks">{{ agent.tasks }} tasks</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- BOTTOM INFO -->
+    <section class="bottom-row">
+      <div class="card card-engine">
+        <div class="engine-badge">Neural Engine v4.2</div>
+        <p class="engine-desc">Orchestration layer is currently processing high-density requests. Core temperature stable at 42°C.</p>
+        <div class="engine-footer">
+          <span class="engine-uptime">UPTIME: 14d 3h 22m</span>
+          <span class="engine-status text-accent">RUNNING</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<router-outlet></router-outlet>

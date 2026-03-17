@@ -1,0 +1,114 @@
+.projects-page {
+  min-height: 100vh;
+  background: var(--bg-base);
+  padding: 2rem 3rem;
+}
+.projects-header {
+  margin-bottom: 3rem;
+}
+.back-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent); }
+.projects-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.3s;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.card-preview {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-emoji {
+  font-size: 4rem;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+}
+.placeholder-preview {
+  background: var(--bg-surface) !important;
+  border-bottom: 1px dashed var(--border);
+}
+.card-body {
+  padding: 1.25rem;
+}
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.card-title-row h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.card-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.card-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+.card-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+.project-placeholder {
+  opacity: 0.5;
+  border-style: dashed;
+  cursor: default;
+}
+.project-placeholder:hover {
+  transform: none;
+  box-shadow: none;
+}

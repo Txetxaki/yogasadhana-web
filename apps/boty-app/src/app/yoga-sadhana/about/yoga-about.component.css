@@ -1,0 +1,103 @@
+:host{display:block;font-family:var(--font-body);color:var(--on-surface)}
+.material-symbols-outlined{font-family:'Material Symbols Outlined';font-size:24px;vertical-align:middle}
+.therapy-inner{max-width:var(--container);margin:0 auto;padding:6rem var(--px)}
+.label{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--primary);display:block;margin-bottom:.75rem}
+.btn-primary{display:inline-block;background:var(--primary);color:#fff;padding:1rem 2.5rem;border-radius:var(--radius-lg);font-weight:500;text-decoration:none;transition:all .3s;box-shadow:0 20px 40px rgba(146,74,40,.1)}
+.btn-primary:hover{box-shadow:0 24px 48px rgba(146,74,40,.2);transform:translateY(-1px)}
+.btn-text{display:inline-flex;align-items:center;gap:.5rem;color:var(--primary);font-weight:600;text-decoration:none;border-bottom:2px solid var(--primary);padding-bottom:2px;transition:gap .3s}
+.btn-text:hover{gap:.75rem}
+.btn-text .material-symbols-outlined{font-size:18px}
+h2 em{font-style:italic;color:var(--primary-container)}
+
+/* 3D System */
+.card-3d{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s cubic-bezier(.23,1,.32,1);transform-style:preserve-3d;perspective:1000px}
+.card-3d:hover{transform:translateY(-8px) rotateX(2deg) rotateY(-2deg);box-shadow:0 30px 60px rgba(28,28,25,.12),0 0 0 1px rgba(146,74,40,.1)}
+.img-3d-tilt{perspective:600px;transform-style:preserve-3d}
+.img-3d-tilt img{width:100%;height:auto;border-radius:var(--radius-xl);box-shadow:0 20px 50px rgba(28,28,25,.1);transition:transform .6s cubic-bezier(.23,1,.32,1);transform:rotateY(5deg) rotateX(-2deg)}
+.img-3d-tilt:hover img{transform:rotateY(0) rotateX(0) scale(1.03)}
+
+/* Hero */
+.therapy-hero{min-height:60vh;display:flex;align-items:center;background:var(--surface-low);text-align:center;position:relative;overflow:hidden}
+.hero-banner{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0.06;z-index:0;pointer-events:none}
+.therapy-hero .therapy-inner{max-width:700px;position:relative;z-index:1}
+.therapy-hero h1{font-family:var(--font-headline);font-size:clamp(2.5rem,5vw,3.5rem);font-weight:600;margin-bottom:1rem}
+.hero-sub{font-size:1.1rem;color:var(--on-surface-variant);line-height:1.8;margin-bottom:2rem}
+
+/* About with Image */
+.therapy-about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center}
+.therapy-about h2{font-family:var(--font-headline);font-size:2.25rem;font-weight:600;margin-bottom:1.5rem}
+.therapy-about p{font-size:1rem;color:var(--on-surface-variant);line-height:1.8;margin-bottom:1rem}
+.therapy-about strong{color:var(--on-surface)}
+.therapy-about em{color:var(--primary-container)}
+
+/* What to Expect */
+.therapy-expect{background:var(--surface)}
+.therapy-expect h2{font-family:var(--font-headline);font-size:2rem;font-weight:600;margin-bottom:3rem}
+.expect-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.expect-card{background:var(--surface-low);border:1px solid var(--outline);border-radius:var(--radius-lg);padding:2rem}
+.expect-time{font-family:var(--font-headline);font-size:1rem;font-weight:700;color:var(--primary);display:block;margin-bottom:.75rem;padding:.35rem .75rem;background:rgba(146,74,40,.06);border-radius:8px;display:inline-block}
+.expect-card h3{font-family:var(--font-headline);font-size:1.1rem;font-weight:600;margin:.75rem 0 .5rem}
+.expect-card p{font-size:.88rem;color:var(--on-surface-variant);line-height:1.7}
+
+/* Benefits */
+.therapy-benefits{background:var(--surface-low)}
+.therapy-benefits h2{font-family:var(--font-headline);font-size:2rem;font-weight:600;margin-bottom:1rem}
+.benefits-intro{font-size:1rem;color:var(--on-surface-variant);line-height:1.7;margin-bottom:3rem;max-width:700px}
+.benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.benefit{background:var(--surface);border:1px solid var(--outline);border-radius:var(--radius-lg);padding:2rem}
+.benefit .material-symbols-outlined{font-size:32px;color:var(--primary);margin-bottom:1rem;display:block}
+.benefit h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:600;margin-bottom:.5rem}
+.benefit p{font-size:.88rem;color:var(--on-surface-variant);line-height:1.7}
+
+/* Levels */
+.therapy-levels h2{font-family:var(--font-headline);font-size:2rem;font-weight:600;margin-bottom:3rem}
+.levels-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.level{background:var(--surface-low);border:1px solid var(--outline);border-radius:var(--radius-lg);padding:2.5rem 2rem}
+.level-num{font-family:var(--font-headline);font-size:2.5rem;font-weight:700;color:var(--primary-light);display:block;margin-bottom:1rem}
+.level h3{font-family:var(--font-headline);font-size:1.1rem;font-weight:600;margin-bottom:.75rem}
+.level p{font-size:.88rem;color:var(--on-surface-variant);line-height:1.7}
+
+/* FAQ */
+.therapy-faq{background:var(--surface-low)}
+.therapy-faq h2{font-family:var(--font-headline);font-size:2rem;font-weight:600;margin-bottom:3rem}
+.faq-list{max-width:780px;display:flex;flex-direction:column;gap:1rem}
+.faq-item{background:var(--surface);border:1px solid var(--outline);border-radius:var(--radius-lg);overflow:hidden}
+.faq-item summary{font-family:var(--font-body);font-size:1rem;font-weight:600;padding:1.5rem 2rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.faq-item summary:hover{background:rgba(146,74,40,.03)}
+.faq-item summary::after{content:'＋';font-size:1.2rem;color:var(--primary);transition:transform .3s}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item p{padding:0 2rem 1.5rem;font-size:.92rem;color:var(--on-surface-variant);line-height:1.8}
+
+/* CTA */
+.therapy-cta{background:var(--secondary-dark);color:#fff}
+.therapy-cta-inner{text-align:center}
+.therapy-cta h2{font-family:var(--font-headline);font-size:clamp(2rem,4vw,3rem);font-weight:600;color:#fff;margin-bottom:1rem}
+.therapy-cta p{font-size:1.05rem;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 2rem;line-height:1.7}
+.cta-row{display:flex;justify-content:center;gap:2rem;align-items:center}
+.therapy-cta .btn-primary{background:#fff;color:var(--on-surface)}
+.therapy-cta .btn-text{color:var(--primary-light);border-color:var(--primary-light)}
+
+/* ---- TEACHERS SECTION ---- */
+.teachers-section{background:var(--surface)}
+.teachers-section h2{font-family:var(--font-headline);font-size:2.25rem;font-weight:600;margin-bottom:1rem}
+.teachers-intro{font-size:1.05rem;color:var(--on-surface-variant);line-height:1.8;max-width:700px;margin-bottom:4rem}
+
+.teacher-profile{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start;margin-bottom:5rem;padding-bottom:5rem;border-bottom:1px solid var(--outline)}
+.teacher-profile:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.teacher-reverse{direction:rtl}
+.teacher-reverse>*{direction:ltr}
+
+.teacher-photo-wrap{position:relative}
+.teacher-photo-wrap img{width:100%;max-width:380px;aspect-ratio:1;object-fit:cover;border-radius:var(--radius-xl);box-shadow:0 20px 50px rgba(28,28,25,.1)}
+
+.teacher-info h3{font-family:var(--font-headline);font-size:2rem;font-weight:600;margin-bottom:1rem;color:var(--on-surface)}
+.teacher-role{display:inline-block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:var(--primary);background:rgba(146,74,40,.06);padding:.5rem 1rem;border-radius:8px;margin-bottom:1rem}
+.teacher-info p{font-size:.95rem;color:var(--on-surface-variant);line-height:1.8;margin-bottom:1rem}
+.teacher-info strong{color:var(--on-surface)}
+
+.teacher-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.teacher-tags span{font-size:.76rem;font-weight:600;color:var(--primary);background:rgba(146,74,40,.06);padding:.4rem .85rem;border-radius:20px;letter-spacing:.03em}
+
+/* Responsive */
+@media(max-width:1024px){.therapy-about-grid{grid-template-columns:1fr}.expect-grid{grid-template-columns:1fr}.teacher-profile,.teacher-reverse{grid-template-columns:1fr;direction:ltr;gap:2rem}.teacher-reverse>*{direction:ltr}.teacher-photo-wrap{text-align:center}.teacher-photo-wrap img{max-width:300px}}
+@media(max-width:768px){.benefits-grid,.levels-grid{grid-template-columns:1fr}.cta-row{flex-direction:column}.teacher-profile{margin-bottom:3rem;padding-bottom:3rem}}

@@ -1,0 +1,23 @@
+<section class="therapy-hero"><img class="hero-banner" src="images/yoga/headers/classes.png" alt="" aria-hidden="true" /><img class="hero-banner" src="images/yoga/headers/classes.png" alt="" aria-hidden="true" loading="eager" /><div class="therapy-inner"><span class="label">YOGASADHANA</span><h1>Clases de Yoga en Ciudad Real</h1><p class="hero-sub">Más de 6 disciplinas de yoga y terapias manuales en un solo centro. Desde el Hatha clásico hasta el exclusivo Khatva Yoga. Encuentra el estilo que resuena contigo.</p></div></section>
+<section class="therapy-about"><div class="therapy-inner">
+<div class="classes-grid">
+  @for (d of disciplines; track d.name) {
+    <a [routerLink]="d.route" class="class-card card-3d">
+      <div class="class-img"><img [src]="d.image" [alt]="'Clase de ' + d.name + ' en YogaSadhana Ciudad Real'" loading="lazy" width="280" height="200" /></div>
+      <div class="class-body">
+        <div class="class-icon"><span class="material-symbols-outlined">{{ d.icon }}</span></div>
+        <h3>{{ d.name }}</h3>
+        <p>{{ d.desc }}</p>
+        <div class="class-meta"><span class="material-symbols-outlined meta-icon">schedule</span> {{ d.schedule }} <span class="level-badge">{{ d.level }}</span></div>
+      </div>
+      <span class="class-arrow material-symbols-outlined">arrow_forward</span>
+    </a>
+  }
+</div>
+<div class="seo-block">
+  <h2>Centro de Yoga en Ciudad Real con más de 6 Disciplinas</h2>
+  <p>En YogaSadhana ofrecemos la mayor variedad de <strong>clases de yoga en Ciudad Real</strong>. Nuestro equipo de profesores certificados por Yoga Alliance te guiará en tu camino, adaptando cada práctica a tu nivel, tu cuerpo y tus objetivos. Grupos reducidos de máximo 10 alumnos para una atención verdaderamente personalizada.</p>
+  <p>Ya sea que busques <strong>yoga para principiantes</strong>, <strong>yoga dinámico para atletas</strong>, <strong>yoga para embarazadas</strong> o <strong>terapias manuales</strong> como masaje tailandés y osteopatía, encontrarás tu espacio en nuestro centro. La primera clase es siempre gratuita y sin compromiso.</p>
+</div>
+</div></section>
+<section class="therapy-cta"><div class="therapy-inner therapy-cta-inner"><h2>¿No sabes cuál elegir?</h2><p>Contáctanos y te ayudamos a encontrar la práctica perfecta para ti. Tu primera clase es gratis.</p><div class="cta-row"><a routerLink="/yoga-sadhana/contacto" class="btn-primary">Contactar</a><a routerLink="/yoga-sadhana/horarios" class="btn-text">Ver Horarios <span class="material-symbols-outlined">arrow_forward</span></a></div></div></section>

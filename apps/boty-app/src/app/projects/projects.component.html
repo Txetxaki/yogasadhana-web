@@ -1,0 +1,41 @@
+<div class="projects-page">
+  <header class="projects-header">
+    <a routerLink="/" class="back-link">← Dashboard</a>
+    <h1>Proyectos</h1>
+    <p class="subtitle">Proyectos realizados por Boty Agency</p>
+  </header>
+
+  <div class="projects-grid">
+    @for (project of projects; track project.title) {
+      <a [routerLink]="project.route" class="project-card">
+        <div class="card-preview" [style.background]="project.gradient">
+          <span class="card-emoji">{{ project.emoji }}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title-row">
+            <h3>{{ project.title }}</h3>
+            <span class="card-status">{{ project.status }}</span>
+          </div>
+          <p class="card-subtitle">{{ project.subtitle }}</p>
+          <p class="card-desc">{{ project.description }}</p>
+          <div class="card-tags">
+            @for (tag of project.tags; track tag) {
+              <span class="tag">{{ tag }}</span>
+            }
+          </div>
+        </div>
+      </a>
+    }
+
+    <!-- Placeholder for future projects -->
+    <div class="project-card project-placeholder">
+      <div class="card-preview placeholder-preview">
+        <span class="card-emoji">➕</span>
+      </div>
+      <div class="card-body">
+        <h3>Próximo Proyecto</h3>
+        <p class="card-desc">Usa <code>/create-project</code> para iniciar un nuevo proyecto.</p>
+      </div>
+    </div>
+  </div>
+</div>
