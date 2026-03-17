@@ -27,6 +27,7 @@ interface StatCard {
   positive: boolean;
   icon: string;
   color: string;
+  route?: string;
 }
 
 interface ClassItem {
@@ -50,9 +51,9 @@ export class AdminDashboardComponent {
   sanitizer = inject(DomSanitizer);
 
   stats: StatCard[] = [
-    { label: 'Alumnos Activos', value: '47', delta: '+3 este mes', positive: true, icon: 'group', color: '#924a28' },
-    { label: 'Clases esta semana', value: '18', delta: '+2 vs anterior', positive: true, icon: 'self_improvement', color: '#4e635a' },
-    { label: 'Reservas pendientes', value: '12', delta: '-5 vs ayer', positive: false, icon: 'event_available', color: '#924a28' },
+    { label: 'Alumnos Activos', value: '47', delta: '+3 este mes', positive: true, icon: 'group', color: '#924a28', route: '/yoga-sadhana/admin/usuarios' },
+    { label: 'Clases esta semana', value: '18', delta: '+2 vs anterior', positive: true, icon: 'self_improvement', color: '#4e635a', route: '/yoga-sadhana/admin/horario' },
+    { label: 'Reservas pendientes', value: '12', delta: '-5 vs ayer', positive: false, icon: 'event_available', color: '#924a28', route: '/yoga-sadhana/admin/horario' },
     { label: 'Ingresos mes', value: '2.840 €', delta: '+8.2%', positive: true, icon: 'euro', color: '#4e635a' },
   ];
 

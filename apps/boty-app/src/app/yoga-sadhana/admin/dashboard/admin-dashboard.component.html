@@ -10,7 +10,7 @@
   <!-- Stats Grid -->
   <div class="adm-stats">
     @for (stat of stats; track stat.label) {
-      <div class="adm-stat-card">
+      <div class="adm-stat-card" [class.is-link]="!!stat.route" [routerLink]="stat.route ? stat.route : null">
         <div class="adm-stat-icon" [style.background]="stat.color + '18'">
           <span class="adm-icon-wrapper" [style.color]="stat.color" [innerHTML]="getIcon(stat.icon)"></span>
         </div>
@@ -22,6 +22,11 @@
             {{ stat.delta }}
           </span>
         </div>
+        @if (stat.route) {
+          <div class="adm-stat-arrow">
+            <span class="adm-icon-wrapper" [innerHTML]="getIcon('arrow_forward')"></span>
+          </div>
+        }
       </div>
     }
   </div>

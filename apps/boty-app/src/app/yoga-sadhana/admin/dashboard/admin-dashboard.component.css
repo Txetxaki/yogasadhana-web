@@ -39,8 +39,28 @@
   gap: 1rem;
   box-shadow: 0 2px 16px rgba(28,28,25,0.05);
   transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.adm-stat-card.is-link {
+  cursor: pointer;
+  padding-right: 2.5rem;
 }
 .adm-stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(28,28,25,0.08); }
+
+.adm-stat-arrow {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #87736b;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.adm-stat-arrow .adm-icon-wrapper { width: 1.2rem; height: 1.2rem; }
+.adm-stat-card.is-link:hover .adm-stat-arrow {
+  opacity: 1;
+  transform: translateY(-50%) translateX(4px);
+}
 
 .adm-stat-icon {
   width: 48px; height: 48px;
