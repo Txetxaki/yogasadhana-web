@@ -17,9 +17,9 @@ export class UserDashboardComponent {
   ];
 
   quickLinks = [
-    { label: 'Ver Horario', route: '/yoga-sadhana/horarios', icon: 'calendar_month', color: '#924a28' },
-    { label: 'Mis Reservas', route: '/yoga-sadhana/dashboard/reservas', icon: 'event_available', color: '#4e635a' },
-    { label: 'Mi Perfil', route: '/yoga-sadhana/dashboard/perfil', icon: 'manage_accounts', color: '#924a28' },
+    { label: 'Ver Horario', route: '/yoga-sadhana/horarios', icon: 'calendar', color: '#924a28' },
+    { label: 'Mis Reservas', route: '/yoga-sadhana/dashboard/reservas', icon: 'event', color: '#4e635a' },
+    { label: 'Mi Perfil', route: '/yoga-sadhana/dashboard/perfil', icon: 'profile', color: '#924a28' },
     { label: 'Formación', route: '/yoga-sadhana/formacion', icon: 'school', color: '#4e635a' },
   ];
 

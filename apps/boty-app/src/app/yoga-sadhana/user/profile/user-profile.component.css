@@ -121,8 +121,8 @@
   color: #5a4a44;
   text-align: left;
 }
-.usr-prof-meta .material-symbols-outlined {
-  font-size: 1rem;
+.usr-prof-meta .usr-nav-icon {
+  width: 18px; height: 18px;
   color: #924a28;
   flex-shrink: 0;
 }
@@ -169,7 +169,7 @@
   font-family: inherit;
 }
 .usr-edit-btn:hover { background: #924a28; color: #fff; }
-.usr-edit-btn .material-symbols-outlined { font-size: 1rem; }
+.usr-edit-btn .usr-nav-icon { width: 18px; height: 18px; }
 
 /* ── Settings panel ─────────────────────── */
 .usr-settings-title {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
@@ -9,7 +9,9 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.css',
 })
-export class UserLayoutComponent {
+export class UserLayoutComponent implements OnInit {
+  sidebarCollapsed = false;
+
   navItems = [
     { label: 'Mi Área', route: '/yoga-sadhana/dashboard', icon: 'dashboard', exact: true },
     { label: 'Mis Reservas', route: '/yoga-sadhana/dashboard/reservas', icon: 'event_available', exact: false },
@@ -17,6 +19,35 @@ export class UserLayoutComponent {
   ];
 
   constructor(public auth: AuthService) {}
+
+  ngOnInit() {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    if (this.isMobile()) {
+      this.sidebarCollapsed = true;
+    }
+  }
+
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  closeSidebarOnMobile(): void {
+    if (this.isMobile()) {
+      this.sidebarCollapsed = true;
+    }
+  }
+
+  isMobile(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth <= 768;
+  }
 
   logout(): void {
     this.auth.logout();

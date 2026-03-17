@@ -48,7 +48,9 @@
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.adm-stat-icon .material-symbols-outlined { font-size: 1.4rem; }
+.adm-svg-icon { width: 1.4rem; height: 1.4rem; }
+.adm-svg-icon-small { width: 0.9rem; height: 0.9rem; }
+.adm-icon-wrapper { display: inline-flex; align-items: center; justify-content: center; }
 
 .adm-stat-body { display: flex; flex-direction: column; gap: 0.15rem; }
 .adm-stat-label { font-size: 0.75rem; color: #87736b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; }
@@ -57,7 +59,7 @@
   display: flex; align-items: center; gap: 0.2rem;
   font-size: 0.75rem; font-weight: 600;
 }
-.adm-stat-delta .material-symbols-outlined { font-size: 0.9rem; }
+.adm-stat-delta .adm-icon-wrapper { width: 0.9rem; height: 0.9rem; }
 .adm-stat-delta.positive { color: #4e635a; }
 .adm-stat-delta.negative { color: #ba1a1a; }
 
@@ -89,14 +91,17 @@
   color: #1c1c19;
   margin: 0;
 }
-.adm-panel-title .material-symbols-outlined { font-size: 1.2rem; color: #924a28; }
+.adm-panel-title .adm-icon-wrapper {
+  color: #924a28;
+}
+.adm-panel-title .adm-svg-icon { width: 1.2rem; height: 1.2rem; }
 
 .adm-panel-link {
   display: flex; align-items: center; gap: 0.25rem;
   font-size: 0.8rem; color: #924a28; text-decoration: none; font-weight: 600;
 }
 .adm-panel-link:hover { text-decoration: underline; }
-.adm-panel-link .material-symbols-outlined { font-size: 0.9rem; }
+.adm-panel-link .adm-icon-wrapper { width: 0.9rem; height: 0.9rem; }
 
 /* Table */
 .adm-table-wrap { overflow-x: auto; }
@@ -150,13 +155,14 @@
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.adm-activity-icon .material-symbols-outlined { font-size: 1rem; color: #924a28; }
+.adm-activity-icon .adm-icon-wrapper { color: #924a28; }
+.adm-activity-icon .adm-svg-icon { width: 1rem; height: 1rem; }
 .act-user .adm-activity-icon { background: #cee5da; }
-.act-user .adm-activity-icon .material-symbols-outlined { color: #4e635a; }
+.act-user .adm-activity-icon .adm-icon-wrapper { color: #4e635a; }
 .act-cancel .adm-activity-icon { background: #ffdad6; }
-.act-cancel .adm-activity-icon .material-symbols-outlined { color: #ba1a1a; }
+.act-cancel .adm-activity-icon .adm-icon-wrapper { color: #ba1a1a; }
 .act-payment .adm-activity-icon { background: #ffdbcd; }
-.act-payment .adm-activity-icon .material-symbols-outlined { color: #753413; }
+.act-payment .adm-activity-icon .adm-icon-wrapper { color: #753413; }
 
 .adm-activity-body { flex: 1; }
 .adm-activity-body p { margin: 0 0 0.2rem; font-size: 0.82rem; color: #1c1c19; line-height: 1.4; }

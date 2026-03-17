@@ -5,6 +5,10 @@
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: grid-template-columns 0.3s ease;
+}
+.usr-shell.usr-collapsed {
+  grid-template-columns: 72px 1fr;
 }
 
 /* ── Sidebar ── */
@@ -16,6 +20,8 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow: hidden;
+  z-index: 20;
 }
 
 .usr-sidebar-header {
@@ -32,6 +38,8 @@
   font-family: 'Noto Serif', serif;
   font-size: 1rem;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .usr-logo { width: 28px; height: 28px; }
 
@@ -41,7 +49,9 @@
   gap: 0.75rem;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid #ebe8e3;
+  overflow: hidden;
 }
+.usr-profile-mini.usr-collapsed-user { justify-content: center; padding: 1rem 0.25rem; }
 .usr-avatar {
   width: 40px; height: 40px;
   border-radius: 50%;
@@ -52,8 +62,9 @@
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.usr-p-name { display: block; font-size: 0.85rem; font-weight: 600; color: #1c1c19; }
-.usr-p-role { display: block; font-size: 0.72rem; color: #924a28; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; }
+.usr-user-details { display: flex; flex-direction: column; overflow: hidden; }
+.usr-p-name { display: block; font-size: 0.85rem; font-weight: 600; color: #1c1c19; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.usr-p-role { display: block; font-size: 0.72rem; color: #924a28; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Nav */
 .usr-nav {
@@ -75,6 +86,8 @@
   font-size: 0.875rem;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .usr-nav-item:hover { background: #f1ede8; color: #1c1c19; }
 .usr-nav-item.usr-nav-active {
@@ -82,7 +95,11 @@
   color: #924a28;
   font-weight: 600;
 }
-.usr-nav-item .material-symbols-outlined { font-size: 1.2rem; flex-shrink: 0; }
+.usr-nav-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
 .usr-nav-web { color: #87736b; font-size: 0.8rem; }
 
 .usr-nav-divider { border-top: 1px solid #ebe8e3; margin: 0.5rem 0; }
@@ -107,15 +124,76 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+  justify-content: center;
+  white-space: nowrap;
 }
 .usr-logout-btn:hover { background: #f1ede8; color: #924a28; }
-.usr-logout-btn .material-symbols-outlined { font-size: 1.1rem; }
+.usr-logout-btn .usr-nav-icon { margin-right: 2px; }
 
 /* Main */
-.usr-main { background: #f7f3ee; min-height: 100vh; }
-.usr-content { padding: 2rem; }
+.usr-main { display: flex; flex-direction: column; background: #f7f3ee; min-height: 100vh; }
+
+.usr-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 2rem;
+  background: rgba(253,249,244,0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #ebe8e3;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.usr-collapse-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #54433c;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+.usr-collapse-btn:hover { background: #ebe8e3; }
+
+.usr-topbar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #924a28;
+  text-decoration: none;
+  font-weight: 500;
+}
+.usr-topbar-link:hover { text-decoration: underline; }
+
+.usr-content { flex: 1; padding: 2rem; }
 
 @media (max-width: 768px) {
-  .usr-shell { grid-template-columns: 1fr; }
-  .usr-sidebar { display: none; }
+  .usr-shell,
+  .usr-shell.usr-collapsed { 
+    display: block; 
+  }
+  .usr-sidebar {
+    display: flex;
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: 240px;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .usr-shell:not(.usr-collapsed) .usr-sidebar {
+    transform: translateX(0);
+  }
+  .usr-mobile-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 90;
+    backdrop-filter: blur(2px);
+  }
 }

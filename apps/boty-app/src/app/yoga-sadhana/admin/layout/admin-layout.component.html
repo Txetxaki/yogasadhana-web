@@ -13,34 +13,34 @@
           <span>YogaSadhana</span>
         }
       </a>
-      @if (!sidebarCollapsed) {
+      @if (!sidebarCollapsed || isMobile()) {
         <span class="adm-role-badge">Admin</span>
       }
     </div>
 
     <nav class="adm-nav">
       <!-- Dashboard -->
-      <a routerLink="/yoga-sadhana/admin/dashboard" routerLinkActive="adm-nav-active" class="adm-nav-item">
+      <a routerLink="/yoga-sadhana/admin/dashboard" routerLinkActive="adm-nav-active" class="adm-nav-item" (click)="closeSidebarOnMobile()">
         <svg class="adm-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
           <rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
           <rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
           <rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/>
         </svg>
-        @if (!sidebarCollapsed) { <span>Dashboard</span> }
+        @if (!sidebarCollapsed || isMobile()) { <span>Dashboard</span> }
       </a>
       <!-- Usuarios -->
-      <a routerLink="/yoga-sadhana/admin/usuarios" routerLinkActive="adm-nav-active" class="adm-nav-item">
+      <a routerLink="/yoga-sadhana/admin/usuarios" routerLinkActive="adm-nav-active" class="adm-nav-item" (click)="closeSidebarOnMobile()">
         <svg class="adm-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="9" cy="7" r="3.5" stroke="currentColor" stroke-width="1.6"/>
           <path d="M2 20c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M17 10c1.657 0 3 1.343 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M19 20c0-2.761-1.343-5-3-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
-        @if (!sidebarCollapsed) { <span>Usuarios</span> }
+        @if (!sidebarCollapsed || isMobile()) { <span>Usuarios</span> }
       </a>
       <!-- Horario -->
-      <a routerLink="/yoga-sadhana/admin/horario" routerLinkActive="adm-nav-active" class="adm-nav-item">
+      <a routerLink="/yoga-sadhana/admin/horario" routerLinkActive="adm-nav-active" class="adm-nav-item" (click)="closeSidebarOnMobile()">
         <svg class="adm-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/>
           <path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/>
@@ -49,14 +49,14 @@
           <circle cx="8" cy="15" r="1" fill="currentColor"/>
           <circle cx="16" cy="15" r="1" fill="currentColor"/>
         </svg>
-        @if (!sidebarCollapsed) { <span>Horario</span> }
+        @if (!sidebarCollapsed || isMobile()) { <span>Horario</span> }
       </a>
     </nav>
 
     <div class="adm-sidebar-footer">
       <div class="adm-user-info" [class.adm-collapsed-user]="sidebarCollapsed">
         <div class="adm-avatar">{{ auth.currentUser()?.avatar ?? 'A' }}</div>
-        @if (!sidebarCollapsed) {
+        @if (!sidebarCollapsed || isMobile()) {
           <div class="adm-user-details">
             <span class="adm-user-name">{{ auth.currentUser()?.name }}</span>
             <span class="adm-user-email">{{ auth.currentUser()?.email }}</span>
@@ -69,10 +69,15 @@
           <polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
-        @if (!sidebarCollapsed) { <span>Salir</span> }
+        @if (!sidebarCollapsed || isMobile()) { <span>Salir</span> }
       </button>
     </div>
   </aside>
+
+  <!-- Mobile Overlay -->
+  @if (!sidebarCollapsed && isMobile()) {
+    <div class="adm-mobile-overlay" (click)="closeSidebarOnMobile()"></div>
+  }
 
   <!-- Main -->
   <div class="adm-main">

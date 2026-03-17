@@ -3,30 +3,29 @@
     <div>
       <span class="usr-page-label">Bienvenida</span>
       <h1 class="usr-page-title">
-        Namaste, {{ (auth.currentUser()?.name ?? '').split(' ')[0] }} 🙏
+        Namaste, {{ (auth.currentUser()?.name ?? '').split(' ')[0] }}
       </h1>
     </div>
   </div>
 
-  <!-- Streak Stats -->
   <div class="usr-stats">
     <div class="usr-stat-card">
-      <div class="usr-stat-icon"><span class="material-symbols-outlined">local_fire_department</span></div>
+      <div class="usr-stat-icon"><svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
       <span class="usr-stat-value">{{ streakWeeks }}</span>
       <span class="usr-stat-label">Semanas de racha</span>
     </div>
     <div class="usr-stat-card">
-      <div class="usr-stat-icon secondary"><span class="material-symbols-outlined">self_improvement</span></div>
+      <div class="usr-stat-icon secondary"><svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 7-2 1-1 3"/><path d="m14 7 2 1 1 3"/><circle cx="12" cy="4" r="1"/><path d="m5 17 2-3h10l2 3"/><path d="m3 19 3-2h12l3 2"/><path d="M12 17v5"/></svg></div>
       <span class="usr-stat-value">{{ totalClasses }}</span>
       <span class="usr-stat-label">Clases totales</span>
     </div>
     <div class="usr-stat-card">
-      <div class="usr-stat-icon tertiary"><span class="material-symbols-outlined">schedule</span></div>
+      <div class="usr-stat-icon tertiary"><svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <span class="usr-stat-value usr-stat-sm">{{ nextClass }}</span>
       <span class="usr-stat-label">Próxima clase</span>
     </div>
     <div class="usr-stat-card">
-      <div class="usr-stat-icon secondary"><span class="material-symbols-outlined">favorite</span></div>
+      <div class="usr-stat-icon secondary"><svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
       <span class="usr-stat-value usr-stat-sm">{{ auth.currentUser()?.favoriteStyle ?? 'Hatha' }}</span>
       <span class="usr-stat-label">Tu estilo</span>
     </div>
@@ -37,10 +36,10 @@
     <div class="usr-panel">
       <div class="usr-panel-header">
         <h2 class="usr-panel-title">
-          <span class="material-symbols-outlined">event</span>
+          <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
           Mis Próximas Clases
         </h2>
-        <a routerLink="/yoga-sadhana/horarios" class="usr-panel-link">Ver horario <span class="material-symbols-outlined">arrow_forward</span></a>
+        <a routerLink="/yoga-sadhana/horarios" class="usr-panel-link">Ver horario <svg class="usr-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.25rem;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
       </div>
       <div class="usr-class-list">
         @for (cls of upcomingClasses; track cls.name) {
@@ -54,7 +53,11 @@
               <span class="usr-class-meta">{{ cls.time }} · {{ cls.teacher }}</span>
             </div>
             <div class="usr-class-status" [class.confirmed]="cls.confirmed" [class.pending]="!cls.confirmed">
-              <span class="material-symbols-outlined">{{ cls.confirmed ? 'check_circle' : 'pending' }}</span>
+              @if (cls.confirmed) {
+                <svg class="usr-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+              } @else {
+                <svg class="usr-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              }
               {{ cls.confirmed ? 'Confirmada' : 'Pendiente' }}
             </div>
           </div>
@@ -66,18 +69,23 @@
     <div class="usr-panel">
       <div class="usr-panel-header">
         <h2 class="usr-panel-title">
-          <span class="material-symbols-outlined">apps</span>
+          <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
           Acceso Rápido
         </h2>
       </div>
       <div class="usr-quick-links">
         @for (link of quickLinks; track link.route) {
           <a [routerLink]="link.route" class="usr-quick-card">
-            <div class="usr-quick-icon" [style.background]="link.color + '18'">
-              <span class="material-symbols-outlined" [style.color]="link.color">{{ link.icon }}</span>
+            <div class="usr-quick-icon" [style.background]="link.color + '18'" [style.color]="link.color">
+              @switch(link.icon) {
+                @case('calendar') { <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg> }
+                @case('event') { <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg> }
+                @case('profile') { <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> }
+                @case('school') { <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 8-4 8 4"/><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"/><path d="M14 22v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M18 5v17"/><path d="M6 5v17"/><circle cx="12" cy="9" r="2"/></svg> }
+              }
             </div>
             <span>{{ link.label }}</span>
-            <span class="material-symbols-outlined usr-quick-arrow">arrow_forward</span>
+            <svg class="usr-quick-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
         }
       </div>

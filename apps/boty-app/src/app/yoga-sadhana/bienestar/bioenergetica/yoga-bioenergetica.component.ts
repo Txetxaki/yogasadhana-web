@@ -12,9 +12,9 @@ import { Title, Meta } from '@angular/platform-browser';
 export class YogaBioenergeticaComponent implements OnInit {
   constructor(private title: Title, private meta: Meta) {}
   ngOnInit() {
-    this.title.setTitle('Bioenergética China y Bioenergética Facial en Ciudad Real · YogaSadhana');
-    this.meta.updateTag({ name: 'description', content: 'Bioenergética China en Ciudad Real: moxibustión, ventosas, estimulación de puntos energéticos basada en Medicina Tradicional China. Bioenergética Facial para luminosidad y equilibrio natural. YogaSadhana.' });
-    this.meta.updateTag({ property: 'og:title', content: 'Bioenergética China · Reequilibrio Energético YogaSadhana Ciudad Real' });
-    this.meta.updateTag({ property: 'og:description', content: 'Sesiones de bioenergética china y facial. Moxibustión, cupping, estimulación de meridianos. Bienestar energético profundo en Ciudad Real.' });
+    this.title.setTitle('Bioenergética China en Ciudad Real | YogaSadhana');
+    this.meta.updateTag({ name: 'description', content: 'Descubre la Bioenergética China en Ciudad Real. Terapia holística para restablecer el flujo energético y equilibrar el cuerpo y la mente. YogaSadhana.' });
+    this.meta.updateTag({ property: 'og:title', content: 'Bioenergética China en Ciudad Real · YogaSadhana' });
+    this.meta.updateTag({ property: 'og:description', content: 'Técnicas milenarias de Bioenergética China para armonizar tu bienestar integral en YogaSadhana.' });
   }
 }

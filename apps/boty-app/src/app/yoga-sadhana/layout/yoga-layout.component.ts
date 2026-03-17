@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class YogaLayoutComponent {
     { label: 'Osteopatía', route: '/yoga-sadhana/osteopatia', icon: 'healing' },
   ];
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private router: Router) {}
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
@@ -44,5 +44,20 @@ export class YogaLayoutComponent {
 
   get dashboardRoute(): string {
     return this.auth.isAdmin() ? '/yoga-sadhana/admin/dashboard' : '/yoga-sadhana/dashboard';
+  }
+
+  isDisciplinasActive(): boolean {
+    const url = this.router.url;
+    return url.includes('/hatha-yoga') || 
+           url.includes('/vinyasa-yoga') || 
+           url.includes('/yin-yoga') || 
+           url.includes('/yoga-suave') || 
+           url.includes('/khatva-yoga') ||
+           url.includes('/clases');
+  }
+
+  isBienestarActive(): boolean {
+    const url = this.router.url;
+    return url.includes('/bienestar/');
   }
 }

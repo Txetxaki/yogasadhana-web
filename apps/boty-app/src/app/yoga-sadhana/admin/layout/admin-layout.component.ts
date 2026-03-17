@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
@@ -9,7 +9,7 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css',
 })
-export class AdminLayoutComponent {
+export class AdminLayoutComponent implements OnInit {
   sidebarCollapsed = false;
 
   navItems = [
@@ -20,8 +20,33 @@ export class AdminLayoutComponent {
 
   constructor(public auth: AuthService) {}
 
+  ngOnInit() {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    if (this.isMobile()) {
+      this.sidebarCollapsed = true;
+    }
+  }
+
   toggleSidebar(): void {
     this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  closeSidebarOnMobile(): void {
+    if (this.isMobile()) {
+      this.sidebarCollapsed = true;
+    }
+  }
+
+  isMobile(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth <= 768;
   }
 
   logout(): void {

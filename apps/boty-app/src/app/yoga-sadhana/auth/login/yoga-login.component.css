@@ -4,7 +4,7 @@
 
 /* ── Layout Split ── */
 .ys-auth-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 88px); /* Account for global layout header */
   display: flex;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
