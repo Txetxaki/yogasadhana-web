@@ -12,9 +12,11 @@ export interface CartItem {
 export class CartService {
   // Using Signals for maximum reactivity
   private cartItemsSignal = signal<CartItem[]>([]);
+  private isDrawerOpenSignal = signal<boolean>(false);
   
   // Public readonly access
   cartItems = this.cartItemsSignal.asReadonly();
+  isDrawerOpen = this.isDrawerOpenSignal.asReadonly();
   
   // Computed values
   totalItems = computed(() => this.cartItemsSignal().reduce((acc, item) => acc + item.quantity, 0));
@@ -36,6 +38,7 @@ export class CartService {
       return [...items, { product, quantity }];
     });
     this.saveToLocalStorage();
+    this.openDrawer();
   }
 
   removeFromCart(productId: string) {
@@ -57,6 +60,24 @@ export class CartService {
   clearCart() {
     this.cartItemsSignal.set([]);
     this.saveToLocalStorage();
+  }
+
+  openDrawer() {
+    this.isDrawerOpenSignal.set(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeDrawer() {
+    this.isDrawerOpenSignal.set(false);
+    document.body.style.overflow = '';
+  }
+
+  toggleDrawer() {
+    if (this.isDrawerOpenSignal()) {
+      this.closeDrawer();
+    } else {
+      this.openDrawer();
+    }
   }
 
   private saveToLocalStorage() {

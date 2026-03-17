@@ -1,0 +1,146 @@
+<div class="adm-section">
+  <div class="adm-header">
+    <h2 class="adm-title">Gestión de Pedidos</h2>
+    <p class="adm-subtitle">Monitoriza, actualiza y gestiona el envío de todos los pedidos de la tienda.</p>
+  </div>
+
+  <div class="adm-content-grid" [class.single-col]="!selectedOrder()">
+    <!-- Detalles del Pedido Seleccionado -->
+    @if (selectedOrder(); as order) {
+      <div class="adm-form-card ord-detail-card">
+        <div class="ord-detail-header">
+          <div>
+            <h3 class="adm-card-title no-margin">Pedido #{{ order.id | slice:0:8 | uppercase }}</h3>
+            <span class="ord-date">{{ formatDate(order.createdAt) }}</span>
+          </div>
+          <button class="adm-icon-btn" (click)="closeOrder()" title="Cerrar detalles">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="ord-status-editor">
+          <div class="adm-field">
+            <span class="adm-label">Estado del Pedido</span>
+            <select [(ngModel)]="editStatus" class="adm-input">
+              <option value="Pendiente">Pendiente</option>
+              <option value="Pagado">Pagado</option>
+              <option value="Enviado">Enviado</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+          
+          <div class="adm-field">
+            <span class="adm-label">Número de Seguimiento (Tracking)</span>
+            <input type="text" [(ngModel)]="editTracking" placeholder="Ej. 1Z999999999" class="adm-input">
+          </div>
+
+          <button class="ys-btn ys-btn-primary full-width mt-2" (click)="updateOrder()" 
+                  [disabled]="editStatus() === order.status && editTracking() === (order.trackingNumber || '')">
+            Guardar Cambios
+          </button>
+        </div>
+
+        <div class="ord-customer-info">
+          <h4 class="ord-subheading">Datos del Cliente</h4>
+          <p><strong>Nombre:</strong> {{ order.customerInfo.firstName }} {{ order.customerInfo.lastName }}</p>
+          <p><strong>Email:</strong> <a href="mailto:{{ order.customerInfo.email }}" class="adm-link">{{ order.customerInfo.email }}</a></p>
+          <p><strong>Teléfono:</strong> {{ order.customerInfo.phone }}</p>
+          <p><strong>Dirección:</strong> {{ order.customerInfo.address }}, {{ order.customerInfo.postalCode }}, {{ order.customerInfo.city }} ({{ order.customerInfo.country }})</p>
+        </div>
+
+        <div class="ord-items-list">
+          <h4 class="ord-subheading">Artículos</h4>
+          @for (item of order.items; track item.productId) {
+            <div class="ord-item">
+              <div class="ord-item-img">
+                @if (item.thumbnail) {
+                  <img [src]="item.thumbnail" [alt]="item.productName">
+                } @else {
+                  <div class="img-placeholder"></div>
+                }
+              </div>
+              <div class="ord-item-details">
+                <span class="ord-item-name">{{ item.productName }}</span>
+                @if (item.selectedAttributes) {
+                  <div class="ord-item-attrs">
+                    @for (attr of item.selectedAttributes | keyvalue; track attr.key) {
+                      <span class="attr-tag">{{ attr.key }}: {{ attr.value }}</span>
+                    }
+                  </div>
+                }
+                <div class="ord-item-price-qty">
+                  <span>{{ item.quantity }} x {{ item.price | currency:'EUR' }}</span>
+                  <strong>{{ (item.quantity * item.price) | currency:'EUR' }}</strong>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="ord-summary">
+          <div class="summary-line"><span>Subtotal:</span> <span>{{ order.subtotal | currency:'EUR' }}</span></div>
+          <div class="summary-line"><span>Envío:</span> <span>{{ order.shippingCost === 0 ? 'Gratis' : (order.shippingCost | currency:'EUR') }}</span></div>
+          <div class="summary-line total"><span>Total Pagado:</span> <span>{{ order.total | currency:'EUR' }}</span></div>
+          <div class="summary-line mt-1"><span>Método:</span> <span class="method-badge">{{ order.paymentMethod }}</span></div>
+        </div>
+      </div>
+    }
+
+    <!-- Lista -->
+    <div class="adm-list-card">
+      <h3 class="adm-card-title">Todos los Pedidos ({{ orders().length }})</h3>
+      
+      @if (orders().length === 0) {
+        <div class="adm-empty-state">
+          <p>La tienda no ha recibido pedidos aún.</p>
+        </div>
+      } @else {
+        <div class="adm-table-container">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th class="text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of orders(); track order.id) {
+                <tr [class.selected-row]="selectedOrder()?.id === order.id">
+                  <td class="adm-td-main">
+                    <strong>#{{ order.id | slice:0:8 | uppercase }}</strong>
+                  </td>
+                  <td>{{ formatDate(order.createdAt) }}</td>
+                  <td>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                      <span>{{ order.customerInfo.firstName }} {{ order.customerInfo.lastName }}</span>
+                      <span class="adm-text-sm">{{ order.customerInfo.city }}</span>
+                    </div>
+                  </td>
+                  <td><strong>{{ order.total | currency:'EUR' }}</strong></td>
+                  <td>
+                    <span class="ord-status-badge" [ngClass]="getStatusColor(order.status)">
+                      {{ order.status }}
+                    </span>
+                  </td>
+                  <td class="adm-td-actions">
+                    <button class="ys-btn ys-btn-outline ys-btn-sm" (click)="selectOrder(order)">
+                      Ver Detalles
+                    </button>
+                    <button class="adm-icon-btn delete ml-2" (click)="deleteOrder(order.id)" title="Eliminar Permanente">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

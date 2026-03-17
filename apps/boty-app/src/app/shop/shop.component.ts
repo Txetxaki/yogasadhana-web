@@ -9,7 +9,8 @@ import { Product } from '../core/models/product.model';
   selector: 'app-shop',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './shop.component.html'
+  templateUrl: './shop.component.html',
+  styleUrl: './shop.component.css'
 })
 export class ShopComponent implements OnInit {
   private shopService = inject(ShopService);

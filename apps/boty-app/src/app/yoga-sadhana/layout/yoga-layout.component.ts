@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { CartService } from '../../core/services/cart/cart.service';
+import { CartDrawerComponent } from '../../shop/cart-drawer/cart-drawer.component';
 
 @Component({
   selector: 'app-yoga-layout',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CartDrawerComponent],
   templateUrl: './yoga-layout.component.html',
   styleUrl: './yoga-layout.component.css',
 })
@@ -22,7 +24,7 @@ export class YogaLayoutComponent {
     { label: 'Osteopatía', route: '/yoga-sadhana/osteopatia', icon: 'healing' },
   ];
 
-  constructor(public auth: AuthService, private router: Router) {}
+  constructor(public auth: AuthService, private router: Router, public cart: CartService) {}
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

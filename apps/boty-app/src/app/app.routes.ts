@@ -65,7 +65,12 @@ export const appRoutes: Route[] = [
       { path: 'dashboard', loadComponent: () => import('./yoga-sadhana/admin/dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
       { path: 'usuarios', loadComponent: () => import('./yoga-sadhana/admin/users/admin-users.component').then(m => m.AdminUsersComponent) },
       { path: 'horario', loadComponent: () => import('./yoga-sadhana/admin/schedule/admin-schedule.component').then(m => m.AdminScheduleComponent) },
-      { path: 'tienda', loadComponent: () => import('./admin/shop-manage/shop-manage').then(m => m.ShopManage) },
+      { path: 'tienda', redirectTo: 'tienda/productos', pathMatch: 'full' },
+      { path: 'tienda/productos', loadComponent: () => import('./admin/shop-manage/shop-manage').then(m => m.ShopManage) },
+      { path: 'tienda/pedidos', loadComponent: () => import('./admin/orders-manage/orders-manage.component').then(m => m.OrdersManageComponent) },
+      { path: 'tienda/marcas', loadComponent: () => import('./admin/brands-manage/brands-manage.component').then(m => m.BrandsManageComponent) },
+      { path: 'tienda/proveedores', loadComponent: () => import('./admin/suppliers-manage/suppliers-manage.component').then(m => m.SuppliersManageComponent) },
+      { path: 'tienda/atributos', loadComponent: () => import('./admin/attributes-manage/attributes-manage.component').then(m => m.AttributesManageComponent) },
     ],
   },
   // User dashboard area — outside yoga-layout (has its own sidebar layout)

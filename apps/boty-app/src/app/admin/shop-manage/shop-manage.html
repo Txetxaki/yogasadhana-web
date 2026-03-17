@@ -1,94 +1,109 @@
-<div class="space-y-6">
+<div class="admin-container">
   <!-- Header -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+  <div class="admin-header">
     <div>
-      <h2 class="text-2xl font-semibold text-[#1c1c19]">Gestión de Tienda</h2>
-      <p class="text-sm text-[#54433c] mt-1">Administra tu inventario, precios y visualiza órdenes recientes.</p>
+      <h2 class="admin-title">Catálogo Completo</h2>
+      <p class="admin-subtitle">Administra tu inventario, precios y visualiza órdenes recientes.</p>
     </div>
     
-    <button (click)="addProduct()" class="flex items-center gap-2 bg-[#924a28] text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-[#783c20] transition-colors shadow-sm">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    <button (click)="openDrawer()" class="ys-btn ys-btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
       Añadir Producto
     </button>
   </div>
 
   <!-- Stats Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-[#e5dfd5]/50">
-      <h3 class="text-sm font-medium text-[#54433c] mb-1">Total Productos</h3>
-      <p class="text-3xl font-semibold text-[#1c1c19]">{{products().length}}</p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3 class="stat-label">Total Productos</h3>
+      <p class="stat-value">{{products().length}}</p>
     </div>
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-[#e5dfd5]/50">
-      <h3 class="text-sm font-medium text-[#54433c] mb-1">Órdenes Activas</h3>
-      <p class="text-3xl font-semibold text-[#1c1c19]">0</p>
+    <div class="stat-card">
+      <h3 class="stat-label">Stock Crítico</h3>
+      <p class="stat-value text-danger">{{ lowStockCount() }}</p>
     </div>
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-[#e5dfd5]/50">
-      <h3 class="text-sm font-medium text-[#54433c] mb-1">Ventas del Mes</h3>
-      <p class="text-3xl font-semibold text-[#1c1c19]">0.00 €</p>
+    <div class="stat-card">
+      <h3 class="stat-label">Ticket Promedio</h3>
+      <p class="stat-value">-- €</p>
     </div>
   </div>
 
   <!-- Loading State -->
   @if (loading()) {
-  <div class="py-12 flex justify-center">
-    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#924a28]"></div>
+  <div class="loading-row">
+    <div class="spinner"></div>
   </div>
   }
 
   <!-- Inventory Table -->
   @if (!loading()) {
-  <div class="bg-white rounded-2xl shadow-sm border border-[#e5dfd5]/50 overflow-hidden">
-    <div class="p-6 border-b border-[#e5dfd5]/50 flex justify-between items-center">
-      <h3 class="text-lg font-semibold text-[#1c1c19]">Inventario Actual</h3>
+  <div class="inventory-section">
+    <div class="inventory-header">
+      <h3 class="inventory-title">Inventario Actual</h3>
       <!-- Filter/Search placeholder -->
-      <div class="relative">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[#54433c] opacity-50" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" placeholder="Buscar producto..." class="pl-9 pr-4 py-2 border border-[#e5dfd5] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#924a28]/50 focus:border-[#924a28] transition-all bg-[#f7f3ee]">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Buscar producto..." class="search-input">
       </div>
     </div>
     
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-[#f7f3ee] text-[#54433c] text-xs uppercase tracking-wider font-semibold">
+    <div class="table-wrapper">
+      <table class="inventory-table">
+        <thead>
           <tr>
-            <th class="px-6 py-4">Producto</th>
-            <th class="px-6 py-4">Categoría</th>
-            <th class="px-6 py-4">Precio</th>
-            <th class="px-6 py-4">Stock</th>
-            <th class="px-6 py-4 text-right">Acciones</th>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Precio / Coste</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th style="text-align: right;">Acciones</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-[#e5dfd5]/50 text-sm">
+        <tbody>
           @for (p of products(); track p.id) {
-          <tr class="hover:bg-[#f7f3ee]/50 transition-colors">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-[#e5dfd5] overflow-hidden flex-shrink-0">
+          <tr class="table-row">
+            <td>
+              <div class="product-info-cell">
+                <div class="product-thumbnail-wrap">
                   @if (p.thumbnail) {
-                  <img [src]="p.thumbnail" class="w-full h-full object-cover">
+                  <img [src]="p.thumbnail" class="product-thumbnail">
                   }
                 </div>
-                <div class="font-medium text-[#1c1c19]">{{p.name}}</div>
+                <div style="display: flex; flex-direction: column;">
+                    <span class="product-name">{{p.name}}</span>
+                    <span class="product-sku">SKU: {{p.sku || 'N/A'}}</span>
+                </div>
               </div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-[#54433c]">{{p.category}}</td>
-            <td class="px-6 py-4 whitespace-nowrap font-medium text-[#924a28]">{{p.price | currency:'EUR'}}</td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    [class.bg-green-100]="p.stock > 10" [class.text-green-800]="p.stock > 10"
-                    [class.bg-yellow-100]="p.stock > 0 && p.stock <= 10" [class.text-yellow-800]="p.stock > 0 && p.stock <= 10"
-                    [class.bg-red-100]="p.stock === 0" [class.text-red-800]="p.stock === 0">
-                {{p.stock > 0 ? p.stock + ' en stock' : 'Agotado'}}
+            <td class="category-cell">{{p.category}}</td>
+            <td>
+                <div style="display: flex; flex-direction: column;">
+                    <span class="price-cell">{{p.price | currency:'EUR'}}</span>
+                    <span class="cost-cell">C: {{p.costPrice ? (p.costPrice | currency:'EUR') : 'N/A'}}</span>
+                </div>
+            </td>
+            <td>
+              <span class="stock-badge"
+                    [class.high]="p.stock > 10" 
+                    [class.medium]="p.stock > 0 && p.stock <= 10" 
+                    [class.empty]="p.stock === 0">
+                {{p.stock > 0 ? p.stock + ' uds' : 'Agotado'}}
               </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-               <button class="text-[#52675e] hover:text-[#2d3a35] mr-4 transition-colors">Editar</button>
-               <button (click)="deleteProduct(p.id)" class="text-red-600 hover:text-red-800 transition-colors">Eliminar</button>
+            <td>
+                <div class="badges-col">
+                    @if (p.isBestSeller) { <span class="mini-badge bestseller">Bestseller</span> }
+                    @if (p.isEcoFriendly) { <span class="mini-badge eco">Eco</span> }
+                </div>
+            </td>
+            <td class="actions-cell">
+               <button class="btn-edit" (click)="openDrawer(p)">Editar</button>
+               <button (click)="deleteProduct(p.id)" class="btn-delete">Eliminar</button>
             </td>
           </tr>
           } @empty {
           <tr>
-            <td colspan="5" class="px-6 py-12 text-center text-[#54433c]">No hay productos en el inventario.</td>
+            <td colspan="6" class="empty-state">No hay productos en el inventario.</td>
           </tr>
           }
         </tbody>
@@ -97,3 +112,236 @@
   </div>
   }
 </div>
+
+<!-- Product Drawer -->
+@if (isDrawerOpen()) {
+  <div class="drawer-overlay" (click)="closeDrawer()"></div>
+  <div class="product-drawer" [class.open]="isDrawerOpen()">
+    <div class="drawer-header">
+      <h3 class="drawer-title">{{ editingProduct()?.id ? 'Editar Producto' : 'Añadir Nuevo Producto' }}</h3>
+      <button class="icon-btn-close" (click)="closeDrawer()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    
+    <div class="drawer-content">
+      @if (editingProduct(); as prod) {
+        
+        <div class="drawer-section">
+            <h4 class="section-heading">Información Básica</h4>
+            <div class="form-grid">
+                <div class="adm-field full">
+                    <label class="adm-label">Nombre del Producto *</label>
+                    <input type="text" [(ngModel)]="prod.name" class="adm-input" placeholder="Ej. Esterilla PRO Corcho">
+                </div>
+                
+                <div class="adm-field">
+                    <label class="adm-label">SKU</label>
+                    <input type="text" [(ngModel)]="prod.sku" class="adm-input" placeholder="Ej. EST-PRO-001">
+                </div>
+                
+                <div class="adm-field">
+                    <label class="adm-label">Categoría</label>
+                    <select [(ngModel)]="prod.category" class="adm-input">
+                        <option value="Esenciales">Esenciales</option>
+                        <option value="Ambiente">Ambiente</option>
+                        <option value="Vida">Vida</option>
+                        <option value="Digital">Digital</option>
+                    </select>
+                </div>
+                
+                <div class="adm-field full">
+                    <label class="adm-label">Slug (URL amigable)</label>
+                    <input type="text" [(ngModel)]="prod.slug" class="adm-input" placeholder="esterilla-pro-corcho">
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-section">
+            <h4 class="section-heading">Precios e Inventario</h4>
+            <div class="form-grid">
+                <div class="adm-field">
+                    <label class="adm-label">Precio Final (€) *</label>
+                    <input type="number" [(ngModel)]="prod.price" class="adm-input" min="0" step="0.01">
+                </div>
+                
+                <div class="adm-field">
+                    <label class="adm-label">Precio Coste B2B (€)</label>
+                    <input type="number" [(ngModel)]="prod.costPrice" class="adm-input" min="0" step="0.01">
+                </div>
+                
+                <div class="adm-field">
+                    <label class="adm-label">Stock Disponible</label>
+                    <input type="number" [(ngModel)]="prod.stock" class="adm-input" min="0">
+                </div>
+                
+                <div class="adm-field">
+                    <label class="adm-label">Peso (kg)</label>
+                    <input type="number" [(ngModel)]="prod.weight" class="adm-input" min="0" step="0.1">
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-section">
+            <h4 class="section-heading">Relaciones B2B</h4>
+            <div class="form-grid">
+                <div class="adm-field">
+                    <label class="adm-label">Marca</label>
+                    <select [(ngModel)]="prod.brandId" class="adm-input">
+                        <option [ngValue]="undefined">Ninguna</option>
+                        @for (b of brands(); track b.id) {
+                            <option [value]="b.id">{{ b.name }}</option>
+                        }
+                    </select>
+                </div>
+                
+                <div class="adm-field">
+                    <label class="adm-label">Proveedor</label>
+                    <select [(ngModel)]="prod.supplierId" class="adm-input">
+                        <option [ngValue]="undefined">Ninguno</option>
+                        @for (s of suppliers(); track s.id) {
+                            <option [value]="s.id">{{ s.name }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-section">
+            <h4 class="section-heading">Variantes y Atributos E-commerce</h4>
+            <p class="section-desc">Añade propiedades globales como Talla, Color, etc. Estas crearán variantes para el cliente.</p>
+            
+            <div class="attr-adder">
+                <select [(ngModel)]="selectedGlobalAttrId" (change)="onGlobalAttrSelect($event)" class="adm-input">
+                    <option value="">Selecciona Atributo Global...</option>
+                    @for (attr of globalAttributes(); track attr.id) {
+                        <option [value]="attr.id">{{ attr.name }}</option>
+                    }
+                </select>
+                
+                @if (selectedGlobalAttrOptions().length > 0) {
+                    <div class="attr-options-cloud">
+                        @for (opt of selectedGlobalAttrOptions(); track opt) {
+                            <div class="attr-chip" 
+                                 [class.selected]="attrValuesToAdd().includes(opt)"
+                                 (click)="toggleAttrValue(opt)">
+                                {{ opt }}
+                            </div>
+                        }
+                    </div>
+                }
+                
+                <button class="ys-btn ys-btn-outline ys-btn-sm" 
+                        [disabled]="!selectedGlobalAttrId() || attrValuesToAdd().length === 0"
+                        (click)="addAttributeToProduct()">
+                    Añadir al Producto
+                </button>
+            </div>
+            
+            @if (prod.attributes && prod.attributes.length > 0) {
+                <div class="active-attrs-list">
+                    @for (attr of prod.attributes; track attr.name; let i = $index) {
+                        <div class="active-attr-row">
+                            <strong>{{ attr.name }}:</strong>
+                            <span>{{ attr.values.join(', ') }}</span>
+                            <button class="icon-btn-sm text-danger" (click)="removeAttributeFromProduct(i)">×</button>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="drawer-section">
+            <h4 class="section-heading">Descripciones</h4>
+            <div class="adm-field full">
+                <label class="adm-label">Descripción Corta</label>
+                <textarea [(ngModel)]="prod.description" class="adm-input" rows="2"></textarea>
+            </div>
+            
+            <div class="adm-field full">
+                <label class="adm-label">Detalles (HTML soportado)</label>
+                <textarea [(ngModel)]="prod.details" class="adm-input" rows="4"></textarea>
+            </div>
+        </div>
+
+        <div class="drawer-section">
+            <h4 class="section-heading">Imágenes del Producto</h4>
+            <div class="img-adder">
+                <input type="text" [(ngModel)]="newImageUrl" class="adm-input" placeholder="Pegar URL de imagen">
+                <button class="ys-btn ys-btn-outline" (click)="addImage()">Añadir</button>
+            </div>
+            
+            <div class="img-preview-grid mt-2">
+                @for (img of prod.images; track img; let i = $index) {
+                    <div class="img-preview-card">
+                        <img [src]="img" alt="preview">
+                        <button class="img-remove-btn" (click)="removeImage(i)">×</button>
+                        @if (prod.thumbnail === img) {
+                            <span class="thumb-badge">Miniatura</span>
+                        }
+                    </div>
+                }
+            </div>
+            @if (prod.images && prod.images.length > 0) {
+                <div class="adm-field mt-2">
+                    <label class="adm-label">Seleccionar imagen miniatura</label>
+                    <select [(ngModel)]="prod.thumbnail" class="adm-input">
+                        @for (img of prod.images; track img) {
+                            <option [value]="img">{{ img | slice:0:30 }}...</option>
+                        }
+                    </select>
+                </div>
+            }
+        </div>
+
+        <div class="drawer-section">
+            <h4 class="section-heading">Materiales y Beneficios</h4>
+            <div class="form-grid">
+                <div class="list-editor">
+                    <label class="adm-label">Materiales</label>
+                    <div class="flex-adder">
+                        <input type="text" [(ngModel)]="newMaterial" class="adm-input" (keyup.enter)="addMaterial()">
+                        <button class="add-btn-sm" (click)="addMaterial()">+</button>
+                    </div>
+                    <ul class="simple-list">
+                        @for (mat of prod.materials; track mat; let i = $index) {
+                            <li>{{ mat }} <button class="icon-btn-sm text-danger" (click)="removeMaterial(i)">×</button></li>
+                        }
+                    </ul>
+                </div>
+                
+                <div class="list-editor">
+                    <label class="adm-label">Beneficios</label>
+                    <div class="flex-adder">
+                        <input type="text" [(ngModel)]="newBenefit" class="adm-input" (keyup.enter)="addBenefit()">
+                        <button class="add-btn-sm" (click)="addBenefit()">+</button>
+                    </div>
+                    <ul class="simple-list">
+                        @for (ben of prod.benefits; track ben; let i = $index) {
+                            <li>{{ ben }} <button class="icon-btn-sm text-danger" (click)="removeBenefit(i)">×</button></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="checkboxes-wrap mt-2">
+                <label class="cb-label">
+                    <input type="checkbox" [(ngModel)]="prod.isBestSeller">
+                    Destacar como Best Seller
+                </label>
+                <label class="cb-label">
+                    <input type="checkbox" [(ngModel)]="prod.isEcoFriendly">
+                    Destacar como Eco-Friendly
+                </label>
+            </div>
+        </div>
+
+      }
+    </div>
+    
+    <div class="drawer-footer">
+      <button class="ys-btn ys-btn-outline" (click)="closeDrawer()">Cancelar</button>
+      <button class="ys-btn ys-btn-primary" (click)="saveProduct()">Guardar Producto</button>
+    </div>
+  </div>
+}

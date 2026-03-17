@@ -1,0 +1,109 @@
+<div class="adm-section">
+  <div class="adm-header">
+    <h2 class="adm-title">Gestión de Proveedores</h2>
+    <p class="adm-subtitle">Añade o edita los detalles de los proveedores, fabricantes y artesanos.</p>
+  </div>
+
+  <div class="adm-content-grid">
+    <!-- Formulario -->
+    <div class="adm-form-card">
+      <h3 class="adm-card-title">{{ isEditing() ? 'Editar Proveedor' : 'Nuevo Proveedor' }}</h3>
+      
+      <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()" class="adm-form">
+        <label class="adm-field">
+          <span class="adm-label">Empresa / Nombre *</span>
+          <input type="text" formControlName="name" placeholder="Nombre Comercial" class="adm-input" 
+                 [class.error]="supplierForm.get('name')?.invalid && supplierForm.get('name')?.touched">
+        </label>
+
+        <label class="adm-field">
+          <span class="adm-label">Persona de Contacto *</span>
+          <input type="text" formControlName="contactName" placeholder="Nombre y Apellidos" class="adm-input"
+                 [class.error]="supplierForm.get('contactName')?.invalid && supplierForm.get('contactName')?.touched">
+        </label>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <label class="adm-field">
+            <span class="adm-label">Teléfono *</span>
+            <input type="tel" formControlName="phone" placeholder="+34..." class="adm-input"
+                   [class.error]="supplierForm.get('phone')?.invalid && supplierForm.get('phone')?.touched">
+          </label>
+  
+          <label class="adm-field">
+            <span class="adm-label">Email *</span>
+            <input type="email" formControlName="email" placeholder="contacto@empresa.com" class="adm-input"
+                   [class.error]="supplierForm.get('email')?.invalid && supplierForm.get('email')?.touched">
+          </label>
+        </div>
+
+        <label class="adm-field">
+          <span class="adm-label">Dirección Fiscal / Envío *</span>
+          <input type="text" formControlName="address" placeholder="Calle, Ciudad, Código Postal..." class="adm-input"
+                 [class.error]="supplierForm.get('address')?.invalid && supplierForm.get('address')?.touched">
+        </label>
+
+        <label class="adm-field">
+          <span class="adm-label">Notas o Condiciones (Opcional)</span>
+          <textarea formControlName="notes" rows="3" placeholder="Términos de pago, tiempo de envío habitual..." class="adm-input"></textarea>
+        </label>
+
+        <div class="adm-form-actions">
+          @if (isEditing()) {
+            <button type="button" class="ys-btn ys-btn-outline" (click)="resetForm()">Cancelar</button>
+          }
+          <button type="submit" class="ys-btn ys-btn-primary" [disabled]="supplierForm.invalid">
+            {{ isEditing() ? 'Actualizar Proveedor' : 'Crear Proveedor' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Lista -->
+    <div class="adm-list-card">
+      <h3 class="adm-card-title">Directorio ({{ suppliers().length }})</h3>
+      
+      @if (suppliers().length === 0) {
+        <div class="adm-empty-state">
+          <p>La agenda de proveedores está vacía.</p>
+        </div>
+      } @else {
+        <div class="adm-table-container">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Contacto</th>
+                <th>Email / Tel</th>
+                <th class="text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (supplier of suppliers(); track supplier.id) {
+                <tr>
+                  <td class="adm-td-main">
+                    <strong>{{ supplier.name }}</strong>
+                  </td>
+                  <td>{{ supplier.contactName }}</td>
+                  <td>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                      <a [href]="'mailto:' + supplier.email" class="adm-link">{{ supplier.email }}</a>
+                      <span class="adm-text-sm">{{ supplier.phone }}</span>
+                    </div>
+                  </td>
+                  <td class="adm-td-actions">
+                    <button class="adm-icon-btn edit" (click)="editSupplier(supplier)" title="Editar">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <button class="adm-icon-btn delete" (click)="deleteSupplier(supplier.id)" title="Eliminar">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

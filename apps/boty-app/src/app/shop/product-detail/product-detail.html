@@ -1,39 +1,37 @@
 <!-- Loading State -->
 @if (loading()) {
-<div class="min-h-screen flex justify-center items-center">
-  <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#924a28]"></div>
+<div class="loading-container" style="min-height: 100vh;">
+  <div class="spinner"></div>
 </div>
 }
 
 @if (!loading() && product()) {
-<main class="pt-10 pb-24 max-w-7xl mx-auto px-6 md:px-12 animate-fade-in-up">
+<main class="detail-container">
   <!-- Breadcrumb -->
-  <nav class="mb-10 text-xs font-medium uppercase tracking-[0.15em] text-[#54433c] opacity-70">
-    <a routerLink="/yoga-sadhana/tienda" class="hover:text-[#924a28] transition-colors">Tienda</a>
+  <nav class="breadcrumb">
+    <a routerLink="/yoga-sadhana/tienda">Tienda</a>
     <span class="mx-2">/</span>
-      <button 
-        (click)="goBack()"
-        class="inline-flex items-center text-sm font-medium text-[#924a28] hover:text-[#783c20] transition-colors group">{{ product()?.category }}</button>
+      <button (click)="goBack()">{{ product()?.category }}</button>
     <span class="mx-2">/</span>
-    <span class="text-[#1c1c19] opacity-100">{{ product()?.name }}</span>
+    <span class="breadcrumb-current">{{ product()?.name }}</span>
   </nav>
 
-  <div class="flex flex-col lg:flex-row gap-16 lg:gap-24 mb-24">
+  <div class="detail-layout">
     <!-- Left: Images Gallery (Sticky on Desktop) -->
-    <div class="w-full lg:w-1/2 flex flex-col gap-6 relative">
-      <div class="sticky top-24">
-        <div class="aspect-[4/5] bg-[#f7f3ee] rounded-2xl overflow-hidden shadow-sm relative mb-4">
+    <div class="gallery-section">
+      <div class="gallery-sticky">
+        <div class="main-image-wrap">
           <img [src]="product()!.images[activeImageIndex()] || product()!.thumbnail" 
                [alt]="product()!.name" 
-               class="w-full h-full object-cover mix-blend-multiply opacity-95 transition-all duration-700 hover:scale-105" />
+               class="main-image" />
                
           @if (product()!.isBestSeller || product()!.isEcoFriendly) {
-          <div class="absolute top-6 left-6 flex gap-2">
+          <div class="product-badges">
             @if (product()!.isEcoFriendly) {
-            <span class="px-4 py-1.5 bg-white/90 backdrop-blur-md text-[#54433c] text-[10px] font-semibold uppercase tracking-widest rounded-full shadow-sm">Sostenible</span>
+            <span class="badge badge-eco">Sostenible</span>
             }
             @if (product()!.isBestSeller) {
-            <span class="px-4 py-1.5 bg-[#924a28] text-white text-[10px] font-semibold uppercase tracking-widest rounded-full shadow-sm">Top Ventas</span>
+            <span class="badge badge-best">Top Ventas</span>
             }
           </div>
           }
@@ -41,13 +39,12 @@
 
         <!-- Thumbnail Selector -->
         @if (product()!.images && product()!.images!.length > 1) {
-        <div class="flex gap-4 overflow-x-auto pb-2">
+        <div class="thumbnail-list">
           @for (img of product()!.images; track img; let i = $index) {
           <button (click)="setActiveImage(i)"
-                  [class.ring-2]="activeImageIndex() === i"
-                  [class.ring-[#924a28]]="activeImageIndex() === i"
-                  class="w-20 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-[#f7f3ee] transition-all opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer focus:outline-none">
-            <img [src]="img" class="w-full h-full object-cover mix-blend-multiply" alt="Thumbnail">
+                  [class.active]="activeImageIndex() === i"
+                  class="thumbnail-btn">
+            <img [src]="img" class="thumbnail-img" alt="Thumbnail">
           </button>
           }
         </div>
@@ -56,55 +53,55 @@
     </div>
 
     <!-- Right: Product Information -->
-    <div class="w-full lg:w-1/2 flex flex-col pt-4">
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif text-[#1c1c19] leading-tight mb-4">
+    <div class="info-section">
+      <h1 class="product-h1">
         {{ product()!.name }}
       </h1>
-      <p class="text-2xl font-light text-[#924a28] mb-8">{{ product()!.price | currency:'EUR' }}</p>
+      <p class="product-price-tag">{{ product()!.price | currency:'EUR' }}</p>
       
-      <p class="text-base text-[#54433c] leading-relaxed mb-10 w-full lg:max-w-md">
+      <p class="product-detail-desc">
         {{ product()!.details || product()!.description }}
       </p>
 
-      <hr class="border-[#e5dfd5] mb-10 w-full lg:max-w-md" />
+      <hr class="divider" />
 
       <!-- Add to Cart Form -->
-      <div class="flex flex-col gap-6 w-full lg:max-w-md mb-12">
-        <div class="flex justify-between items-center text-sm font-medium uppercase tracking-widest text-[#54433c]">
+      <div class="cart-form">
+        <div class="quantity-header">
           <span>Cantidad</span>
           @if (product()!.stock < 5 && product()!.stock > 0) {
-          <span class="text-xs opacity-70">! Últimas {{product()!.stock}} unidades !</span>
+          <span class="stock-warning">! Últimas {{product()!.stock}} unidades !</span>
           }
         </div>
         
-        <div class="flex items-center gap-6">
-          <div class="flex items-center bg-[#f7f3ee] rounded-full px-6 py-3 border border-transparent focus-within:border-[#924a28]/30 transition-colors">
-            <button (click)="decrementQuantity()" [disabled]="quantity() <= 1" class="text-xl text-[#54433c] opacity-60 hover:opacity-100 disabled:opacity-30 focus:outline-none pb-1">−</button>
-            <span class="text-lg font-medium w-12 text-center text-[#1c1c19]">{{ quantity() }}</span>
-            <button (click)="incrementQuantity()" [disabled]="quantity() >= product()!.stock" class="text-xl text-[#54433c] opacity-60 hover:opacity-100 disabled:opacity-30 focus:outline-none pb-1">+</button>
+        <div class="actions-row">
+          <div class="qty-control">
+            <button (click)="decrementQuantity()" [disabled]="quantity() <= 1" class="qty-btn">−</button>
+            <span class="qty-display">{{ quantity() }}</span>
+            <button (click)="incrementQuantity()" [disabled]="quantity() >= product()!.stock" class="qty-btn">+</button>
           </div>
 
           <button (click)="addToCart()" 
                   [disabled]="addingToCart() || product()!.stock <= 0"
-                  class="flex-1 py-4 bg-[#924a28] text-white rounded-full text-[13px] font-semibold uppercase tracking-[0.15em] hover:bg-[#783c20] transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 flex justify-center shadow-lg shadow-[#924a28]/20">
+                  class="btn-add-cart">
             @if (!addingToCart()) {
             <span>Añadir a la bolsa</span>
             } @else {
-            <span class="animate-pulse">Añadido ✓</span>
+            <span class="animate-pulse-fast">Añadido ✓</span>
             }
           </button>
         </div>
       </div>
 
       <!-- Accordion Details -->
-      <div class="w-full lg:max-w-md border-t border-[#e5dfd5] pt-6 space-y-6">
-        <details class="group cursor-pointer">
-          <summary class="flex justify-between items-center font-serif text-lg text-[#1c1c19] pb-4 select-none outline-none">
+      <div class="accordions-container">
+        <details class="accordion-group">
+          <summary class="accordion-summary">
             Materiales & Origen
-            <span class="transition group-open:rotate-180">↓</span>
+            <span class="accordion-icon">↓</span>
           </summary>
-          <div class="text-sm text-[#54433c] leading-relaxed pb-6 pl-2">
-            <ul class="list-disc pl-4 space-y-2 opacity-90">
+          <div class="accordion-content">
+            <ul class="accordion-list">
               @for (m of product()!.materials || ['Material sostenible premium']; track m) {
               <li>{{ m }}</li>
               }
@@ -112,13 +109,13 @@
           </div>
         </details>
         
-        <details class="group cursor-pointer border-t border-[#e5dfd5] pt-6">
-          <summary class="flex justify-between items-center font-serif text-lg text-[#1c1c19] pb-4 select-none outline-none">
+        <details class="accordion-group">
+          <summary class="accordion-summary">
             Beneficios
-            <span class="transition group-open:rotate-180">↓</span>
+            <span class="accordion-icon">↓</span>
           </summary>
-          <div class="text-sm text-[#54433c] leading-relaxed pb-6 pl-2">
-             <ul class="list-disc pl-4 space-y-2 opacity-90">
+          <div class="accordion-content">
+             <ul class="accordion-list">
               @for (b of product()!.benefits || ['Diseñado para la práctica']; track b) {
               <li>{{ b }}</li>
               }
@@ -126,12 +123,12 @@
           </div>
         </details>
 
-        <details class="group cursor-pointer border-t border-[#e5dfd5] pt-6">
-          <summary class="flex justify-between items-center font-serif text-lg text-[#1c1c19] pb-4 select-none outline-none">
+        <details class="accordion-group">
+          <summary class="accordion-summary">
             Envíos y Devoluciones
-            <span class="transition group-open:rotate-180">↓</span>
+            <span class="accordion-icon">↓</span>
           </summary>
-          <div class="text-sm text-[#54433c] leading-relaxed pb-6 pl-2 opacity-90 space-y-3">
+          <div class="accordion-content">
              <p>Envío gratuito nacional en compras superiores a 100€.</p>
              <p>Devoluciones garantizadas durante los primeros 30 días si el producto no ha sido utilizado por razones sanitarias.</p>
           </div>
