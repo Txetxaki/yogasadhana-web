@@ -62,11 +62,12 @@
 .ys-nav {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 500;
   background: rgba(253, 249, 244, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 10px 60px -15px rgba(28, 28, 25, 0.04);
+  overflow: visible;
 }
 .ys-nav-inner {
   max-width: var(--container);
@@ -151,8 +152,10 @@
   cursor: pointer;
 }
 .dd-arrow {
-  font-family: 'Material Symbols Outlined';
-  font-size: 18px !important;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
   transition: transform 0.3s;
 }
 .ys-dropdown:hover .dd-arrow {
@@ -201,8 +204,9 @@
   background: rgba(146, 74, 40, 0.04);
 }
 .sub-icon {
-  font-family: 'Material Symbols Outlined';
-  font-size: 20px !important;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
   color: var(--primary-container);
 }
 .ys-dropdown-divider {
@@ -214,9 +218,6 @@
   font-weight: 600 !important;
   color: var(--primary) !important;
   justify-content: space-between;
-}
-.ys-dropdown-all .material-symbols-outlined {
-  font-size: 16px !important;
 }
 
 /* ---- MAIN ---- */
@@ -329,7 +330,6 @@
   transition: background 0.2s !important;
 }
 .ys-nav-login:hover { background: rgba(146,74,40,0.15) !important; }
-.ys-nav-login .material-symbols-outlined { font-size: 1rem; }
 
 /* User menu button */
 .ys-user-menu { position: relative; }
@@ -382,20 +382,21 @@
 .ys-user-dropdown {
   position: absolute;
   top: calc(100% + 0.5rem);
-  right: 0;
-  min-width: 220px;
-  background: rgba(253,249,244,0.97);
+  right: -8px;
+  min-width: 230px;
+  background: rgba(253,249,244,0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--outline);
   border-radius: var(--radius-md);
-  box-shadow: 0 20px 60px rgba(28,28,25,0.12);
+  box-shadow: 0 20px 60px rgba(28,28,25,0.18);
   padding: 0.5rem;
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
   transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
-  z-index: 100;
+  z-index: 600;
+  overflow: visible;
 }
 .ys-user-menu.open .ys-user-dropdown {
   opacity: 1;
@@ -416,7 +417,7 @@
   width: 100%;
 }
 .ys-user-dropdown a:hover { background: rgba(146,74,40,0.07); color: var(--primary) !important; }
-.ys-user-dropdown .material-symbols-outlined { font-size: 1.1rem; }
+.ys-user-dropdown svg { flex-shrink: 0; }
 
 .ys-user-divider { height: 1px; background: var(--outline); margin: 0.35rem; }
 
@@ -436,7 +437,7 @@
   transition: background 0.2s;
 }
 .ys-user-logout:hover { background: #ffdad6; }
-.ys-user-logout .material-symbols-outlined { font-size: 1.1rem; }
+.ys-user-logout svg { flex-shrink: 0; }
 
 /* ---- RESPONSIVE ---- */
 

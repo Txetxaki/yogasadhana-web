@@ -53,4 +53,21 @@ export class YogaLoginComponent {
   togglePassword(): void {
     this.showPassword.set(!this.showPassword());
   }
+
+  async loginWithGoogle(): Promise<void> {
+    this.loading.set(true);
+    this.error.set('');
+    const result = await this.auth.loginWithGoogle();
+    this.loading.set(false);
+    if (!result.success && result.error) {
+      this.error.set(result.error);
+      return;
+    }
+    if (!result.success) return; // cerró el popup, silencioso
+    if (this.auth.isAdmin()) {
+      this.router.navigate(['/yoga-sadhana/admin/dashboard']);
+    } else {
+      this.router.navigateByUrl(this.returnUrl);
+    }
+  }
 }

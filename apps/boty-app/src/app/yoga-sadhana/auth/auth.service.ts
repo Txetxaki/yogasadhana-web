@@ -8,6 +8,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider,
   User as FirebaseUser,
 } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
@@ -105,6 +107,22 @@ export class AuthService {
     await signOut(auth);
     this._currentUser.set(null);
     this.router.navigate(['/yoga-sadhana']);
+  }
+
+  async loginWithGoogle(): Promise<{ success: boolean; error?: string }> {
+    try {
+      const auth = getFirebaseAuth();
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      await signInWithPopup(auth, provider);
+      return { success: true };
+    } catch (err: unknown) {
+      const code = (err as { code?: string }).code ?? '';
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        return { success: false, error: '' }; // silencioso — usuario cerró
+      }
+      return { success: false, error: this.mapFirebaseError(err) };
+    }
   }
 
   async register(data: {

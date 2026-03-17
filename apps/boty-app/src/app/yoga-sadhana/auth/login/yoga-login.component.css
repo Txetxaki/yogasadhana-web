@@ -277,7 +277,6 @@
   align-items: center;
 }
 .ys-pw-toggle:hover { color: #924a28; }
-.ys-pw-toggle .material-symbols-outlined { font-size: 1.1rem; }
 
 /* ── Submit Button ── */
 .ys-auth-btn {
@@ -303,7 +302,6 @@
   box-shadow: 0 8px 24px rgba(146,74,40,0.3);
 }
 .ys-auth-btn.ys-loading { opacity: 0.7; cursor: not-allowed; }
-.ys-auth-btn .material-symbols-outlined { font-size: 1.1rem; }
 
 /* Spinner */
 .ys-spinner {
@@ -340,4 +338,47 @@
   color: #87736b;
 }
 .ys-auth-back:hover { color: #924a28; }
-.ys-auth-back .material-symbols-outlined { font-size: 1rem; }
+
+/* ── Auth Divider ── */
+.ys-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0.5rem;
+  color: #87736b;
+  font-size: 0.78rem;
+}
+.ys-auth-divider::before,
+.ys-auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ddd9d5;
+}
+
+/* ── Google Button ── */
+.ys-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  background: #fff;
+  border: 1.5px solid #ddd9d5;
+  border-radius: 1.5rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1c1c19;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  margin-bottom: 0.5rem;
+}
+.ys-google-btn:hover:not(:disabled) {
+  background: #f7f3ee;
+  border-color: #924a28;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(146,74,40,0.12);
+}
+.ys-google-btn:disabled { opacity: 0.6; cursor: not-allowed; }
