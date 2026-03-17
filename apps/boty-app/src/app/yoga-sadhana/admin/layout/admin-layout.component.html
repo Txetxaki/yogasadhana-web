@@ -1,0 +1,64 @@
+<div class="adm-shell" [class.adm-collapsed]="sidebarCollapsed">
+  <!-- Sidebar -->
+  <aside class="adm-sidebar">
+    <div class="adm-sidebar-header">
+      <a routerLink="/yoga-sadhana" class="adm-brand">
+        <svg class="adm-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path d="M32 52 C32 44 32 44 32 40" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M32 40 C22 38 12 30 16 20 C22 28 28 34 32 40Z" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
+          <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.08)"/>
+          <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="rgba(255,255,255,0.8)" stroke-width="1.8" fill="rgba(255,255,255,0.14)"/>
+        </svg>
+        @if (!sidebarCollapsed) {
+          <span>YogaSadhana</span>
+        }
+      </a>
+      @if (!sidebarCollapsed) {
+        <span class="adm-role-badge">Admin</span>
+      }
+    </div>
+
+    <nav class="adm-nav">
+      @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route" routerLinkActive="adm-nav-active" class="adm-nav-item">
+          <span class="material-symbols-outlined">{{ item.icon }}</span>
+          @if (!sidebarCollapsed) {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="adm-sidebar-footer">
+      <div class="adm-user-info" [class.adm-collapsed-user]="sidebarCollapsed">
+        <div class="adm-avatar">{{ auth.currentUser()?.avatar ?? 'A' }}</div>
+        @if (!sidebarCollapsed) {
+          <div class="adm-user-details">
+            <span class="adm-user-name">{{ auth.currentUser()?.name }}</span>
+            <span class="adm-user-email">{{ auth.currentUser()?.email }}</span>
+          </div>
+        }
+      </div>
+      <button class="adm-logout-btn" (click)="logout()" [title]="sidebarCollapsed ? 'Cerrar sesión' : ''">
+        <span class="material-symbols-outlined">logout</span>
+        @if (!sidebarCollapsed) { <span>Salir</span> }
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="adm-main">
+    <header class="adm-topbar">
+      <button class="adm-collapse-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <span class="material-symbols-outlined">{{ sidebarCollapsed ? 'menu_open' : 'menu' }}</span>
+      </button>
+      <a routerLink="/yoga-sadhana" class="adm-topbar-link">
+        <span class="material-symbols-outlined">open_in_new</span>
+        Ver web
+      </a>
+    </header>
+    <div class="adm-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

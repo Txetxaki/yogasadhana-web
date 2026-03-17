@@ -1,0 +1,107 @@
+.usr-dashboard { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.usr-page-header { margin-bottom: 0; }
+.usr-page-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1rem; color: #924a28; font-weight: 600; margin-bottom: 0.2rem; }
+.usr-page-title { font-family: 'Noto Serif', serif; font-size: 1.75rem; color: #1c1c19; margin: 0; }
+
+/* Stats */
+.usr-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+.usr-stat-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  box-shadow: 0 2px 12px rgba(28,28,25,0.05);
+  transition: transform 0.2s;
+}
+.usr-stat-card:hover { transform: translateY(-2px); }
+.usr-stat-icon { width: 40px; height: 40px; border-radius: 0.75rem; background: rgba(146,74,40,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 0.25rem; }
+.usr-stat-icon.secondary { background: rgba(78,99,90,0.1); }
+.usr-stat-icon.secondary .material-symbols-outlined { color: #4e635a; }
+.usr-stat-icon.tertiary { background: rgba(146,74,40,0.08); }
+.usr-stat-icon .material-symbols-outlined { font-size: 1.3rem; color: #924a28; }
+
+.usr-stat-value { font-family: 'Noto Serif', serif; font-size: 1.6rem; font-weight: 700; color: #1c1c19; }
+.usr-stat-sm { font-size: 1rem; }
+.usr-stat-label { font-size: 0.75rem; color: #87736b; font-weight: 500; }
+
+/* Main Grid */
+.usr-grid-main { display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem; align-items: start; }
+@media (max-width: 1000px) { .usr-grid-main { grid-template-columns: 1fr; } }
+
+/* Panel */
+.usr-panel { background: #fff; border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 2px 12px rgba(28,28,25,0.05); }
+.usr-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.usr-panel-title { display: flex; align-items: center; gap: 0.5rem; font-family: 'Noto Serif', serif; font-size: 1.1rem; color: #1c1c19; margin: 0; }
+.usr-panel-title .material-symbols-outlined { font-size: 1.2rem; color: #924a28; }
+.usr-panel-link { display: flex; align-items: center; gap: 0.25rem; font-size: 0.8rem; color: #924a28; text-decoration: none; font-weight: 600; }
+.usr-panel-link:hover { text-decoration: underline; }
+.usr-panel-link .material-symbols-outlined { font-size: 0.9rem; }
+
+/* Class List */
+.usr-class-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.usr-class-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: #fdf9f4;
+  border-left: 3px solid #924a28;
+}
+.cls-vinyasa { border-left-color: #4e635a; }
+.cls-yin { border-left-color: #6b3419; }
+
+.usr-class-date { text-align: center; flex-shrink: 0; }
+.usr-class-day { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08rem; color: #924a28; font-weight: 700; }
+.usr-class-d { display: block; font-size: 0.75rem; color: #54433c; font-weight: 500; }
+
+.usr-class-body { flex: 1; }
+.usr-class-name { display: block; font-size: 0.9rem; font-weight: 700; color: #1c1c19; }
+.usr-class-meta { display: block; font-size: 0.75rem; color: #87736b; }
+
+.usr-class-status {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+.usr-class-status .material-symbols-outlined { font-size: 0.9rem; }
+.usr-class-status.confirmed { background: #d1e8dd; color: #0b1f18; }
+.usr-class-status.pending { background: #ffdbcd; color: #360f00; }
+
+/* Quick Links */
+.usr-quick-links { display: flex; flex-direction: column; gap: 0.5rem; }
+.usr-quick-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  background: #fdf9f4;
+  text-decoration: none;
+  color: #1c1c19;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s;
+}
+.usr-quick-card:hover { background: #f1ede8; transform: translateX(4px); }
+.usr-quick-icon {
+  width: 36px; height: 36px;
+  border-radius: 0.625rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.usr-quick-icon .material-symbols-outlined { font-size: 1.1rem; }
+.usr-quick-arrow { font-size: 1rem; color: #87736b; margin-left: auto; }

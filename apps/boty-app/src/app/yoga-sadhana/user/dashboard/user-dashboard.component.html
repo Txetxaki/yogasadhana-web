@@ -1,0 +1,86 @@
+<div class="usr-dashboard">
+  <div class="usr-page-header">
+    <div>
+      <span class="usr-page-label">Bienvenida</span>
+      <h1 class="usr-page-title">
+        Namaste, {{ (auth.currentUser()?.name ?? '').split(' ')[0] }} 🙏
+      </h1>
+    </div>
+  </div>
+
+  <!-- Streak Stats -->
+  <div class="usr-stats">
+    <div class="usr-stat-card">
+      <div class="usr-stat-icon"><span class="material-symbols-outlined">local_fire_department</span></div>
+      <span class="usr-stat-value">{{ streakWeeks }}</span>
+      <span class="usr-stat-label">Semanas de racha</span>
+    </div>
+    <div class="usr-stat-card">
+      <div class="usr-stat-icon secondary"><span class="material-symbols-outlined">self_improvement</span></div>
+      <span class="usr-stat-value">{{ totalClasses }}</span>
+      <span class="usr-stat-label">Clases totales</span>
+    </div>
+    <div class="usr-stat-card">
+      <div class="usr-stat-icon tertiary"><span class="material-symbols-outlined">schedule</span></div>
+      <span class="usr-stat-value usr-stat-sm">{{ nextClass }}</span>
+      <span class="usr-stat-label">Próxima clase</span>
+    </div>
+    <div class="usr-stat-card">
+      <div class="usr-stat-icon secondary"><span class="material-symbols-outlined">favorite</span></div>
+      <span class="usr-stat-value usr-stat-sm">{{ auth.currentUser()?.favoriteStyle ?? 'Hatha' }}</span>
+      <span class="usr-stat-label">Tu estilo</span>
+    </div>
+  </div>
+
+  <div class="usr-grid-main">
+    <!-- Upcoming Classes -->
+    <div class="usr-panel">
+      <div class="usr-panel-header">
+        <h2 class="usr-panel-title">
+          <span class="material-symbols-outlined">event</span>
+          Mis Próximas Clases
+        </h2>
+        <a routerLink="/yoga-sadhana/horarios" class="usr-panel-link">Ver horario <span class="material-symbols-outlined">arrow_forward</span></a>
+      </div>
+      <div class="usr-class-list">
+        @for (cls of upcomingClasses; track cls.name) {
+          <div class="usr-class-item" [class]="'cls-' + cls.style">
+            <div class="usr-class-date">
+              <span class="usr-class-day">{{ cls.day }}</span>
+              <span class="usr-class-d">{{ cls.date }}</span>
+            </div>
+            <div class="usr-class-body">
+              <span class="usr-class-name">{{ cls.name }}</span>
+              <span class="usr-class-meta">{{ cls.time }} · {{ cls.teacher }}</span>
+            </div>
+            <div class="usr-class-status" [class.confirmed]="cls.confirmed" [class.pending]="!cls.confirmed">
+              <span class="material-symbols-outlined">{{ cls.confirmed ? 'check_circle' : 'pending' }}</span>
+              {{ cls.confirmed ? 'Confirmada' : 'Pendiente' }}
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="usr-panel">
+      <div class="usr-panel-header">
+        <h2 class="usr-panel-title">
+          <span class="material-symbols-outlined">apps</span>
+          Acceso Rápido
+        </h2>
+      </div>
+      <div class="usr-quick-links">
+        @for (link of quickLinks; track link.route) {
+          <a [routerLink]="link.route" class="usr-quick-card">
+            <div class="usr-quick-icon" [style.background]="link.color + '18'">
+              <span class="material-symbols-outlined" [style.color]="link.color">{{ link.icon }}</span>
+            </div>
+            <span>{{ link.label }}</span>
+            <span class="material-symbols-outlined usr-quick-arrow">arrow_forward</span>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</div>

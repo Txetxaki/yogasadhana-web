@@ -1,0 +1,19 @@
+/* Hereda estilos del login */
+@import url('../login/yoga-login.component.css');
+
+/* Panel izquierdo oscuro para admin */
+.admin-panel {
+  background: linear-gradient(160deg, #2d1708 0%, #4a2210 50%, #3a1a0a 100%);
+}
+
+.admin-panel .ys-auth-panel__pre {
+  color: rgba(255,181,150,0.7);
+}
+
+/* Copyright footer */
+.ys-admin-copyright {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.72rem;
+  color: #87736b;
+}

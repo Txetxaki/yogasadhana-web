@@ -1,0 +1,50 @@
+<div class="usr-shell">
+  <aside class="usr-sidebar">
+    <div class="usr-sidebar-header">
+      <a routerLink="/yoga-sadhana" class="usr-brand">
+        <svg class="usr-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path d="M32 52 C32 52 32 44 32 40" stroke="#924a28" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M32 40 C22 38 12 30 16 20 C22 28 28 34 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.07)"/>
+          <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.07)"/>
+          <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="#924a28" stroke-width="1.8" fill="rgba(146,74,40,0.15)"/>
+        </svg>
+        <span>YogaSadhana</span>
+      </a>
+    </div>
+
+    <div class="usr-profile-mini">
+      <div class="usr-avatar">{{ auth.currentUser()?.avatar ?? '?' }}</div>
+      <div>
+        <span class="usr-p-name">{{ auth.currentUser()?.name }}</span>
+        <span class="usr-p-role">Alumna/o</span>
+      </div>
+    </div>
+
+    <nav class="usr-nav">
+      @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route" routerLinkActive="usr-nav-active" [routerLinkActiveOptions]="{exact: item.exact}" class="usr-nav-item">
+          <span class="material-symbols-outlined">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+      <div class="usr-nav-divider"></div>
+      <a routerLink="/yoga-sadhana" class="usr-nav-item usr-nav-web">
+        <span class="material-symbols-outlined">open_in_new</span>
+        <span>Ver la web</span>
+      </a>
+    </nav>
+
+    <div class="usr-sidebar-footer">
+      <button class="usr-logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Cerrar Sesión
+      </button>
+    </div>
+  </aside>
+
+  <div class="usr-main">
+    <div class="usr-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

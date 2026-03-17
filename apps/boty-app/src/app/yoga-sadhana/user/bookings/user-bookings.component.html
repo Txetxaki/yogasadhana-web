@@ -1,0 +1,43 @@
+<div class="usr-bookings">
+  <div class="usr-page-header">
+    <div>
+      <span class="usr-page-label">Mi Área</span>
+      <h1 class="usr-page-title">Mis Reservas</h1>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="usr-filters">
+    @for (f of filters; track f.value) {
+      <button class="usr-filter-btn" [class.active]="activeFilter === f.value" (click)="setFilter(f.value)">
+        {{ f.label }}
+      </button>
+    }
+  </div>
+
+  <div class="usr-panel">
+    <div class="usr-book-list">
+      @for (b of filtered; track b.id) {
+        <div class="usr-book-item">
+          <div class="usr-book-strip" [class]="'strip-' + b.style"></div>
+          <div class="usr-book-body">
+            <span class="usr-book-name">{{ b.className }}</span>
+            <span class="usr-book-meta">{{ b.date }} · {{ b.time }} · {{ b.teacher }}</span>
+          </div>
+          <div class="usr-book-badge" [class]="'badge-' + b.status">
+            <span class="material-symbols-outlined">
+              {{ b.status === 'confirmada' ? 'check_circle' : b.status === 'completada' ? 'done_all' : 'cancel' }}
+            </span>
+            {{ b.status }}
+          </div>
+        </div>
+      }
+      @if (filtered.length === 0) {
+        <div class="usr-empty">
+          <span class="material-symbols-outlined">event_busy</span>
+          <p>No hay reservas en esta categoría.</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

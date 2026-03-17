@@ -1,7 +1,21 @@
 <nav class="ys-nav">
   <div class="ys-nav-inner">
     <a routerLink="/yoga-sadhana" class="ys-brand">
-      <img src="images/yoga/logo.png" alt="YogaSadhana" class="ys-logo" width="36" height="36" />
+      <!-- Lotus SVG inline — no background, pure vector -->
+      <svg class="ys-logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <!-- Stem -->
+        <path d="M32 52 C32 52 32 44 32 40" stroke="#924a28" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Left outer leaf -->
+        <path d="M32 40 C22 38 12 30 16 20 C22 28 28 34 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.07)" stroke-linejoin="round"/>
+        <!-- Right outer leaf -->
+        <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.07)" stroke-linejoin="round"/>
+        <!-- Left inner petal -->
+        <path d="M32 40 C25 34 20 24 26 14 C28 24 30 32 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.1)" stroke-linejoin="round"/>
+        <!-- Right inner petal -->
+        <path d="M32 40 C39 34 44 24 38 14 C36 24 34 32 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.1)" stroke-linejoin="round"/>
+        <!-- Center petal -->
+        <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="#924a28" stroke-width="1.8" fill="rgba(146,74,40,0.15)" stroke-linejoin="round"/>
+      </svg>
       YogaSadhana
     </a>
 
@@ -31,7 +45,58 @@
       <a routerLink="/yoga-sadhana/horarios" routerLinkActive="ys-active" (click)="menuOpen=false">Horarios</a>
       <a routerLink="/yoga-sadhana/formacion" routerLinkActive="ys-active" (click)="menuOpen=false">Formación</a>
       <a routerLink="/yoga-sadhana/nosotros" routerLinkActive="ys-active" (click)="menuOpen=false">Nosotros</a>
-      <a routerLink="/yoga-sadhana/contacto" class="ys-nav-cta" (click)="menuOpen=false">Reservar Clase</a>
+
+      <!-- Auth section -->
+      @if (!auth.isLoggedIn()) {
+        <a routerLink="/yoga-sadhana/login" class="ys-nav-login" (click)="menuOpen=false">
+          <span class="material-symbols-outlined">login</span>
+          Acceder
+        </a>
+      } @else {
+        <!-- User menu -->
+        <div class="ys-user-menu" [class.open]="userMenuOpen">
+          <button class="ys-user-trigger" (click)="toggleUserMenu()">
+            <div class="ys-user-avatar">{{ auth.currentUser()?.avatar }}</div>
+            <span class="ys-user-name">{{ (auth.currentUser()?.name ?? '').split(' ')[0] }}</span>
+            @if (auth.isAdmin()) {
+              <span class="ys-admin-badge">Admin</span>
+            }
+            <span class="material-symbols-outlined ys-user-caret">expand_more</span>
+          </button>
+          <div class="ys-user-dropdown">
+            <a [routerLink]="dashboardRoute" (click)="closeMenus()">
+              <span class="material-symbols-outlined">dashboard</span>
+              {{ auth.isAdmin() ? 'Panel Admin' : 'Mi Área' }}
+            </a>
+            @if (auth.isAdmin()) {
+              <a routerLink="/yoga-sadhana/admin/usuarios" (click)="closeMenus()">
+                <span class="material-symbols-outlined">group</span>
+                Usuarios
+              </a>
+              <a routerLink="/yoga-sadhana/admin/horario" (click)="closeMenus()">
+                <span class="material-symbols-outlined">calendar_month</span>
+                Horario
+              </a>
+            } @else {
+              <a routerLink="/yoga-sadhana/dashboard/reservas" (click)="closeMenus()">
+                <span class="material-symbols-outlined">event_available</span>
+                Mis Reservas
+              </a>
+              <a routerLink="/yoga-sadhana/dashboard/perfil" (click)="closeMenus()">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                Mi Perfil
+              </a>
+            }
+            <div class="ys-user-divider"></div>
+            <button class="ys-user-logout" (click)="logout()">
+              <span class="material-symbols-outlined">logout</span>
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      }
+
+      <a routerLink="/yoga-sadhana/contacto" class="ys-nav-cta" (click)="closeMenus()">Reservar Clase</a>
     </div>
   </div>
 </nav>
@@ -45,7 +110,14 @@
     <div class="ys-footer-grid">
       <div class="ys-footer-col">
         <span class="ys-footer-brand">
-          <img src="images/yoga/logo.png" alt="" class="ys-footer-logo" width="28" height="28" />
+          <svg class="ys-footer-logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <path d="M32 52 C32 44 32 44 32 40" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M32 40 C22 38 12 30 16 20 C22 28 28 34 32 40Z" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="rgba(255,255,255,0.06)" stroke-linejoin="round"/>
+            <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="rgba(255,255,255,0.06)" stroke-linejoin="round"/>
+            <path d="M32 40 C25 34 20 24 26 14 C28 24 30 32 32 40Z" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.09)" stroke-linejoin="round"/>
+            <path d="M32 40 C39 34 44 24 38 14 C36 24 34 32 32 40Z" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="rgba(255,255,255,0.09)" stroke-linejoin="round"/>
+            <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" fill="rgba(255,255,255,0.12)" stroke-linejoin="round"/>
+          </svg>
           YogaSadhana
         </span>
         <p>Tu santuario de yoga en Ciudad Real. Paz en ti mismo, paz en el mundo.</p>

@@ -1,0 +1,80 @@
+<div class="ys-auth-page">
+  <div class="ys-auth-blob ys-auth-blob--1"></div>
+  <div class="ys-auth-blob ys-auth-blob--2"></div>
+
+  <div class="ys-auth-card">
+    <a routerLink="/yoga-sadhana" class="ys-auth-brand">
+      <svg class="ys-auth-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M32 52 C32 52 32 44 32 40" stroke="#924a28" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M32 40 C22 38 12 30 16 20 C22 28 28 34 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.07)"/>
+        <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.07)"/>
+        <path d="M32 40 C25 34 20 24 26 14 C28 24 30 32 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.1)"/>
+        <path d="M32 40 C39 34 44 24 38 14 C36 24 34 32 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.1)"/>
+        <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="#924a28" stroke-width="1.8" fill="rgba(146,74,40,0.15)"/>
+      </svg>
+      <span>YogaSadhana</span>
+    </a>
+
+    <div class="ys-auth-header">
+      <span class="ys-auth-label">Únete al Santuario</span>
+      <h1 class="ys-auth-title">Crea tu Cuenta</h1>
+      <p class="ys-auth-subtitle">Tu práctica comienza hoy.</p>
+    </div>
+
+    <form class="ys-auth-form" (ngSubmit)="onSubmit()">
+      @if (error()) {
+        <div class="ys-auth-error" role="alert">
+          <span class="material-symbols-outlined">error</span>
+          {{ error() }}
+        </div>
+      }
+
+      <div class="ys-field">
+        <label for="reg-name">Nombre completo *</label>
+        <input id="reg-name" type="text" placeholder="Tu nombre" [(ngModel)]="name" name="name" required />
+      </div>
+
+      <div class="ys-field">
+        <label for="reg-email">Email *</label>
+        <input id="reg-email" type="email" placeholder="tu@email.com" [(ngModel)]="email" name="email" autocomplete="email" required />
+      </div>
+
+      <div class="ys-field">
+        <label for="reg-password">Contraseña *</label>
+        <div class="ys-field-pw">
+          <input id="reg-password" [type]="showPassword() ? 'text' : 'password'" placeholder="Mínimo 6 caracteres" [(ngModel)]="password" name="password" required />
+          <button type="button" class="ys-pw-toggle" (click)="togglePassword()">
+            <span class="material-symbols-outlined">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ys-field">
+        <label for="reg-style">Estilo de yoga favorito</label>
+        <select id="reg-style" [(ngModel)]="favoriteStyle" name="favoriteStyle">
+          <option value="">Selecciona uno...</option>
+          @for (style of yogaStyles; track style) {
+            <option [value]="style">{{ style }}</option>
+          }
+        </select>
+      </div>
+
+      <button type="submit" class="ys-auth-btn" [class.ys-loading]="loading()">
+        @if (loading()) {
+          <span class="ys-spinner"></span>
+          Creando cuenta...
+        } @else {
+          <span class="material-symbols-outlined">person_add</span>
+          Crear Cuenta
+        }
+      </button>
+    </form>
+
+    <p class="ys-auth-switch">
+      ¿Ya tienes cuenta? <a routerLink="/yoga-sadhana/login">Inicia Sesión</a>
+    </p>
+    <a routerLink="/yoga-sadhana" class="ys-auth-back">
+      <span class="material-symbols-outlined">arrow_back</span> Volver a la web
+    </a>
+  </div>
+</div>

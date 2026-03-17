@@ -1,0 +1,34 @@
+<div class="adm-schedule">
+  <div class="adm-page-header">
+    <div>
+      <span class="adm-page-label">Gestión</span>
+      <h1 class="adm-page-title">Horario Semanal</h1>
+    </div>
+  </div>
+
+  <div class="adm-week-grid">
+    @for (day of weekDays; track day) {
+      <div class="adm-day-col">
+        <div class="adm-day-header">{{ day }}</div>
+        <div class="adm-day-slots">
+          @for (slot of schedule[day]; track slot.name) {
+            <div class="adm-slot" [class]="'slot-' + slot.style">
+              <div class="adm-slot-name">{{ slot.name }}</div>
+              <div class="adm-slot-meta">
+                <span class="material-symbols-outlined">schedule</span>{{ slot.time }}
+                &nbsp;·&nbsp;
+                <span class="material-symbols-outlined">person</span>{{ slot.teacher }}
+              </div>
+              <div class="adm-slot-occ">
+                <div class="adm-mini-bar">
+                  <div class="adm-mini-fill" [style.width.%]="getOccupancyPct(slot.enrolled, slot.capacity)"></div>
+                </div>
+                <span>{{ slot.enrolled }}/{{ slot.capacity }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

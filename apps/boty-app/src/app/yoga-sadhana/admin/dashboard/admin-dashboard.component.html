@@ -1,0 +1,96 @@
+<div class="adm-dashboard">
+  <div class="adm-page-header">
+    <div>
+      <span class="adm-page-label">Panel de Control</span>
+      <h1 class="adm-page-title">Buenos días, {{ (auth.currentUser()?.name ?? '').split(' ')[0] }} 👋</h1>
+    </div>
+    <span class="adm-date">{{ auth.currentUser()?.joinDate | date:'MMMM yyyy' }}</span>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="adm-stats">
+    @for (stat of stats; track stat.label) {
+      <div class="adm-stat-card">
+        <div class="adm-stat-icon" [style.background]="stat.color + '18'">
+          <span class="material-symbols-outlined" [style.color]="stat.color">{{ stat.icon }}</span>
+        </div>
+        <div class="adm-stat-body">
+          <span class="adm-stat-label">{{ stat.label }}</span>
+          <span class="adm-stat-value">{{ stat.value }}</span>
+          <span class="adm-stat-delta" [class.positive]="stat.positive" [class.negative]="!stat.positive">
+            <span class="material-symbols-outlined">{{ stat.positive ? 'trending_up' : 'trending_down' }}</span>
+            {{ stat.delta }}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="adm-grid-main">
+    <!-- Upcoming Classes -->
+    <div class="adm-panel">
+      <div class="adm-panel-header">
+        <h2 class="adm-panel-title">
+          <span class="material-symbols-outlined">calendar_today</span>
+          Próximas Clases
+        </h2>
+        <a routerLink="/yoga-sadhana/admin/horario" class="adm-panel-link">Ver horario <span class="material-symbols-outlined">arrow_forward</span></a>
+      </div>
+      <div class="adm-table-wrap">
+        <table class="adm-table">
+          <thead>
+            <tr>
+              <th>Clase</th>
+              <th>Profesora</th>
+              <th>Día · Hora</th>
+              <th>Ocupación</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (cls of upcomingClasses; track cls.name) {
+              <tr>
+                <td>
+                  <span class="adm-class-dot" [class]="'dot-' + cls.style"></span>
+                  {{ cls.name }}
+                </td>
+                <td class="adm-secondary">{{ cls.teacher }}</td>
+                <td class="adm-secondary">{{ cls.day }} · {{ cls.time }}</td>
+                <td>
+                  <div class="adm-occupancy">
+                    <div class="adm-bar">
+                      <div class="adm-bar-fill" [class]="getOccupancyClass(cls.enrolled, cls.capacity)" [style.width.%]="(cls.enrolled / cls.capacity) * 100"></div>
+                    </div>
+                    <span class="adm-occ-text" [class]="getOccupancyClass(cls.enrolled, cls.capacity)">{{ cls.enrolled }}/{{ cls.capacity }}</span>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="adm-panel adm-panel--sm">
+      <div class="adm-panel-header">
+        <h2 class="adm-panel-title">
+          <span class="material-symbols-outlined">timeline</span>
+          Actividad Reciente
+        </h2>
+      </div>
+      <div class="adm-activity">
+        @for (act of recentActivity; track act.text) {
+          <div class="adm-activity-item" [class]="'act-' + act.type">
+            <div class="adm-activity-icon">
+              <span class="material-symbols-outlined">{{ act.icon }}</span>
+            </div>
+            <div class="adm-activity-body">
+              <p>{{ act.text }}</p>
+              <span>{{ act.time }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

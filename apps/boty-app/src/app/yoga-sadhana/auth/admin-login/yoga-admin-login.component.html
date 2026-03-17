@@ -1,0 +1,98 @@
+<div class="ys-auth-page">
+  <!-- Left panel — dark institutional -->
+  <aside class="ys-auth-panel admin-panel">
+    <div class="ys-auth-panel__inner">
+      <a routerLink="/yoga-sadhana" class="ys-auth-brand">
+        <svg class="ys-auth-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path d="M32 52 C32 52 32 44 32 40" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M32 40 C22 38 12 30 16 20 C22 28 28 34 32 40Z" stroke="currentColor" stroke-width="1.6" fill="rgba(255,255,255,0.12)"/>
+          <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="currentColor" stroke-width="1.6" fill="rgba(255,255,255,0.12)"/>
+          <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="currentColor" stroke-width="1.8" fill="rgba(255,255,255,0.25)"/>
+        </svg>
+        <span>YogaSadhana</span>
+      </a>
+      <div class="ys-auth-panel__content">
+        <p class="ys-auth-panel__pre">Panel de Gestión</p>
+        <h2 class="ys-auth-panel__quote">
+          "Este es un entorno<br>seguro y privado."
+        </h2>
+        <p class="ys-auth-panel__sub">
+          Área exclusiva para<br>personal autorizado del estudio.
+        </p>
+      </div>
+      <div class="ys-panel-blob ys-panel-blob--1"></div>
+      <div class="ys-panel-blob ys-panel-blob--2"></div>
+    </div>
+  </aside>
+
+  <main class="ys-auth-form-side">
+    <div class="ys-auth-blob ys-auth-blob--1"></div>
+    <div class="ys-auth-blob ys-auth-blob--2"></div>
+
+    <div class="ys-auth-card">
+      <div class="ys-auth-header">
+        <span class="ys-auth-label">Acceso Administración</span>
+        <h1 class="ys-auth-title">Panel Admin</h1>
+        <p class="ys-auth-subtitle">Acceso restringido a personal autorizado.</p>
+      </div>
+
+      <form class="ys-auth-form" (ngSubmit)="onSubmit()">
+        @if (error()) {
+          <div class="ys-auth-error" role="alert">
+            <span class="material-symbols-outlined">error</span>
+            {{ error() }}
+          </div>
+        }
+
+        <div class="ys-field">
+          <label for="admin-email">Email</label>
+          <input
+            id="admin-email"
+            type="email"
+            placeholder="admin@yogasadhana.xyz"
+            [(ngModel)]="email"
+            name="email"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="ys-field">
+          <label for="admin-password">Contraseña</label>
+          <div class="ys-field-pw">
+            <input
+              id="admin-password"
+              [type]="showPassword() ? 'text' : 'password'"
+              placeholder="••••••••"
+              [(ngModel)]="password"
+              name="password"
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="ys-pw-toggle" (click)="togglePassword()" aria-label="Mostrar contraseña">
+              <span class="material-symbols-outlined">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="ys-auth-btn" [class.ys-loading]="loading()">
+          @if (loading()) {
+            <span class="ys-spinner"></span>
+            Verificando...
+          } @else {
+            <span class="material-symbols-outlined">admin_panel_settings</span>
+            Acceder al Panel
+          }
+        </button>
+      </form>
+
+      <a routerLink="/yoga-sadhana" class="ys-auth-back">
+        <span class="material-symbols-outlined">arrow_back</span> Volver al sitio público
+      </a>
+
+      <p class="ys-admin-copyright">
+        © 2025 YogaSadhana · Reservado para Personal Autorizado
+      </p>
+    </div>
+  </main>
+</div>

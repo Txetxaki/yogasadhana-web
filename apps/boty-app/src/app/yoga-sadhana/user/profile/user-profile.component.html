@@ -1,0 +1,90 @@
+<div class="usr-profile">
+  <div class="usr-page-header">
+    <div>
+      <span class="usr-page-label">Mi Área</span>
+      <h1 class="usr-page-title">Mi Perfil</h1>
+    </div>
+    <button class="usr-edit-btn" (click)="toggleEdit()">
+      <span class="material-symbols-outlined">{{ editMode() ? 'close' : 'edit' }}</span>
+      {{ editMode() ? 'Cancelar' : 'Editar' }}
+    </button>
+  </div>
+
+  @if (saved()) {
+    <div class="usr-saved-toast">
+      <span class="material-symbols-outlined">check_circle</span>
+      Perfil guardado correctamente.
+    </div>
+  }
+
+  <div class="usr-profile-grid">
+    <!-- Avatar Card -->
+    <div class="usr-panel usr-avatar-panel">
+      <div class="usr-prof-avatar">{{ user?.avatar ?? '?' }}</div>
+      <h2 class="usr-prof-name">{{ user?.name }}</h2>
+      <span class="usr-prof-role">Alumna/o · YogaSadhana</span>
+      <div class="usr-prof-meta-list">
+        <div class="usr-prof-meta">
+          <span class="material-symbols-outlined">mail</span>
+          {{ user?.email }}
+        </div>
+        <div class="usr-prof-meta">
+          <span class="material-symbols-outlined">calendar_today</span>
+          Alta desde {{ user?.joinDate }}
+        </div>
+        <div class="usr-prof-meta">
+          <span class="material-symbols-outlined">favorite</span>
+          {{ user?.favoriteStyle ?? 'Hatha Yoga' }}
+        </div>
+      </div>
+      <button class="usr-logout-full" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Cerrar Sesión
+      </button>
+    </div>
+
+    <!-- Settings -->
+    <div class="usr-panel">
+      <h3 class="usr-settings-title">Datos Personales</h3>
+      <div class="usr-form">
+        <div class="ys-field">
+          <label>Nombre completo</label>
+          <input type="text" [value]="user?.name" [disabled]="!editMode()" />
+        </div>
+        <div class="ys-field">
+          <label>Email</label>
+          <input type="email" [value]="user?.email" [disabled]="!editMode()" />
+        </div>
+        <div class="ys-field">
+          <label>Estilo favorito</label>
+          <select [disabled]="!editMode()">
+            @for (style of yogaStyles; track style) {
+              <option [value]="style" [selected]="style === user?.favoriteStyle">{{ style }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      @if (editMode()) {
+        <button class="usr-save-btn" (click)="saveChanges()">
+          <span class="material-symbols-outlined">save</span>
+          Guardar Cambios
+        </button>
+      }
+
+      <hr class="usr-divider" />
+
+      <h3 class="usr-settings-title">Seguridad</h3>
+      <div class="usr-form">
+        <div class="ys-field">
+          <label>Contraseña actual</label>
+          <input type="password" placeholder="••••••••" [disabled]="!editMode()" />
+        </div>
+        <div class="ys-field">
+          <label>Nueva contraseña</label>
+          <input type="password" placeholder="••••••••" [disabled]="!editMode()" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,9 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 
-@Component({ selector: 'app-yoga-home', standalone: true, imports: [RouterModule], templateUrl: './yoga-home.component.html', styleUrl: './yoga-home.component.css' })
+@Component({
+  selector: 'app-yoga-home',
+  standalone: true,
+  imports: [RouterModule],
+  templateUrl: './yoga-home.component.html',
+  styleUrl: './yoga-home.component.css'
+})
 export class YogaHomeComponent implements OnInit {
   constructor(private title: Title, private meta: Meta) {}
+
   ngOnInit() {
     this.title.setTitle('YogaSadhana · Centro de Yoga en Ciudad Real | Hatha, Vinyasa, Yin, Aéreo');
     this.meta.updateTag({ name: 'description', content: 'Centro de yoga en Ciudad Real con más de 6 disciplinas: Hatha Yoga, Vinyasa Flow, Yin Yoga, Khatva Yoga (aéreo), masaje tailandés y osteopatía. Primera clase gratis. Grupos reducidos.' });

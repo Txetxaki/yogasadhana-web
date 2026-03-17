@@ -1,0 +1,137 @@
+/* Shared user section styles */
+.usr-page-header { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.usr-page-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1rem; color: #924a28; font-weight: 600; margin-bottom: 0.2rem; }
+.usr-page-title { font-family: 'Noto Serif', serif; font-size: 1.75rem; color: #1c1c19; margin: 0; }
+
+.usr-panel { background: #fff; border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 2px 12px rgba(28,28,25,0.05); }
+
+/* Filters */
+.usr-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.usr-filter-btn {
+  background: #fff; border: 1px solid #dac2b8; border-radius: 2rem;
+  padding: 0.4rem 1rem; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 500; color: #54433c; cursor: pointer;
+  transition: all 0.2s;
+}
+.usr-filter-btn:hover { border-color: #924a28; color: #924a28; }
+.usr-filter-btn.active { background: #924a28; border-color: #924a28; color: #fff; }
+
+/* Bookings List */
+.usr-book-list { display: flex; flex-direction: column; gap: 0.625rem; }
+.usr-book-item {
+  display: flex; align-items: center; gap: 1rem;
+  border-radius: 1rem; overflow: hidden;
+  background: #fdf9f4; position: relative;
+}
+.usr-book-strip { width: 4px; height: 100%; min-height: 56px; flex-shrink: 0; }
+.strip-hatha { background: #924a28; }
+.strip-vinyasa { background: #4e635a; }
+.strip-yin { background: #6b3419; }
+.strip-suave { background: #8da399; }
+.strip-khatva { background: #d27d56; }
+
+.usr-book-body { flex: 1; padding: 0.875rem 0.5rem; }
+.usr-book-name { display: block; font-size: 0.9rem; font-weight: 700; color: #1c1c19; }
+.usr-book-meta { display: block; font-size: 0.75rem; color: #87736b; margin-top: 0.15rem; }
+
+.usr-book-badge {
+  display: flex; align-items: center; gap: 0.25rem;
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04rem; padding: 3px 10px; border-radius: 20px;
+  flex-shrink: 0; margin-right: 1rem;
+}
+.usr-book-badge .material-symbols-outlined { font-size: 0.9rem; }
+.badge-confirmada { background: #d1e8dd; color: #0b1f18; }
+.badge-completada { background: #f1ede8; color: #54433c; }
+.badge-cancelada { background: #ffdad6; color: #93000a; }
+
+.usr-empty { text-align: center; padding: 3rem 1rem; color: #87736b; }
+.usr-empty .material-symbols-outlined { font-size: 2.5rem; display: block; margin: 0 auto 0.75rem; }
+.usr-empty p { margin: 0; font-size: 0.9rem; }
+
+/* Profile styles */
+.usr-edit-btn {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: #f1ede8; border: none; border-radius: 1rem;
+  padding: 0.5rem 1.25rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.875rem; font-weight: 600; color: #924a28; cursor: pointer;
+  transition: background 0.2s;
+}
+.usr-edit-btn:hover { background: #ebe8e3; }
+.usr-edit-btn .material-symbols-outlined { font-size: 1rem; }
+
+.usr-saved-toast {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #d1e8dd; color: #0b1f18; border-radius: 0.875rem;
+  padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 600;
+  margin-bottom: 1rem; animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.usr-saved-toast .material-symbols-outlined { font-size: 1.1rem; color: #4e635a; }
+
+.usr-profile-grid { display: grid; grid-template-columns: 280px 1fr; gap: 1.5rem; align-items: start; }
+@media (max-width: 900px) { .usr-profile-grid { grid-template-columns: 1fr; } }
+
+.usr-avatar-panel { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; }
+.usr-prof-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, #924a28, #d27d56);
+  color: #fff; font-size: 1.5rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 0.5rem;
+}
+.usr-prof-name { font-family: 'Noto Serif', serif; font-size: 1.2rem; color: #1c1c19; margin: 0; }
+.usr-prof-role { font-size: 0.75rem; color: #924a28; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06rem; }
+
+.usr-prof-meta-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; width: 100%; text-align: left; }
+.usr-prof-meta {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.82rem; color: #54433c;
+}
+.usr-prof-meta .material-symbols-outlined { font-size: 1rem; color: #924a28; flex-shrink: 0; }
+
+.usr-logout-full {
+  margin-top: 1rem; width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: none; border: 1px solid #dac2b8; border-radius: 0.875rem;
+  padding: 0.6rem 1rem; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 500; color: #54433c;
+  transition: all 0.2s;
+}
+.usr-logout-full:hover { background: #ffdad6; border-color: #ba1a1a; color: #ba1a1a; }
+.usr-logout-full .material-symbols-outlined { font-size: 1.1rem; }
+
+.usr-settings-title { font-family: 'Noto Serif', serif; font-size: 1rem; color: #1c1c19; margin: 0 0 1rem; }
+.usr-form { display: flex; flex-direction: column; gap: 1rem; }
+
+.ys-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.ys-field label { font-size: 0.8rem; font-weight: 600; color: #54433c; text-transform: uppercase; letter-spacing: 0.05rem; }
+.ys-field input, .ys-field select {
+  background: #fff; border: 1px solid rgba(218,194,184,0.4); border-radius: 0.75rem;
+  padding: 0.7rem 0.875rem; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem; color: #1c1c19; outline: none;
+  transition: border-color 0.2s;
+}
+.ys-field input:focus, .ys-field select:focus {
+  border-color: transparent; border-bottom-color: #924a28;
+  border-radius: 0.75rem 0.75rem 0 0;
+  box-shadow: 0 2px 0 #924a28;
+}
+.ys-field input:disabled, .ys-field select:disabled {
+  background: #f7f3ee; color: #87736b; cursor: not-allowed;
+}
+
+.usr-save-btn {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: linear-gradient(135deg, #924a28, #d27d56);
+  color: #fff; border: none; border-radius: 1.5rem;
+  padding: 0.8rem 1.5rem; cursor: pointer; margin-top: 0.5rem;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.usr-save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(146,74,40,0.3); }
+.usr-save-btn .material-symbols-outlined { font-size: 1.1rem; }
+
+.usr-divider { border: none; border-top: 1px solid #ebe8e3; margin: 1.5rem 0 1rem; }
