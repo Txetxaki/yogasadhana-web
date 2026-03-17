@@ -28,7 +28,7 @@ export class YogaLoginComponent {
       ?? '/yoga-sadhana/dashboard/reservas';
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (!this.email || !this.password) {
       this.error.set('Por favor completa todos los campos.');
       return;
@@ -36,19 +36,18 @@ export class YogaLoginComponent {
     this.loading.set(true);
     this.error.set('');
 
-    setTimeout(() => {
-      const result = this.auth.login(this.email, this.password);
-      this.loading.set(false);
-      if (!result.success) {
-        this.error.set(result.error || 'Error al iniciar sesión.');
-        return;
-      }
-      if (this.auth.isAdmin()) {
-        this.router.navigate(['/yoga-sadhana/admin/dashboard']);
-      } else {
-        this.router.navigateByUrl(this.returnUrl);
-      }
-    }, 600);
+    const result = await this.auth.login(this.email, this.password);
+    this.loading.set(false);
+
+    if (!result.success) {
+      this.error.set(result.error || 'Error al iniciar sesión.');
+      return;
+    }
+    if (this.auth.isAdmin()) {
+      this.router.navigate(['/yoga-sadhana/admin/dashboard']);
+    } else {
+      this.router.navigateByUrl(this.returnUrl);
+    }
   }
 
   togglePassword(): void {

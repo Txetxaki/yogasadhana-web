@@ -19,7 +19,7 @@ export class YogaAdminLoginComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (!this.email || !this.password) {
       this.error.set('Por favor completa todos los campos.');
       return;
@@ -27,20 +27,19 @@ export class YogaAdminLoginComponent {
     this.loading.set(true);
     this.error.set('');
 
-    setTimeout(() => {
-      const result = this.auth.login(this.email, this.password);
-      this.loading.set(false);
-      if (!result.success) {
-        this.error.set(result.error || 'Credenciales inválidas.');
-        return;
-      }
-      if (!this.auth.isAdmin()) {
-        this.auth.logout();
-        this.error.set('No tienes permisos de administrador.');
-        return;
-      }
-      this.router.navigate(['/yoga-sadhana/admin/dashboard']);
-    }, 600);
+    const result = await this.auth.login(this.email, this.password);
+    this.loading.set(false);
+
+    if (!result.success) {
+      this.error.set(result.error || 'Credenciales inválidas.');
+      return;
+    }
+    if (!this.auth.isAdmin()) {
+      await this.auth.logout();
+      this.error.set('No tienes permisos de administrador.');
+      return;
+    }
+    this.router.navigate(['/yoga-sadhana/admin/dashboard']);
   }
 
   togglePassword(): void {

@@ -31,7 +31,7 @@ export class YogaRegisterComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (!this.name || !this.email || !this.password) {
       this.error.set('Por favor completa todos los campos obligatorios.');
       return;
@@ -43,20 +43,20 @@ export class YogaRegisterComponent {
     this.loading.set(true);
     this.error.set('');
 
-    setTimeout(() => {
-      const result = this.auth.register({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        favoriteStyle: this.favoriteStyle || 'Hatha Yoga',
-      });
-      this.loading.set(false);
-      if (!result.success) {
-        this.error.set(result.error || 'Error al crear la cuenta.');
-        return;
-      }
-      this.router.navigate(['/yoga-sadhana/dashboard']);
-    }, 600);
+    const result = await this.auth.register({
+      name: this.name,
+      email: this.email,
+      password: this.password,
+      favoriteStyle: this.favoriteStyle || 'Hatha Yoga',
+    });
+
+    this.loading.set(false);
+
+    if (!result.success) {
+      this.error.set(result.error || 'Error al crear la cuenta.');
+      return;
+    }
+    this.router.navigate(['/yoga-sadhana/dashboard']);
   }
 
   togglePassword(): void {
