@@ -27,7 +27,7 @@ export interface YogaUser {
 }
 
 // Firebase project-level admin emails
-const ADMIN_EMAILS = ['admin@yogasadhana.xyz', 'raquel@yogasadhana.xyz'];
+const ADMIN_EMAILS = ['admin@yogasadhana.xyz', 'raquel@yogasadhana.xyz', 'sergiogdiseno@gmail.com'];
 
 // Initialize Firebase (lazy singleton)
 let _auth: Auth | null = null;
