@@ -96,7 +96,11 @@
         </div>
       }
 
-      <a routerLink="/yoga-sadhana/contacto" class="ys-nav-cta" (click)="closeMenus()">Reservar Clase</a>
+      @if (!auth.isLoggedIn()) {
+        <a routerLink="/yoga-sadhana/login" [queryParams]="{returnUrl: '/yoga-sadhana/dashboard/reservas'}" class="ys-nav-cta" (click)="closeMenus()">Reservar Clase</a>
+      } @else {
+        <a routerLink="/yoga-sadhana/dashboard/reservas" class="ys-nav-cta" (click)="closeMenus()">Reservar Clase</a>
+      }
     </div>
   </div>
 </nav>

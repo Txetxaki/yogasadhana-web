@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -17,7 +17,16 @@ export class YogaLoginComponent {
   loading = signal(false);
   showPassword = signal(false);
 
-  constructor(private auth: AuthService, private router: Router) {}
+  private returnUrl: string;
+
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl')
+      ?? '/yoga-sadhana/dashboard/reservas';
+  }
 
   onSubmit(): void {
     if (!this.email || !this.password) {
@@ -37,7 +46,7 @@ export class YogaLoginComponent {
       if (this.auth.isAdmin()) {
         this.router.navigate(['/yoga-sadhana/admin/dashboard']);
       } else {
-        this.router.navigate(['/yoga-sadhana/dashboard']);
+        this.router.navigateByUrl(this.returnUrl);
       }
     }, 600);
   }
