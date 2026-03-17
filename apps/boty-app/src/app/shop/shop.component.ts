@@ -39,7 +39,11 @@ export class ShopComponent implements OnInit {
     script.text = JSON.stringify(jsonLd);
     document.head.appendChild(script);
 
-    this.loadProducts();
+    // Call seedDatabase once to populate Firestore
+    // Remove or comment out after first run!
+    this.shopService.seedDatabase().then(() => {
+      this.loadProducts();
+    });
   }
 
   loadProducts() {

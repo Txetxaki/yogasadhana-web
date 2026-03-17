@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Firestore, collection, collectionData, doc, docData, query, where, setDoc } from '@angular/fire/firestore';
 import { Product } from '../../models/product.model';
 
 @Injectable({
@@ -31,25 +32,49 @@ export class ShopService {
     { id: '20', slug: 'retiro-virtual-detox', name: 'Retiro 7 Días Detox', description: 'Retiro virtual guiado.', details: 'Medita, purifica y revitaliza cuerpo y mente durante 7 días intensivos desde casa.', price: 45, category: 'Digital', stock: 999, images: ['https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?auto=format&fit=crop&q=80&w=800'], thumbnail: 'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?auto=format&fit=crop&q=80&w=800', benefits: ['Reset mental', 'Material PDF'], materials: [] }
   ];
 
+  private firestore = inject(Firestore);
+  private productsCollection = collection(this.firestore, 'products');
+
+  // Seed the database with hardcoded products
+  async seedDatabase(): Promise<void> {
+    for (const p of this.HARDCODED_PRODUCTS) {
+      const docRef = doc(this.firestore, `products/${p.id}`);
+      await setDoc(docRef, p);
+    }
+    console.log('Database seeded with hardcoded products!');
+  }
+
   // Get all products
   getProducts(): Observable<Product[]> {
-    return of(this.HARDCODED_PRODUCTS);
+    return collectionData(this.productsCollection, { idField: 'id' }).pipe(
+      map(data => data as Product[])
+    );
   }
 
   // Get products by category
   getProductsByCategory(category: string): Observable<Product[]> {
-    return of(this.HARDCODED_PRODUCTS.filter(p => p.category === category));
+    const q = query(this.productsCollection, where('category', '==', category));
+    return collectionData(q, { idField: 'id' }).pipe(
+      map(data => data as Product[])
+    );
   }
 
-  // Get single product by ID or Slug
+  // Get single product by ID (slug support requires a query, simpler to just use ID for now)
   getProductById(id: string): Observable<Product> {
-    const p = this.HARDCODED_PRODUCTS.find(x => x.id === id || x.slug === id);
-    if (!p) throw new Error('Product not found');
-    return of(p);
+    const docRef = doc(this.firestore, `products/${id}`);
+    return docData(docRef, { idField: 'id' }).pipe(
+      map(data => {
+        if (!data) throw new Error('Product not found');
+        return data as Product;
+      })
+    );
   }
 
   // Get Best Sellers
   getBestSellers(): Observable<Product[]> {
-    return of(this.HARDCODED_PRODUCTS.filter(p => p.isBestSeller));
+    const q = query(this.productsCollection, where('isBestSeller', '==', true));
+    return collectionData(q, { idField: 'id' }).pipe(
+      map(data => data as Product[])
+    );
   }
 }

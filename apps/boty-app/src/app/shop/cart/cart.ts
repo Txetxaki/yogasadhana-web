@@ -14,17 +14,9 @@ export class Cart {
   cartService = inject(CartService);
   private router = inject(Router);
 
-  get cartItems() {
-    return this.cartService.cartItems;
-  }
-
-  get cartTotal() {
-    return this.cartService.subtotal;
-  }
-
-  get cartCount() {
-    return this.cartService.totalItems;
-  }
+  cartItems = this.cartService.cartItems;
+  cartTotal = this.cartService.subtotal;
+  cartCount = this.cartService.totalItems;
 
   updateQuantity(productId: string, newQuantity: number) {
     if (newQuantity > 0) {

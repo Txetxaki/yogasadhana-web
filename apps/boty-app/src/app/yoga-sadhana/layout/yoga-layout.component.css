@@ -110,7 +110,13 @@
 .ys-nav-links {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 1.5rem;
+}
+.ys-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
 }
 .ys-nav-links a {
   font-family: var(--font-label);
@@ -439,8 +445,8 @@
 .ys-user-logout:hover { background: #ffdad6; }
 .ys-user-logout svg { flex-shrink: 0; }
 
-/* ---- CART BUTTON ---- */
-.ys-nav-cart {
+/* ---- NAV ICONS ---- */
+.ys-nav-icon {
   position: relative;
   background: none;
   border: none;
@@ -450,11 +456,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s ease;
-  margin-left: 0.5rem;
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
-.ys-nav-cart:hover {
+.ys-nav-icon:hover {
   opacity: 0.7;
   color: var(--primary);
 }
