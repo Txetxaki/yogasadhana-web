@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyCfRwxWY1YDXmTXwHgXwkwC_8k5LrPagg',
+    apiKey: 'AIzaSyCfRwxWY1YYDxmTXwHgXwkwC_8k5LrPagg',
     authDomain: 'yogasadhana-web-agency.firebaseapp.com',
     projectId: 'yogasadhana-web-agency',
     storageBucket: 'yogasadhana-web-agency.firebasestorage.app',
