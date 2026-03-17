@@ -1,0 +1,106 @@
+<main class="pt-10 pb-24 max-w-4xl mx-auto px-6 animate-fade-in-up min-h-[70vh]">
+  
+  <header class="mb-12 border-b border-[#e5dfd5] pb-6 flex items-end justify-between">
+    <div>
+      <h1 class="text-4xl font-serif text-[#1c1c19]">Tu Bolsa</h1>
+      <p class="text-[#54433c] mt-2">{{cartCount()}} artículo(s)</p>
+    </div>
+    <a routerLink="/yoga-sadhana/tienda" class="text-sm font-medium uppercase tracking-widest text-[#924a28] hover:opacity-80 transition-opacity">Seguir Comprando</a>
+  </header>
+
+  @if (cartCount() === 0) {
+  <div class="text-center py-20 bg-[#f7f3ee] rounded-2xl border border-[#e5dfd5]/50">
+    <p class="text-lg text-[#54433c] font-serif mb-6">Tu bolsa está vacía.</p>
+    <a routerLink="/yoga-sadhana/tienda" class="inline-block px-8 py-3 bg-[#924a28] text-white rounded-full text-sm font-medium uppercase tracking-widest hover:bg-[#783c20] transition-colors shadow-md">
+      Descubrir Productos
+    </a>
+  </div>
+  }
+
+  @if (cartCount() > 0) {
+  <div class="flex flex-col md:flex-row gap-12">
+    <!-- Items List -->
+    <div class="flex-1 space-y-8">
+      @for (item of cartItems(); track item.product.id) {
+      <div class="flex gap-6 group">
+        <!-- Image -->
+        <a [routerLink]="['/yoga-sadhana/tienda', item.product.slug || item.product.id]" class="w-24 h-32 md:w-32 md:h-40 flex-shrink-0 bg-[#f7f3ee] rounded-xl overflow-hidden shadow-sm block relative">
+          <img [src]="item.product.thumbnail" [alt]="item.product.name" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+        </a>
+        
+        <!-- Details -->
+        <div class="flex-1 flex flex-col pt-1">
+          <div class="flex justify-between items-start gap-4 mb-2">
+            <a [routerLink]="['/yoga-sadhana/tienda', item.product.slug || item.product.id]" class="font-serif text-lg text-[#1c1c19] hover:text-[#924a28] transition-colors leading-tight">
+              {{item.product.name}}
+            </a>
+            <button (click)="removeItem(item.product.id)" class="p-1 text-[#54433c] opacity-50 hover:opacity-100 hover:text-red-700 transition-all focus:outline-none" title="Eliminar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+          </div>
+          <p class="text-sm text-[#54433c] opacity-80 mb-4">{{item.product.category}}</p>
+          
+          <div class="mt-auto flex justify-between items-end">
+            <!-- Quantity Control -->
+            <div class="flex items-center bg-[#f7f3ee] rounded-full px-3 py-1.5 border border-[#e5dfd5]">
+               <button (click)="updateQuantity(item.product.id, item.quantity - 1)" [disabled]="item.quantity <= 1" class="text-lg px-2 text-[#54433c] opacity-60 hover:opacity-100 disabled:opacity-30 focus:outline-none pb-0.5">−</button>
+               <span class="text-sm font-medium w-8 text-center text-[#1c1c19]">{{ item.quantity }}</span>
+               <button (click)="updateQuantity(item.product.id, item.quantity + 1)" [disabled]="item.quantity >= item.product.stock" class="text-lg px-2 text-[#54433c] opacity-60 hover:opacity-100 disabled:opacity-30 focus:outline-none pb-0.5">+</button>
+            </div>
+            
+            <!-- Price -->
+            <span class="text-lg font-medium text-[#924a28]">{{ (item.product.price * item.quantity) | currency:'EUR' }}</span>
+          </div>
+        </div>
+      </div>
+      }
+      
+      <!-- Actions -->
+      <div class="pt-6 border-t border-[#e5dfd5] flex justify-between">
+        <button (click)="clearCart()" class="text-sm font-medium tracking-wide text-[#54433c] hover:text-red-700 transition-colors uppercase border-b border-transparent hover:border-red-700 pb-0.5">Vaciar Bolsa</button>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <aside class="w-full md:w-80 flex-shrink-0">
+      <div class="bg-[#f7f3ee] p-8 rounded-2xl shadow-sm border border-[#e5dfd5]/50 sticky top-24">
+        <h2 class="font-serif text-2xl text-[#1c1c19] mb-6">Resumen</h2>
+        
+        <div class="space-y-4 text-sm text-[#54433c] mb-6">
+          <div class="flex justify-between">
+            <span>Subtotal ({{cartCount()}} producto/s)</span>
+            <span>{{cartTotal() | currency:'EUR'}}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Envío estimado</span>
+            @if (cartTotal() >= 100) {
+            <span>Gratis</span>
+            } @else {
+            <span>Calculado en checkout</span>
+            }
+          </div>
+        </div>
+        
+        <div class="pt-6 border-t border-[#e5dfd5] mb-8 flex justify-between items-center">
+          <span class="font-medium text-[#1c1c19]">Total</span>
+          <span class="text-2xl font-semibold text-[#924a28]">{{cartTotal() | currency:'EUR'}}</span>
+        </div>
+        
+        <p class="text-[11px] text-[#54433c] opacity-70 mb-6 text-center leading-relaxed">Impuestos incluidos. Los gastos de envío se calculan en la pantalla de pagos.</p>
+
+        <button (click)="proceedToCheckout()" class="w-full py-4 bg-[#924a28] text-white rounded-full text-sm font-semibold uppercase tracking-[0.1em] hover:bg-[#783c20] transition-all active:scale-[0.98] shadow-lg shadow-[#924a28]/20 flex justify-center items-center gap-2">
+          <span>Finalizar Compra</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </button>
+        
+        <!-- Trust Badges -->
+        <div class="mt-8 pt-6 border-t border-[#e5dfd5]/50 flex justify-center gap-4 text-[#54433c] opacity-60">
+          <svg title="Pago Seguro" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <svg title="Devoluciones" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          <svg title="Envíos Sostenibles" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+      </div>
+    </aside>
+  </div>
+  }
+</main>

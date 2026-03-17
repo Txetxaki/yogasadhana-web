@@ -9,37 +9,7 @@
           <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="currentColor" stroke-width="1.6" fill="rgba(255,255,255,0.12)"/>
           <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="currentColor" stroke-width="1.8" fill="rgba(255,255,255,0.25)"/>
         </svg>
-        <span>YogaSadhana</span>
-      </a>
-      <div class="ys-auth-panel__content">
-        <p class="ys-auth-panel__pre">Panel de Gestión</p>
-        <h2 class="ys-auth-panel__quote">
-          "Este es un entorno<br>seguro y privado."
-        </h2>
-        <p class="ys-auth-panel__sub">
-          Área exclusiva para<br>personal autorizado del estudio.
-        </p>
-      </div>
-      <div class="ys-panel-blob ys-panel-blob--1"></div>
-      <div class="ys-panel-blob ys-panel-blob--2"></div>
-    </div>
-  </aside>
-
-  <main class="ys-auth-form-side">
-    <div class="ys-auth-blob ys-auth-blob--1"></div>
-    <div class="ys-auth-blob ys-auth-blob--2"></div>
-
-    <div class="ys-auth-card">
-      <div class="ys-auth-header">
-        <span class="ys-auth-label">Acceso Administración</span>
-        <h1 class="ys-auth-title">Panel Admin</h1>
-        <p class="ys-auth-subtitle">Acceso restringido a personal autorizado.</p>
-      </div>
-
-      <form class="ys-auth-form" (ngSubmit)="onSubmit()">
-        @if (error()) {
-          <div class="ys-auth-error" role="alert">
-            <span class="material-symbols-outlined">error</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg>
             {{ error() }}
           </div>
         }
@@ -77,17 +47,14 @@
 
         <button type="submit" class="ys-auth-btn" [class.ys-loading]="loading()">
           @if (loading()) {
-            <span class="ys-spinner"></span>
-            Verificando...
-          } @else {
-            <span class="material-symbols-outlined">admin_panel_settings</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg>
             Acceder al Panel
           }
         </button>
       </form>
 
       <a routerLink="/yoga-sadhana" class="ys-auth-back">
-        <span class="material-symbols-outlined">arrow_back</span> Volver al sitio público
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver al sitio público
       </a>
 
       <p class="ys-admin-copyright">

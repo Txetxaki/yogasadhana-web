@@ -1,0 +1,72 @@
+<main class="pt-10 pb-20 max-w-7xl mx-auto px-8 animate-fade-in-up">
+  <!-- Hero Header -->
+  <header class="mb-20">
+    <span class="text-[0.75rem] font-medium uppercase tracking-[0.1rem] text-[#924a28] mb-4 block">Editorial Curated</span>
+    <h1 class="text-5xl md:text-7xl font-serif text-[#1c1c19] leading-tight max-w-3xl">
+        Objetos para la <span class="italic">consciencia</span> y el bienestar.
+    </h1>
+  </header>
+  <div class="flex flex-col md:flex-row gap-16">
+    <!-- Soft Sidebar Filters -->
+    <aside class="w-full md:w-64 space-y-12">
+      <div>
+        <h3 class="text-sm font-medium uppercase tracking-widest text-[#54433c] mb-6">Categoría</h3>
+        <ul class="space-y-4">
+          @for (cat of categories; track cat) {
+          <li>
+            <button 
+              (click)="filterByCategory(cat)"
+              [class.text-[#924a28]]="activeCategory() === cat"
+              [class.font-semibold]="activeCategory() === cat"
+              class="text-[#54433c] hover:text-[#924a28] w-full text-left transition-colors flex justify-between items-center">
+              {{cat}}
+            </button>
+          </li>
+          }
+        </ul>
+      </div>
+      <div class="p-8 bg-[#cee5da] rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <h3 class="font-serif text-lg text-[#52675e] mb-2">Suscripción Wellness</h3>
+        <p class="text-sm text-[#52675e]/80 mb-4 leading-relaxed">Recibe guías de meditación y ofertas exclusivas cada mes.</p>
+        <button class="w-full py-3 bg-[#924a28] text-white rounded-full text-sm font-medium hover:opacity-90 transition-all active:scale-[0.98]">Unirme</button>
+      </div>
+    </aside>
+
+    <!-- Product Grid -->
+    <section class="flex-1 min-h-[500px]">
+      @if (loading()) {
+      <div class="flex justify-center items-center h-full">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#924a28]"></div>
+      </div>
+      } @else {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-12">
+        <!-- Product Item -->
+        @for (product of products(); track product.id; let i = $index) {
+        <div [routerLink]="['/yoga-sadhana/tienda', product.id]"
+             class="group cursor-pointer animate-fade-in-up" [style.animation-delay.ms]="i * 100">
+             
+          <div class="relative aspect-[4/5] bg-[#f7f3ee] rounded-xl overflow-hidden mb-6 transition-transform duration-500 group-hover:-translate-y-2 shadow-sm group-hover:shadow-[0_20px_40px_rgba(146,74,40,0.1)]">
+            <img [alt]="product.name" 
+                 class="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:scale-105 transition-transform duration-700" 
+                 [src]="product.thumbnail"/>
+            @if (product.isBestSeller || product.isEcoFriendly) {
+            <div class="absolute top-4 left-4">
+              @if (product.isEcoFriendly) {
+              <span class="px-3 py-1 bg-white/80 backdrop-blur-md text-[#54433c] text-[10px] font-medium uppercase tracking-widest rounded-full mr-2">Sostenible</span>
+              }
+              @if (product.isBestSeller) {
+              <span class="px-3 py-1 bg-[#924a28] text-white text-[10px] font-medium uppercase tracking-widest rounded-full">Best Seller</span>
+              }
+            </div>
+            }
+          </div>
+          <h3 class="font-serif text-xl text-[#1c1c19] mb-1">{{product.name}}</h3>
+          <p class="text-sm text-[#54433c] mb-3">{{product.description}}</p>
+          <span class="text-lg font-semibold text-[#924a28]">{{product.price | currency:'EUR'}}</span>
+        </div>
+        }
+      </div>
+      }
+    </section>
+  </div>
+</main>

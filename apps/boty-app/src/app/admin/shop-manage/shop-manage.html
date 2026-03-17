@@ -1,0 +1,99 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-2xl font-semibold text-[#1c1c19]">Gestión de Tienda</h2>
+      <p class="text-sm text-[#54433c] mt-1">Administra tu inventario, precios y visualiza órdenes recientes.</p>
+    </div>
+    
+    <button (click)="addProduct()" class="flex items-center gap-2 bg-[#924a28] text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-[#783c20] transition-colors shadow-sm">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Añadir Producto
+    </button>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-[#e5dfd5]/50">
+      <h3 class="text-sm font-medium text-[#54433c] mb-1">Total Productos</h3>
+      <p class="text-3xl font-semibold text-[#1c1c19]">{{products().length}}</p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-[#e5dfd5]/50">
+      <h3 class="text-sm font-medium text-[#54433c] mb-1">Órdenes Activas</h3>
+      <p class="text-3xl font-semibold text-[#1c1c19]">0</p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-[#e5dfd5]/50">
+      <h3 class="text-sm font-medium text-[#54433c] mb-1">Ventas del Mes</h3>
+      <p class="text-3xl font-semibold text-[#1c1c19]">0.00 €</p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+  <div class="py-12 flex justify-center">
+    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#924a28]"></div>
+  </div>
+  }
+
+  <!-- Inventory Table -->
+  @if (!loading()) {
+  <div class="bg-white rounded-2xl shadow-sm border border-[#e5dfd5]/50 overflow-hidden">
+    <div class="p-6 border-b border-[#e5dfd5]/50 flex justify-between items-center">
+      <h3 class="text-lg font-semibold text-[#1c1c19]">Inventario Actual</h3>
+      <!-- Filter/Search placeholder -->
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[#54433c] opacity-50" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Buscar producto..." class="pl-9 pr-4 py-2 border border-[#e5dfd5] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#924a28]/50 focus:border-[#924a28] transition-all bg-[#f7f3ee]">
+      </div>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-[#f7f3ee] text-[#54433c] text-xs uppercase tracking-wider font-semibold">
+          <tr>
+            <th class="px-6 py-4">Producto</th>
+            <th class="px-6 py-4">Categoría</th>
+            <th class="px-6 py-4">Precio</th>
+            <th class="px-6 py-4">Stock</th>
+            <th class="px-6 py-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#e5dfd5]/50 text-sm">
+          @for (p of products(); track p.id) {
+          <tr class="hover:bg-[#f7f3ee]/50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-lg bg-[#e5dfd5] overflow-hidden flex-shrink-0">
+                  @if (p.thumbnail) {
+                  <img [src]="p.thumbnail" class="w-full h-full object-cover">
+                  }
+                </div>
+                <div class="font-medium text-[#1c1c19]">{{p.name}}</div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-[#54433c]">{{p.category}}</td>
+            <td class="px-6 py-4 whitespace-nowrap font-medium text-[#924a28]">{{p.price | currency:'EUR'}}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    [class.bg-green-100]="p.stock > 10" [class.text-green-800]="p.stock > 10"
+                    [class.bg-yellow-100]="p.stock > 0 && p.stock <= 10" [class.text-yellow-800]="p.stock > 0 && p.stock <= 10"
+                    [class.bg-red-100]="p.stock === 0" [class.text-red-800]="p.stock === 0">
+                {{p.stock > 0 ? p.stock + ' en stock' : 'Agotado'}}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+               <button class="text-[#52675e] hover:text-[#2d3a35] mr-4 transition-colors">Editar</button>
+               <button (click)="deleteProduct(p.id)" class="text-red-600 hover:text-red-800 transition-colors">Eliminar</button>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="5" class="px-6 py-12 text-center text-[#54433c]">No hay productos en el inventario.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
+</div>

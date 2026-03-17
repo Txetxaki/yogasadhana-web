@@ -1,23 +1,9 @@
 <div class="adm-schedule">
   <div class="adm-page-header">
     <div>
-      <span class="adm-page-label">Gestión</span>
-      <h1 class="adm-page-title">Horario Semanal</h1>
-    </div>
-  </div>
-
-  <div class="adm-week-grid">
-    @for (day of weekDays; track day) {
-      <div class="adm-day-col">
-        <div class="adm-day-header">{{ day }}</div>
-        <div class="adm-day-slots">
-          @for (slot of schedule[day]; track slot.name) {
-            <div class="adm-slot" [class]="'slot-' + slot.style">
-              <div class="adm-slot-name">{{ slot.name }}</div>
-              <div class="adm-slot-meta">
-                <span class="material-symbols-outlined">schedule</span>{{ slot.time }}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>{{ slot.time }}
                 &nbsp;·&nbsp;
-                <span class="material-symbols-outlined">person</span>{{ slot.teacher }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg>{{ slot.teacher }}
               </div>
               <div class="adm-slot-occ">
                 <div class="adm-mini-bar">

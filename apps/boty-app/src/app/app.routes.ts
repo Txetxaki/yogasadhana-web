@@ -29,6 +29,10 @@ export const appRoutes: Route[] = [
 
       { path: 'formacion', loadComponent: () => import('./yoga-sadhana/formation/yoga-formation.component').then(m => m.YogaFormationComponent) },
       { path: 'contacto', loadComponent: () => import('./yoga-sadhana/contact/yoga-contact.component').then(m => m.YogaContactComponent) },
+      // Tienda / E-commerce routes
+      { path: 'tienda', loadComponent: () => import('./shop/shop.component').then(m => m.ShopComponent) },
+      { path: 'tienda/:id', loadComponent: () => import('./shop/product-detail/product-detail').then(m => m.ProductDetail) },
+      { path: 'carrito', loadComponent: () => import('./shop/cart/cart').then(m => m.Cart) },
       // Auth routes
       {
         path: 'login',
@@ -61,6 +65,7 @@ export const appRoutes: Route[] = [
       { path: 'dashboard', loadComponent: () => import('./yoga-sadhana/admin/dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
       { path: 'usuarios', loadComponent: () => import('./yoga-sadhana/admin/users/admin-users.component').then(m => m.AdminUsersComponent) },
       { path: 'horario', loadComponent: () => import('./yoga-sadhana/admin/schedule/admin-schedule.component').then(m => m.AdminScheduleComponent) },
+      { path: 'tienda', loadComponent: () => import('./admin/shop-manage/shop-manage').then(m => m.ShopManage) },
     ],
   },
   // User dashboard area — outside yoga-layout (has its own sidebar layout)
