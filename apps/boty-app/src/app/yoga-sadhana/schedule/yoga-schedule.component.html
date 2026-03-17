@@ -1,4 +1,26 @@
-<section class="therapy-hero"><img class="hero-banner" src="images/yoga/headers/schedule.png" alt="" aria-hidden="true" /><img class="hero-banner" src="images/yoga/headers/schedule.png" alt="" aria-hidden="true" loading="eager" /><div class="therapy-inner"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg><p><strong>Masajes y Osteopatía:</strong> Con cita previa. Escríbenos por <a href="https://wa.me/+34600582381" target="_blank">WhatsApp</a> para reservar tu sesión.</p></div>
+<section class="therapy-hero"><img class="hero-banner" src="images/yoga/headers/schedule.png" alt="" aria-hidden="true" /><img class="hero-banner" src="images/yoga/headers/schedule.png" alt="" aria-hidden="true" loading="eager" /><div class="therapy-inner"><span class="label">HORARIOS 2026</span><h1>Horario de Clases de Yoga</h1><p class="hero-sub">Encuentra el mejor momento para tu práctica. Clases de mañana y tarde, de lunes a viernes. Grupos reducidos de máximo 10 alumnos.</p></div></section>
+<section class="therapy-about"><div class="therapy-inner">
+<div class="schedule-table-wrap">
+<table class="schedule-table">
+  <thead><tr><th>Hora</th><th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th></tr></thead>
+  <tbody>
+    @for (row of schedule; track row.time) {
+      <tr>
+        <td class="time-cell">{{ row.time }}</td>
+        @for (day of ['mon','tue','wed','thu','fri']; track day) {
+          @if (routeMap[$any(row)[day]]) {
+            <td class="active"><a [routerLink]="routeMap[$any(row)[day]]">{{ $any(row)[day] }}</a></td>
+          } @else {
+            <td>{{ $any(row)[day] }}</td>
+          }
+        }
+      </tr>
+    }
+  </tbody>
+</table>
+</div>
+<div class="schedule-info">
+  <div class="schedule-note-card card-3d"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg><p><strong>Masajes y Osteopatía:</strong> Con cita previa. Escríbenos por <a href="https://wa.me/+34600582381" target="_blank">WhatsApp</a> para reservar tu sesión.</p></div>
   <div class="schedule-note-card card-3d"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg><p><strong>Grupos Reducidos:</strong> Máximo 10 alumnos por clase para garantizar atención personalizada. Reserva con antelación para asegurar tu plaza.</p></div>
   <div class="schedule-note-card card-3d"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg><p><strong>Primera Clase Gratis:</strong> Prueba cualquier disciplina sin compromiso. Solo necesitas ropa cómoda y ganas de cuidarte.</p></div>
 </div>

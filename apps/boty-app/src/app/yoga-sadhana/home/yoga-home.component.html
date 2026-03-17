@@ -11,13 +11,74 @@
     <div class="hero-overlay-gradient"></div>
   </div>
 
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <span class="hero-orb hero-orb-1"></span>
+  <span class="hero-orb hero-orb-2"></span>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="hero-label">
+        <span class="hero-label-line"></span>
+        YOGASADHANA · CIUDAD REAL
+      </span>
+      <h1>Encuentra tu<br><em>centro</em><br>interior</h1>
+      <p>Un santuario de yoga en el corazón de La Mancha.<br>Donde el silencio se convierte en transformación.</p>
+      <div class="hero-actions">
+        <a routerLink="/yoga-sadhana/clases" class="btn-primary">Explorar Clases</a>
+        <a routerLink="/yoga-sadhana/nosotros" class="btn-text">Nuestra Filosofía <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
       </div>
     </div>
 
     <div class="hero-stats">
       <div class="hero-stat">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        <span class="stat-num">+6</span>
+        <span class="stat-desc">Disciplinas</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="stat-num">12</span>
+        <span class="stat-desc">Años</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="stat-num">∞</span>
+        <span class="stat-desc">Bienestar</span>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span class="hero-scroll-label">SCROLL</span>
+      <span class="hero-scroll-line"></span>
+    </div>
+  </div>
+</section>
+
+
+<!-- INTRO / ABOUT -->
+<section class="intro">
+  <div class="section-inner">
+    <div class="intro-grid">
+      <div class="intro-image">
+        <div class="img-3d-tilt">
+          <img src="images/yoga/about.png" alt="Mujer practicando meditación en posición de loto en el estudio YogaSadhana de Ciudad Real" loading="lazy" width="520" height="520" />
+        </div>
+      </div>
+      <div class="intro-content">
+        <span class="section-label">SOBRE NOSOTROS</span>
+        <h2>Un espacio táctil para la <em>introspección activa</em></h2>
+        <p>YogaSadhana nació de la pasión de Montse y Pablo por compartir el yoga como camino hacia el autoconocimiento. En nuestro centro de Ciudad Real, hemos creado un espacio donde la tradición milenaria del yoga se encuentra con las técnicas más innovadoras de bienestar integral.</p>
+        <p>Ofrecemos más de 6 disciplinas de yoga — desde el dinámico Vinyasa Flow hasta el meditativo Yin Yoga, pasando por nuestro exclusivo método Khatva Yoga — junto con terapias manuales como masaje tailandés, ayurvédico y osteopatía para una renovación completa.</p>
+        <div class="features-grid">
+          @for (feat of features; track feat.title) {
+            <div class="feature-item">
+              <span class="feat-num">{{ feat.num }}</span>
+              <div>
+                <h4>{{ feat.title }}</h4>
+                <p>{{ feat.desc }}</p>
+              </div>
+            </div>
+          }
+        </div>
+        <a routerLink="/yoga-sadhana/nosotros" class="btn-text" style="margin-top: 1.5rem;">Conoce nuestra historia <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
       </div>
     </div>
   </div>
@@ -43,7 +104,7 @@
             </div>
             <h3>{{ d.name }}</h3>
             <p>{{ d.desc }}</p>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="discipline-link">Descubrir <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
           </div>
         </a>
       }
@@ -55,7 +116,73 @@
 <section class="experience">
   <div class="section-inner">
     <div class="section-header">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      <span class="section-label">LA EXPERIENCIA SADHANA</span>
+      <h2>¿Por qué practicar Yoga en Ciudad Real con nosotros?</h2>
+      <p class="section-sub">Más que un centro de yoga, somos una comunidad comprometida con tu bienestar. Cada detalle está diseñado para que tu práctica sea una experiencia transformadora.</p>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card card-3d">
+        <span class="exp-num">01</span>
+        <h3>Atención Personalizada</h3>
+        <p>Nuestros grupos son reducidos — máximo 10 alumnos por clase — para garantizar que cada practicante reciba la atención individualizada que merece. Nuestros profesores ajustan las posturas, ofrecen variaciones y se aseguran de que progreses de forma segura y efectiva.</p>
+      </div>
+      <div class="exp-card card-3d">
+        <span class="exp-num">02</span>
+        <h3>Método Propio: Khatva Yoga</h3>
+        <p>Desarrollado por Montse y Pablo en YogaSadhana, el Khatva Yoga combina lo mejor del yoga aéreo, el yin yoga y las técnicas restaurativas. Un enfoque único que no encontrarás en ningún otro centro de Ciudad Real, diseñado para la descompresión vertebral y la relajación profunda.</p>
+      </div>
+      <div class="exp-card card-3d">
+        <span class="exp-num">03</span>
+        <h3>Terapias Complementarias</h3>
+        <p>Completa tu práctica de yoga con nuestros servicios de masaje terapéutico tailandés, masaje ayurvédico con aceite templado y sesiones de osteopatía. Todo en el mismo espacio de bienestar, con profesionales especializados que entienden la conexión entre cuerpo y mente.</p>
+      </div>
+      <div class="exp-card card-3d">
+        <span class="exp-num">04</span>
+        <h3>Formación Certificada de Profesores</h3>
+        <p>¿Sueñas con enseñar yoga? Nuestra formación de 200h y 500h, certificada por Yoga Alliance, te prepara con una base sólida en asana, anatomía, pranayama y filosofía. Convierte tu pasión en una profesión con la guía de instructores con experiencia internacional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">OPINIONES REALES · GOOGLE REVIEWS ★★★★★</span>
+      <h2>Lo que dicen nuestros alumnos sobre YogaSadhana</h2>
+    </div>
+    <div class="testimonials-grid">
+      @for (t of testimonials; track t.name) {
+        <div class="testimonial-card card-3d">
+          <div class="stars">★★★★★</div>
+          <p>"{{ t.text }}"</p>
+          <span class="author">— {{ t.name }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- SEO CONTENT -->
+<section class="seo-content">
+  <div class="section-inner seo-inner">
+    <h2>Centro de Yoga en Ciudad Real: Tu Espacio de Bienestar Integral</h2>
+    <p>YogaSadhana es el centro de yoga de referencia en Ciudad Real, ofreciendo clases de <strong>Hatha Yoga</strong>, <strong>Vinyasa Flow</strong>, <strong>Yin Yoga</strong>, <strong>Yoga Suave</strong>, <strong>Khatva Yoga</strong> y sesiones de <strong>osteopatía y masaje terapéutico</strong>. Nuestro estudio, situado en el corazón de la ciudad, cuenta con instalaciones modernas en un ambiente cálido y acogedor que invita a la introspección y la calma.</p>
+    <p>Tanto si buscas <strong>clases de yoga para principiantes en Ciudad Real</strong> como si eres un practicante avanzado, en YogaSadhana encontrarás el estilo y el nivel que se adapta a ti. Ofrecemos clases de <strong>yoga para embarazadas</strong>, <strong>yoga para mayores</strong> y sesiones <strong>adaptadas para personas con lesiones</strong> o movilidad reducida.</p>
+    <p>Además de nuestras clases regulares, organizamos <strong>talleres temáticos</strong>, <strong>retiros de fin de semana</strong> y <strong>formación de profesores de yoga</strong> certificada por Yoga Alliance. Creemos que el yoga es para todos, y trabajamos cada día para hacer esta práctica milenaria accesible a toda la comunidad de Ciudad Real y La Mancha.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="section-inner cta-inner">
+    <span class="section-label">EMPIEZA HOY</span>
+    <h2>Tu primera clase te espera.</h2>
+    <p>Reserva una clase de prueba gratuita y sin compromiso. Descubre el estilo de yoga que resuena contigo y empieza tu camino hacia el bienestar integral.</p>
+    <div class="cta-actions">
+      <a routerLink="/yoga-sadhana/contacto" class="btn-primary">Reservar Clase Gratis</a>
+      <a routerLink="/yoga-sadhana/horarios" class="btn-text">Ver Horarios <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
     </div>
   </div>
 </section>
