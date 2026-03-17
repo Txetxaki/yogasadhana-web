@@ -99,6 +99,50 @@
       </div>
 
       <a routerLink="/yoga-sadhana/horarios" routerLinkActive="ys-active" (click)="menuOpen=false">Horarios</a>
+
+      <!-- Dropdown: Bienestar -->
+      <div class="ys-dropdown">
+        <a class="ys-dropdown-trigger">Bienestar
+          <svg class="dd-arrow" viewBox="0 0 24 24" fill="none" width="14" height="14">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <div class="ys-dropdown-menu">
+          <!-- Masajes -->
+          <a routerLink="/yoga-sadhana/bienestar/masajes" routerLinkActive="ys-sub-active" (click)="menuOpen=false">
+            <svg class="sub-icon" viewBox="0 0 24 24" fill="none" width="18" height="18">
+              <path d="M12 2a9 9 0 1 0 0 18A9 9 0 0 0 12 2z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 12c1 2 2.5 3 4 3s3-1 4-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M9 9h.01M15 9h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Masajes
+          </a>
+          <!-- Osteomasaje -->
+          <a routerLink="/yoga-sadhana/bienestar/osteomasaje" routerLinkActive="ys-sub-active" (click)="menuOpen=false">
+            <svg class="sub-icon" viewBox="0 0 24 24" fill="none" width="18" height="18">
+              <path d="M12 2a4 4 0 0 1 4 4c0 3-4 6-4 6S8 9 8 6a4 4 0 0 1 4-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M12 12v10M8 17h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Osteomasaje
+          </a>
+          <!-- Bioenergética -->
+          <a routerLink="/yoga-sadhana/bienestar/bioenergetica" routerLinkActive="ys-sub-active" (click)="menuOpen=false">
+            <svg class="sub-icon" viewBox="0 0 24 24" fill="none" width="18" height="18">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 3a9 9 0 0 1 0 18A4.5 4.5 0 0 1 12 12a4.5 4.5 0 0 0 0-9z" fill="currentColor" opacity="0.15"/>
+            </svg>
+            Bioenergética China
+          </a>
+          <div class="ys-dropdown-divider"></div>
+          <a routerLink="/yoga-sadhana/contacto" class="ys-dropdown-all" (click)="menuOpen=false">
+            Reservar Sesión
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
       <a routerLink="/yoga-sadhana/formacion" routerLinkActive="ys-active" (click)="menuOpen=false">Formación</a>
       <a routerLink="/yoga-sadhana/nosotros" routerLinkActive="ys-active" (click)="menuOpen=false">Nosotros</a>
 

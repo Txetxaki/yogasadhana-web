@@ -1,0 +1,18 @@
+/* Mismo sistema de diseño que osteopatia — reutiliza variables y layout */
+/* Estilos adicionales específicos para la página de masajes */
+
+.therapy-list {
+  margin: 1rem 0 1.5rem 1.25rem;
+  line-height: 2;
+  color: var(--on-surface-variant, #54433c);
+}
+
+.therapy-list li {
+  margin-bottom: .25rem;
+}
+
+.benefit-icon {
+  color: var(--primary, #924a28);
+  margin-bottom: .75rem;
+  display: block;
+}

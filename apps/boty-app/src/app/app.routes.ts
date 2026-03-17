@@ -23,6 +23,10 @@ export const appRoutes: Route[] = [
       { path: 'yoga-suave', loadComponent: () => import('./yoga-sadhana/suave/yoga-suave.component').then(m => m.YogaSuaveComponent) },
       { path: 'khatva-yoga', loadComponent: () => import('./yoga-sadhana/khatva/yoga-khatva.component').then(m => m.YogaKhatvaComponent) },
       { path: 'osteopatia', loadComponent: () => import('./yoga-sadhana/osteopatia/yoga-osteopatia.component').then(m => m.YogaOsteopatiaComponent) },
+      { path: 'bienestar/masajes', loadComponent: () => import('./yoga-sadhana/bienestar/masajes/yoga-masajes.component').then(m => m.YogaMasajesComponent) },
+      { path: 'bienestar/osteomasaje', loadComponent: () => import('./yoga-sadhana/bienestar/osteomasaje/yoga-osteomasaje.component').then(m => m.YogaOsteomasajeComponent) },
+      { path: 'bienestar/bioenergetica', loadComponent: () => import('./yoga-sadhana/bienestar/bioenergetica/yoga-bioenergetica.component').then(m => m.YogaBioenergeticaComponent) },
+
       { path: 'formacion', loadComponent: () => import('./yoga-sadhana/formation/yoga-formation.component').then(m => m.YogaFormationComponent) },
       { path: 'contacto', loadComponent: () => import('./yoga-sadhana/contact/yoga-contact.component').then(m => m.YogaContactComponent) },
       // Auth routes
