@@ -1,2 +1,176 @@
-/* admin-users styles: shared with admin-schedule – see admin-schedule.component.css */
 :host { display: block; }
+
+/* ── Page Header ────────────────────────── */
+.adm-users { padding: 0; }
+
+.adm-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.adm-page-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #924a28;
+  margin-bottom: 0.15rem;
+}
+
+.adm-page-title {
+  font-family: 'Noto Serif', Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #2d1708;
+  margin: 0;
+}
+
+/* ── Search ─────────────────────────────── */
+.adm-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1.5px solid #e8ddd8;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  min-width: 280px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.adm-search-wrap:focus-within {
+  border-color: #924a28;
+  box-shadow: 0 0 0 3px rgba(146,74,40,0.1);
+}
+.adm-search-wrap .material-symbols-outlined {
+  font-size: 1.1rem;
+  color: #87736b;
+}
+.adm-search-wrap input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: #2d1708;
+  font-family: inherit;
+  flex: 1;
+}
+.adm-search-wrap input::placeholder { color: #b09e98; }
+
+/* ── Panel ──────────────────────────────── */
+.adm-users-panel {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 16px rgba(146,74,40,0.07);
+  overflow: hidden;
+}
+
+.adm-users-summary {
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid #f2ebe6;
+  font-size: 0.82rem;
+  color: #87736b;
+  font-weight: 500;
+}
+
+/* ── Table ──────────────────────────────── */
+.adm-table-wrap { overflow-x: auto; }
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.adm-table thead th {
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #87736b;
+  background: #fdf9f4;
+  border-bottom: 1px solid #f2ebe6;
+  white-space: nowrap;
+}
+
+.adm-table tbody tr {
+  border-bottom: 1px solid #f7f2ef;
+  transition: background 0.15s;
+}
+.adm-table tbody tr:hover { background: #fdf9f4; }
+.adm-table tbody tr:last-child { border-bottom: none; }
+
+.adm-table td {
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+  color: #2d1708;
+}
+
+/* ── Student cell ───────────────────────── */
+.adm-student {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.adm-student-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #924a28, #d27d56);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adm-student-name {
+  display: block;
+  font-weight: 600;
+  color: #2d1708;
+  font-size: 0.9rem;
+}
+.adm-student-email {
+  display: block;
+  font-size: 0.78rem;
+  color: #87736b;
+  margin-top: 0.1rem;
+}
+
+.adm-secondary { color: #5a4a44; }
+
+/* ── Badge ──────────────────────────────── */
+.adm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.7rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.badge-activa  { background: #edf7f0; color: #2a7a4f; }
+.badge-bono    { background: #fff4e6; color: #924a28; }
+.badge-inactiva { background: #f5f5f5; color: #87736b; }
+
+/* ── Empty ──────────────────────────────── */
+.adm-empty {
+  text-align: center;
+  padding: 3rem 1rem !important;
+  color: #87736b;
+}
+.adm-empty .material-symbols-outlined {
+  display: block;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
