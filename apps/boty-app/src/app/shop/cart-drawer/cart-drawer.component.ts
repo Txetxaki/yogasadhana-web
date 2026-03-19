@@ -1,6 +1,6 @@
 import { Component, inject, effect } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CartService } from '../../core/services/cart/cart.service';
 
 @Component({
@@ -28,7 +28,7 @@ import { CartService } from '../../core/services/cart/cart.service';
         @if (cart.cartItems().length === 0) {
           <div class="cart-empty">
             <p class="cart-empty-text">Tu bolsa está vacía.</p>
-            <button class="btn-discover" (click)="cart.closeDrawer()" routerLink="/yoga-sadhana/tienda">Explorar Tienda</button>
+            <button class="btn-discover" (click)="goToShop()">Explorar Tienda</button>
           </div>
         } @else {
           <ul class="cart-items">
@@ -71,8 +71,8 @@ import { CartService } from '../../core/services/cart/cart.service';
             <span class="total-amount">{{ cart.subtotal() | currency:'EUR' }}</span>
           </div>
           <p class="shipping-note">Impuestos incluidos. Envío calculado en el checkout.</p>
-          <button class="btn-checkout" routerLink="/yoga-sadhana/cart" (click)="cart.closeDrawer()">
-            Ver Carrito Completado
+          <button class="btn-checkout" (click)="goToCart()">
+            Ver Carrito
             <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -85,4 +85,15 @@ import { CartService } from '../../core/services/cart/cart.service';
 })
 export class CartDrawerComponent {
   cart = inject(CartService);
+  router = inject(Router);
+
+  goToCart() {
+    this.cart.closeDrawer();
+    this.router.navigate(['/yoga-sadhana/carrito']);
+  }
+
+  goToShop() {
+    this.cart.closeDrawer();
+    this.router.navigate(['/yoga-sadhana/tienda']);
+  }
 }

@@ -1,0 +1,139 @@
+.orders-container {
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.orders-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.orders-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2b3a42;
+  margin: 0;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order-card {
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.order-card-header {
+  background: #f4f4f4;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.order-id {
+  display: block;
+  font-weight: 600;
+  color: #333;
+}
+
+.order-date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.order-card-body {
+  padding: 1.5rem;
+}
+
+.order-item-row {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.item-qty {
+  font-weight: 500;
+  color: #4e635a;
+  min-width: 30px;
+}
+
+.item-name {
+  flex-grow: 1;
+  color: #444;
+}
+
+.item-price {
+  font-weight: 500;
+}
+
+.order-summary {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid #eee;
+  text-align: right;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.summary-method {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.order-card-footer {
+  padding: 1rem 1.5rem;
+  background: #fff8eb;
+  border-top: 1px solid #ffe3b3;
+  font-size: 0.9rem;
+}
+
+/* Badges */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pendiente-pago, .status-pendiente_pago {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-pagado {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-enviado {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status-entregado {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-cancelado {
+  background: #f8d7da;
+  color: #721c24;
+}

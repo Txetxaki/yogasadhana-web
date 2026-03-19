@@ -1,5 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -47,6 +47,12 @@ export class AdminLayoutComponent implements OnInit {
 
   isMobile(): boolean {
     return typeof window !== 'undefined' && window.innerWidth <= 768;
+  }
+
+  private router = inject(Router);
+
+  get isShopRoute(): boolean {
+    return this.router.url.includes('/admin/tienda');
   }
 
   logout(): void {

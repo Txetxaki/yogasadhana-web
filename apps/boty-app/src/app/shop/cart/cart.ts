@@ -35,10 +35,8 @@ export class Cart {
   }
 
   proceedToCheckout() {
-    // Basic implementation: simulate checkout for now
     if (this.cartCount() > 0) {
-      alert('Implementación de Pasarela de Pago (Stripe/Paypal) iría aquí. Redirigiendo a checkout...');
-      // this.router.navigate(['/tienda/checkout']);
+      this.router.navigate(['/yoga-sadhana/checkout']);
     }
   }
 }

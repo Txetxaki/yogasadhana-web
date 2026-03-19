@@ -16,9 +16,11 @@ export class SuppliersManageComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   suppliers = signal<Supplier[]>([]);
+  loading = signal(true);
   isEditing = signal(false);
+  isModalOpen = signal(false);
   currentSupplierId = signal<string | null>(null);
-  
+
   supplierForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
     contactName: ['', Validators.required],
@@ -31,38 +33,44 @@ export class SuppliersManageComponent implements OnInit {
   ngOnInit() {
     this.supplierService.getSuppliers().subscribe((data: Supplier[]) => {
       this.suppliers.set(data);
+      this.loading.set(false);
     });
   }
 
-  onSubmit() {
-    if (this.supplierForm.invalid) {
-      this.supplierForm.markAllAsTouched();
-      return;
-    }
-
-    const supplierData = this.supplierForm.value;
-    const id = this.currentSupplierId();
-
-    if (this.isEditing() && id) {
-      this.supplierService.updateSupplier(id, supplierData).then(() => {
-        this.resetForm();
-      });
+  openModal(supplier?: Supplier) {
+    if (supplier) {
+      this.isEditing.set(true);
+      this.currentSupplierId.set(supplier.id);
+      this.supplierForm.patchValue(supplier);
     } else {
-      this.supplierService.addSupplier(supplierData).then(() => {
-        this.resetForm();
-      });
+      this.isEditing.set(false);
+      this.currentSupplierId.set(null);
+      this.supplierForm.reset();
+    }
+    this.isModalOpen.set(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeModal() {
+    this.isModalOpen.set(false);
+    document.body.style.overflow = '';
+    this.resetForm();
+  }
+
+  onSubmit() {
+    if (this.supplierForm.invalid) { this.supplierForm.markAllAsTouched(); return; }
+    const id = this.currentSupplierId();
+    if (this.isEditing() && id) {
+      this.supplierService.updateSupplier(id, this.supplierForm.value).then(() => this.closeModal());
+    } else {
+      this.supplierService.addSupplier(this.supplierForm.value).then(() => this.closeModal());
     }
   }
 
-  editSupplier(supplier: Supplier) {
-    this.isEditing.set(true);
-    this.currentSupplierId.set(supplier.id);
-    this.supplierForm.patchValue(supplier);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  editSupplier(supplier: Supplier) { this.openModal(supplier); }
 
   deleteSupplier(id: string) {
-    if(confirm('¿Seguro que quieres eliminar este proveedor? Se mantendrá en los productos que ya lo tengan pero ya no podrá usarse.')) {
+    if (confirm('¿Seguro que quieres eliminar este proveedor?')) {
       this.supplierService.deleteSupplier(id);
     }
   }

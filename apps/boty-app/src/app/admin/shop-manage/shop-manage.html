@@ -12,38 +12,44 @@
     </button>
   </div>
 
-  <!-- Stats Grid -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3 class="stat-label">Total Productos</h3>
-      <p class="stat-value">{{products().length}}</p>
+  <!-- Stats Pills (compactas, en fila) -->
+  <div class="stat-pills">
+    <div class="stat-pill">
+      <span class="pill-label">Total productos</span>
+      <span class="pill-value">{{ products().length }}</span>
     </div>
-    <div class="stat-card">
-      <h3 class="stat-label">Stock Crítico</h3>
-      <p class="stat-value text-danger">{{ lowStockCount() }}</p>
-    </div>
-    <div class="stat-card">
-      <h3 class="stat-label">Ticket Promedio</h3>
-      <p class="stat-value">-- €</p>
+
+    <button class="stat-pill pill-clickable"
+            [class.pill-danger]="lowStockCount() > 0"
+            (click)="showLowStock.set(!showLowStock())">
+      <span class="pill-label">Stock crítico</span>
+      <span class="pill-value">{{ lowStockCount() }}</span>
+      <svg class="pill-chevron" [class.open]="showLowStock()"
+           viewBox="0 0 24 24" fill="none" width="13" height="13">
+        <polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="stat-pill">
+      <span class="pill-label">Precio promedio</span>
+      <span class="pill-value">
+        @if (avgPrice() !== null) {
+          {{ avgPrice() | currency:'EUR':'symbol':'1.0-0' }}
+        } @else { — }
+      </span>
     </div>
   </div>
 
-  <!-- Loading State -->
-  @if (loading()) {
-  <div class="loading-row">
-    <div class="spinner"></div>
-  </div>
-  }
-
+  <!-- Eliminado panel desplegable de low stock, ahora filtra directamente en la tabla -->
   <!-- Inventory Table -->
-  @if (!loading()) {
   <div class="inventory-section">
     <div class="inventory-header">
       <h3 class="inventory-title">Inventario Actual</h3>
       <!-- Filter/Search placeholder -->
       <div class="search-wrapper">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" placeholder="Buscar producto..." class="search-input">
+        <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" placeholder="Buscar producto..." class="search-input">
       </div>
     </div>
     
@@ -60,57 +66,110 @@
           </tr>
         </thead>
         <tbody>
-          @for (p of products(); track p.id) {
-          <tr class="table-row">
-            <td>
-              <div class="product-info-cell">
-                <div class="product-thumbnail-wrap">
-                  @if (p.thumbnail) {
-                  <img [src]="p.thumbnail" class="product-thumbnail">
-                  }
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                    <span class="product-name">{{p.name}}</span>
-                    <span class="product-sku">SKU: {{p.sku || 'N/A'}}</span>
-                </div>
-              </div>
-            </td>
-            <td class="category-cell">{{p.category}}</td>
-            <td>
-                <div style="display: flex; flex-direction: column;">
-                    <span class="price-cell">{{p.price | currency:'EUR'}}</span>
-                    <span class="cost-cell">C: {{p.costPrice ? (p.costPrice | currency:'EUR') : 'N/A'}}</span>
-                </div>
-            </td>
-            <td>
-              <span class="stock-badge"
-                    [class.high]="p.stock > 10" 
-                    [class.medium]="p.stock > 0 && p.stock <= 10" 
-                    [class.empty]="p.stock === 0">
-                {{p.stock > 0 ? p.stock + ' uds' : 'Agotado'}}
-              </span>
-            </td>
-            <td>
-                <div class="badges-col">
-                    @if (p.isBestSeller) { <span class="mini-badge bestseller">Bestseller</span> }
-                    @if (p.isEcoFriendly) { <span class="mini-badge eco">Eco</span> }
-                </div>
-            </td>
-            <td class="actions-cell">
-               <button class="btn-edit" (click)="openDrawer(p)">Editar</button>
-               <button (click)="deleteProduct(p.id)" class="btn-delete">Eliminar</button>
-            </td>
-          </tr>
-          } @empty {
+          @if (loading()) {
+            @for (i of [1,2,3,4,5]; track i) {
+              <tr class="table-row">
+                <td>
+                  <div class="product-info-cell">
+                    <div class="skeleton-text" style="width: 40px; height: 40px; border-radius: 8px;"></div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <div class="skeleton-text" style="width: 140px;"></div>
+                        <div class="skeleton-text" style="width: 80px; height: 12px;"></div>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="skeleton-text" style="width: 80px;"></div></td>
+                <td>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <div class="skeleton-text" style="width: 60px;"></div>
+                        <div class="skeleton-text" style="width: 50px; height: 12px;"></div>
+                    </div>
+                </td>
+                <td><div class="skeleton-text" style="width: 60px; border-radius: 99px; height: 24px;"></div></td>
+                <td><div class="skeleton-text" style="width: 50px; border-radius: 99px; height: 20px;"></div></td>
+                <td class="actions-cell">
+                   <div class="skeleton-text" style="width: 120px; float: right; height: 32px; border-radius: 6px;"></div>
+                </td>
+              </tr>
+            }
+          } @else {
+            @for (p of filteredProducts(); track p.id) {
+              @defer (on viewport) {
+                <tr class="table-row">
+                  <td>
+                    <div class="product-info-cell">
+                      <div class="product-thumbnail-wrap">
+                        @if (p.thumbnail) {
+                        <img [src]="p.thumbnail" class="product-thumbnail" loading="lazy">
+                        }
+                      </div>
+                      <div style="display: flex; flex-direction: column;">
+                          <span class="product-name">{{p.name}}</span>
+                          <span class="product-sku">SKU: {{p.sku || 'N/A'}}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="category-cell">{{p.category}}</td>
+                  <td>
+                      <div style="display: flex; flex-direction: column;">
+                          <span class="price-cell">{{p.price | currency:'EUR'}}</span>
+                          <span class="cost-cell">C: {{p.costPrice ? (p.costPrice | currency:'EUR') : 'N/A'}}</span>
+                      </div>
+                  </td>
+                  <td>
+                    <span class="stock-badge"
+                          [class.high]="p.stock > 10" 
+                          [class.medium]="p.stock > 0 && p.stock <= 10" 
+                          [class.empty]="p.stock === 0">
+                      {{p.stock > 0 ? p.stock + ' uds' : 'Agotado'}}
+                    </span>
+                  </td>
+                  <td>
+                      <div class="badges-col">
+                          @if (p.isBestSeller) { <span class="mini-badge bestseller">Bestseller</span> }
+                          @if (p.isEcoFriendly) { <span class="mini-badge eco">Eco</span> }
+                      </div>
+                  </td>
+                  <td class="actions-cell">
+                     <button class="btn-edit" (click)="openDrawer(p)">Editar</button>
+                     <button (click)="deleteProduct(p.id)" class="btn-delete">Eliminar</button>
+                  </td>
+                </tr>
+              } @placeholder {
+                <tr class="table-row">
+                  <td>
+                    <div class="product-info-cell">
+                      <div class="skeleton-text" style="width: 40px; height: 40px; border-radius: 8px;"></div>
+                      <div style="display: flex; flex-direction: column; gap: 4px;">
+                          <div class="skeleton-text" style="width: 140px;"></div>
+                          <div class="skeleton-text" style="width: 80px; height: 12px;"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><div class="skeleton-text" style="width: 80px;"></div></td>
+                  <td>
+                      <div style="display: flex; flex-direction: column; gap: 4px;">
+                          <div class="skeleton-text" style="width: 60px;"></div>
+                          <div class="skeleton-text" style="width: 50px; height: 12px;"></div>
+                      </div>
+                  </td>
+                  <td><div class="skeleton-text" style="width: 60px; border-radius: 99px; height: 24px;"></div></td>
+                  <td><div class="skeleton-text" style="width: 50px; border-radius: 99px; height: 20px;"></div></td>
+                  <td class="actions-cell">
+                     <div class="skeleton-text" style="width: 120px; float: right; height: 32px; border-radius: 6px;"></div>
+                  </td>
+                </tr>
+              }
+            } @empty {
           <tr>
             <td colspan="6" class="empty-state">No hay productos en el inventario.</td>
           </tr>
+          }
           }
         </tbody>
       </table>
     </div>
   </div>
-  }
 </div>
 
 <!-- Product Drawer -->
@@ -118,9 +177,16 @@
   <div class="drawer-overlay" (click)="closeDrawer()"></div>
   <div class="product-drawer" [class.open]="isDrawerOpen()">
     <div class="drawer-header">
-      <h3 class="drawer-title">{{ editingProduct()?.id ? 'Editar Producto' : 'Añadir Nuevo Producto' }}</h3>
+      <div class="drawer-header-text">
+        <h3 class="drawer-title">{{ editingProduct()?.id ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
+        @if (editingProduct()?.id && editingProduct()?.name) {
+          <p class="drawer-subtitle">{{ editingProduct()?.name }}</p>
+        }
+      </div>
       <button class="icon-btn-close" (click)="closeDrawer()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
       </button>
     </div>
     
@@ -340,8 +406,10 @@
     </div>
     
     <div class="drawer-footer">
-      <button class="ys-btn ys-btn-outline" (click)="closeDrawer()">Cancelar</button>
-      <button class="ys-btn ys-btn-primary" (click)="saveProduct()">Guardar Producto</button>
+      <div class="drawer-footer-inner">
+        <button class="ys-btn ys-btn-outline" (click)="closeDrawer()">Cancelar</button>
+        <button class="ys-btn ys-btn-primary" (click)="saveProduct()">Guardar Producto</button>
+      </div>
     </div>
   </div>
 }

@@ -1,4 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Product } from '../../models/product.model';
 
 export interface CartItem {
@@ -10,15 +11,15 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  // Using Signals for maximum reactivity
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
+
   private cartItemsSignal = signal<CartItem[]>([]);
   private isDrawerOpenSignal = signal<boolean>(false);
-  
-  // Public readonly access
+
   cartItems = this.cartItemsSignal.asReadonly();
   isDrawerOpen = this.isDrawerOpenSignal.asReadonly();
-  
-  // Computed values
+
   totalItems = computed(() => this.cartItemsSignal().reduce((acc, item) => acc + item.quantity, 0));
   subtotal = computed(() => this.cartItemsSignal().reduce((acc, item) => acc + (item.product.price * item.quantity), 0));
 
@@ -30,8 +31,8 @@ export class CartService {
     this.cartItemsSignal.update(items => {
       const existing = items.find(i => i.product.id === product.id);
       if (existing) {
-        return items.map(i => i.product.id === product.id 
-          ? { ...i, quantity: i.quantity + quantity } 
+        return items.map(i => i.product.id === product.id
+          ? { ...i, quantity: i.quantity + quantity }
           : i
         );
       }
@@ -51,7 +52,7 @@ export class CartService {
       this.removeFromCart(productId);
       return;
     }
-    this.cartItemsSignal.update(items => 
+    this.cartItemsSignal.update(items =>
       items.map(i => i.product.id === productId ? { ...i, quantity } : i)
     );
     this.saveToLocalStorage();
@@ -64,12 +65,12 @@ export class CartService {
 
   openDrawer() {
     this.isDrawerOpenSignal.set(true);
-    document.body.style.overflow = 'hidden';
+    if (this.isBrowser) document.body.style.overflow = 'hidden';
   }
 
   closeDrawer() {
     this.isDrawerOpenSignal.set(false);
-    document.body.style.overflow = '';
+    if (this.isBrowser) document.body.style.overflow = '';
   }
 
   toggleDrawer() {
@@ -81,6 +82,7 @@ export class CartService {
   }
 
   private saveToLocalStorage() {
+    if (!this.isBrowser) return;
     try {
       localStorage.setItem('yogasadhana_cart', JSON.stringify(this.cartItemsSignal()));
     } catch (e) {
@@ -89,6 +91,7 @@ export class CartService {
   }
 
   private loadFromLocalStorage() {
+    if (!this.isBrowser) return;
     try {
       const saved = localStorage.getItem('yogasadhana_cart');
       if (saved) {

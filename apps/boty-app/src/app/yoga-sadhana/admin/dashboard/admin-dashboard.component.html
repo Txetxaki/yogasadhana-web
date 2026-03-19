@@ -4,7 +4,19 @@
       <span class="adm-page-label">Panel de Control</span>
       <h1 class="adm-page-title">Bienvenido, {{ (auth.currentUser()?.name ?? '').split(' ')[0] }}</h1>
     </div>
-    <span class="adm-date">{{ auth.currentUser()?.joinDate | date:'MMMM yyyy' }}</span>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <span class="adm-date">{{ auth.currentUser()?.joinDate | date:'MMMM yyyy' }}</span>
+      <button
+        class="ys-btn ys-btn-primary"
+        (click)="runSeed()"
+        [disabled]="isSeedRunning"
+        title="Puebla Firestore con productos, usuarios y pedidos de prueba">
+        {{ isSeedRunning ? '⏳ Inicializando...' : '🌱 Inicializar BD' }}
+      </button>
+      @if (seedStatus) {
+        <span style="font-size:0.78rem;color:#54433c;">{{ seedStatus }}</span>
+      }
+    </div>
   </div>
 
   <!-- Stats Grid -->

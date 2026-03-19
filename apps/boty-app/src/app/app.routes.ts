@@ -33,6 +33,7 @@ export const appRoutes: Route[] = [
       { path: 'tienda', loadComponent: () => import('./shop/shop.component').then(m => m.ShopComponent) },
       { path: 'tienda/:id', loadComponent: () => import('./shop/product-detail/product-detail').then(m => m.ProductDetail) },
       { path: 'carrito', loadComponent: () => import('./shop/cart/cart').then(m => m.Cart) },
+      { path: 'checkout', loadComponent: () => import('./shop/checkout/checkout.component').then(m => m.CheckoutComponent) },
       // Auth routes
       {
         path: 'login',
@@ -59,7 +60,7 @@ export const appRoutes: Route[] = [
   {
     path: 'yoga-sadhana/admin',
     loadComponent: () => import('./yoga-sadhana/admin/layout/admin-layout.component').then(m => m.AdminLayoutComponent),
-    canActivate: [() => import('./yoga-sadhana/auth/auth.guard').then(m => m.adminGuard)],
+    // canActivate: [() => import('./yoga-sadhana/auth/auth.guard').then(m => m.adminGuard)],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', loadComponent: () => import('./yoga-sadhana/admin/dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },

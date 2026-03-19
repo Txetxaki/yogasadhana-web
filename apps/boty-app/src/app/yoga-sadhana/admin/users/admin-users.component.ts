@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+import { UserService, UserProfile } from '../../../core/services/user.service';
 
 export interface ClassHistory {
   id: string;
@@ -10,20 +12,8 @@ export interface ClassHistory {
   attended: boolean;
 }
 
-export interface Student {
-  id: string;
-  name: string;
-  initials: string;
-  email: string;
-  role: 'admin' | 'user';
-  joinDate: string;
-  favoriteStyle: string;
-  classesAttended: number;
-  status: 'activa' | 'inactiva' | 'bono';
-  avatarUrl?: string;
-  phone?: string;
-  history?: ClassHistory[];
-}
+// Extendemos UserProfile con history opcional si se requiere
+export type Student = UserProfile & { history?: ClassHistory[] };
 
 type ViewMode = 'list' | 'detail' | 'form';
 
@@ -34,29 +24,50 @@ type ViewMode = 'list' | 'detail' | 'form';
   templateUrl: './admin-users.component.html',
   styleUrl: './admin-users.component.css',
 })
-export class AdminUsersComponent {
+export class AdminUsersComponent implements OnInit {
+  private userService = inject(UserService);
+  private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
+
   searchTerm = '';
   viewMode: ViewMode = 'list';
   selectedStudent: Student | null = null;
   formStudent: Partial<Student> = {};
+  students: Student[] = [];
+  isLoading = true;
+  debugError = '';
 
-  students: Student[] = [
-    { id: 'u1', name: 'Laura Martínez', initials: 'LM', email: 'alumna@yogasadhana.xyz', role: 'user', joinDate: '2024-09-10', favoriteStyle: 'Vinyasa Flow', classesAttended: 42, status: 'activa', phone: '+34 600 123 456', history: [{id: 'c1', name: 'Vinyasa Matinal', date: '2025-03-15', attended: true}, {id: 'c2', name: 'Hatha Yoga', date: '2025-03-12', attended: true}] },
-    { id: 'u2', name: 'María Sánchez', initials: 'MS', email: 'maria@yogasadhana.xyz', role: 'user', joinDate: '2025-01-20', favoriteStyle: 'Yin Yoga', classesAttended: 15, status: 'bono', phone: '+34 611 222 333', history: [{id: 'c3', name: 'Yin Yoga', date: '2025-03-16', attended: true}] },
-    { id: 'u3', name: 'Sergio Gómez', initials: 'SG', email: 'sergiogdiseno@gmail.com', role: 'admin', joinDate: '2024-11-05', favoriteStyle: 'Hatha Yoga', classesAttended: 120, status: 'activa', history: [] },
-    { id: 'u4', name: 'Carmen Torres', initials: 'CT', email: 'carmen@gmail.com', role: 'user', joinDate: '2025-02-14', favoriteStyle: 'Yoga Suave', classesAttended: 8, status: 'activa', history: [] },
-    { id: 'u5', name: 'Pedro Moreno', initials: 'PM', email: 'pedro@hotmail.com', role: 'user', joinDate: '2025-03-01', favoriteStyle: 'Hatha Yoga', classesAttended: 3, status: 'activa', history: [] },
-    { id: 'u6', name: 'Rosa Díaz', initials: 'RD', email: 'rosa@gmail.com', role: 'user', joinDate: '2024-06-20', favoriteStyle: 'Khatva Yoga', classesAttended: 65, status: 'bono', history: [] },
-    { id: 'u7', name: 'Isabel García', initials: 'IG', email: 'isabel@outlook.es', role: 'user', joinDate: '2024-03-15', favoriteStyle: 'Vinyasa Flow', classesAttended: 2, status: 'inactiva', history: [] },
-  ];
+  async ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      await this.loadUsers();
+    }
+  }
+
+  async loadUsers() {
+    this.isLoading = true;
+    this.debugError = '';
+    try {
+      const users = await this.userService.getAllUsers();
+      this.students = users;
+      if (users.length === 0) {
+        this.debugError = '0 documentos encontrados en Firestore.';
+      }
+    } catch (err: any) {
+      console.error('Error al cargar usuarios:', err);
+      this.debugError = 'Error Firebase: ' + (err.message || err.toString());
+    } finally {
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    }
+  }
 
   get filtered(): Student[] {
     if (!this.searchTerm.trim()) return this.students;
     const q = this.searchTerm.toLowerCase();
     return this.students.filter(s =>
-      s.name.toLowerCase().includes(q) ||
-      s.email.toLowerCase().includes(q) ||
-      s.favoriteStyle.toLowerCase().includes(q)
+      s.name?.toLowerCase().includes(q) ||
+      s.email?.toLowerCase().includes(q) ||
+      (s.favoriteStyle && s.favoriteStyle.toLowerCase().includes(q))
     );
   }
 
@@ -96,20 +107,10 @@ export class AdminUsersComponent {
     }
   }
 
-  saveStudent() {
+  async saveStudent() {
     if (!this.formStudent.name || !this.formStudent.email) {
       alert('Nombre y correo son obligatorios.');
       return;
-    }
-
-    // Auto-generate initials if not provided
-    if (!this.formStudent.initials) {
-      this.formStudent.initials = this.formStudent.name
-        .split(' ')
-        .map(n => n.charAt(0))
-        .join('')
-        .toUpperCase()
-        .substring(0, 2);
     }
 
     if (!this.formStudent.joinDate) {
@@ -118,18 +119,27 @@ export class AdminUsersComponent {
 
     if (this.formStudent.id) {
       // Update existing
-      const index = this.students.findIndex(s => s.id === this.formStudent.id);
-      if (index > -1) {
-        this.students[index] = this.formStudent as Student;
-        // Also update selected if editing from detail view
+      try {
+        await this.userService.updateUser(this.formStudent.id, this.formStudent);
+        await this.loadUsers();
+        
         if (this.selectedStudent && this.selectedStudent.id === this.formStudent.id) {
-            this.selectedStudent = {...this.students[index]};
+            this.selectedStudent = this.students.find(s => s.id === this.selectedStudent!.id) || null;
         }
+      } catch (err) {
+        console.error('Error al actualizar:', err);
+        alert('Hubo un error al guardar.');
       }
     } else {
-      // Create new
+      // Create new (solo en db, sin auth)
       this.formStudent.id = 'u' + Date.now().toString();
-      this.students.unshift(this.formStudent as Student);
+      try {
+        await this.userService.createUser(this.formStudent as UserProfile);
+        await this.loadUsers();
+      } catch (err) {
+        console.error('Error al crear:', err);
+        alert('Hubo un error al crear.');
+      }
     }
 
     // Return to previous view
@@ -141,23 +151,33 @@ export class AdminUsersComponent {
     this.formStudent = {};
   }
 
-  deleteStudent(id: string) {
+  async deleteStudent(id: string) {
     if (confirm('¿Estás seguro de que deseas eliminar este usuario? Esa acción no se puede deshacer.')) {
-      this.students = this.students.filter(s => s.id !== id);
-      if (this.selectedStudent && this.selectedStudent.id === id) {
-        this.closeDetails();
+      try {
+        await this.userService.deleteUser(id);
+        await this.loadUsers();
+        if (this.selectedStudent && this.selectedStudent.id === id) {
+          this.closeDetails();
+        }
+      } catch (err) {
+        console.error('Error al eliminar:', err);
+        alert('Hubo un error al eliminar.');
       }
     }
   }
 
-  toggleRole(student: Student) {
+  async toggleRole(student: Student) {
     const newRole = student.role === 'admin' ? 'user' : 'admin';
     if(confirm(`¿Cambiar rol de ${student.name} a ${newRole.toUpperCase()}?`)) {
-       student.role = newRole;
-       // Also update the main array
-       const index = this.students.findIndex(s => s.id === student.id);
-       if (index > -1) {
-           this.students[index].role = newRole;
+       try {
+         await this.userService.updateUser(student.id, { role: newRole });
+         await this.loadUsers();
+         if (this.selectedStudent && this.selectedStudent.id === student.id) {
+            this.selectedStudent = this.students.find(s => s.id === this.selectedStudent!.id) || null;
+         }
+       } catch (err) {
+         console.error('Error al cambiar rol:', err);
+         alert('Hubo un error al cambiar el rol.');
        }
     }
   }

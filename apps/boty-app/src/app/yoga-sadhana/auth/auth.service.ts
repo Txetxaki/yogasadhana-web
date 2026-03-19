@@ -12,9 +12,11 @@ import {
   GoogleAuthProvider,
   User as FirebaseUser,
 } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
+import { UserService } from '../../core/services/user.service';
+import { CartService } from '../../core/services/cart/cart.service';
 
 export interface YogaUser {
   id: string;
@@ -33,7 +35,7 @@ const ADMIN_EMAILS = ['admin@yogasadhana.xyz', 'raquel@yogasadhana.xyz', 'sergio
 let _auth: Auth | null = null;
 function getFirebaseAuth(): Auth {
   if (!_auth) {
-    const app = initializeApp(environment.firebase);
+    const app = !getApps().length ? initializeApp(environment.firebase) : getApp();
     _auth = getAuth(app);
   }
   return _auth;
@@ -64,6 +66,8 @@ function firebaseUserToYoga(user: FirebaseUser): YogaUser {
 export class AuthService {
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
+  private userService = inject(UserService);
+  private cartService = inject(CartService);
 
   private _currentUser = signal<YogaUser | null>(null);
   private _loading = signal<boolean>(true);
@@ -106,6 +110,7 @@ export class AuthService {
     const auth = getFirebaseAuth();
     await signOut(auth);
     this._currentUser.set(null);
+    this.cartService.clearCart();
     this.router.navigate(['/yoga-sadhana']);
   }
 
@@ -114,7 +119,16 @@ export class AuthService {
       const auth = getFirebaseAuth();
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: 'select_account' });
-      await signInWithPopup(auth, provider);
+      const cred = await signInWithPopup(auth, provider);
+      
+      const email = cred.user.email ?? '';
+      await this.userService.saveUser({
+        id: cred.user.uid,
+        email,
+        name: cred.user.displayName ?? email.split('@')[0],
+        role: ADMIN_EMAILS.includes(email.toLowerCase()) ? 'admin' : 'user'
+      });
+      
       return { success: true };
     } catch (err: unknown) {
       const code = (err as { code?: string }).code ?? '';
@@ -139,6 +153,15 @@ export class AuthService {
         data.password
       );
       await updateProfile(cred.user, { displayName: data.name });
+      
+      await this.userService.saveUser({
+        id: cred.user.uid,
+        email: data.email,
+        name: data.name,
+        favoriteStyle: data.favoriteStyle,
+        role: ADMIN_EMAILS.includes(data.email.toLowerCase()) ? 'admin' : 'user'
+      });
+      
       return { success: true };
     } catch (err: unknown) {
       return {

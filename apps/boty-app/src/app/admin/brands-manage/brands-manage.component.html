@@ -1,96 +1,127 @@
 <div class="adm-section">
+  <!-- Header con botón -->
   <div class="adm-header">
-    <h2 class="adm-title">Gestión de Marcas</h2>
-    <p class="adm-subtitle">Añade o edita las marcas que proveen productos a la tienda.</p>
+    <div>
+      <h2 class="adm-title">Marcas</h2>
+      <p class="adm-subtitle">Gestiona las marcas que proveen productos a la tienda.</p>
+    </div>
+    <button class="ys-btn ys-btn-primary" (click)="openModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Añadir Marca
+    </button>
   </div>
 
-  <div class="adm-content-grid">
-    <!-- Formulario -->
-    <div class="adm-form-card">
-      <h3 class="adm-card-title">{{ isEditing() ? 'Editar Marca' : 'Nueva Marca' }}</h3>
-      
-      <form [formGroup]="brandForm" (ngSubmit)="onSubmit()" class="adm-form">
-        <label class="adm-field">
-          <span class="adm-label">Nombre de la Marca *</span>
-          <input type="text" formControlName="name" placeholder="Ej. Manduka" class="adm-input" 
-                 [class.error]="brandForm.get('name')?.invalid && brandForm.get('name')?.touched">
-        </label>
-
-        <label class="adm-field">
-          <span class="adm-label">País de Origen *</span>
-          <input type="text" formControlName="countryOfOrigin" placeholder="Ej. Alemania" class="adm-input"
-                 [class.error]="brandForm.get('countryOfOrigin')?.invalid && brandForm.get('countryOfOrigin')?.touched">
-        </label>
-
-        <label class="adm-field">
-          <span class="adm-label">Descripción *</span>
-          <textarea formControlName="description" rows="3" placeholder="Breve descripción de la marca..." class="adm-input"
-                    [class.error]="brandForm.get('description')?.invalid && brandForm.get('description')?.touched"></textarea>
-        </label>
-
-        <label class="adm-field">
-          <span class="adm-label">URL del Logo (Opcional)</span>
-          <input type="url" formControlName="logoUrl" placeholder="https://..." class="adm-input">
-        </label>
-
-        <div class="adm-form-actions">
-          @if (isEditing()) {
-            <button type="button" class="ys-btn ys-btn-outline" (click)="resetForm()">Cancelar</button>
+  <!-- Tabla -->
+  @if (loading()) {
+    <div class="adm-table-container">
+      <table class="adm-table">
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Nombre</th>
+            <th>Origen</th>
+            <th class="text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (i of [1,2,3]; track i) {
+            <tr>
+              <td class="adm-td-image"><div class="skeleton-img" style="width:36px; height:36px; border-radius:8px;"></div></td>
+              <td class="adm-td-main"><div class="skeleton-text" style="width: 120px;"></div></td>
+              <td><div class="skeleton-text" style="width: 80px;"></div></td>
+              <td class="adm-td-actions"><div class="skeleton-text" style="width: 60px; float: right;"></div></td>
+            </tr>
           }
-          <button type="submit" class="ys-btn ys-btn-primary" [disabled]="brandForm.invalid">
-            {{ isEditing() ? 'Actualizar Marca' : 'Crear Marca' }}
-          </button>
-        </div>
-      </form>
+        </tbody>
+      </table>
     </div>
-
-    <!-- Lista de Marcas -->
-    <div class="adm-list-card">
-      <h3 class="adm-card-title">Marcas Registradas ({{ brands().length }})</h3>
-      
-      @if (brands().length === 0) {
-        <div class="adm-empty-state">
-          <p>No hay marcas registradas todavía.</p>
-        </div>
-      } @else {
-        <div class="adm-table-container">
-          <table class="adm-table">
-            <thead>
-              <tr>
-                <th>Logo</th>
-                <th>Nombre</th>
-                <th>Origen</th>
-                <th class="text-right">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (brand of brands(); track brand.id) {
-                <tr>
-                  <td class="adm-td-image">
-                    @if (brand.logoUrl) {
-                      <img [src]="brand.logoUrl" [alt]="brand.name" class="adm-tiny-img">
-                    } @else {
-                      <div class="adm-img-placeholder">{{ brand.name.charAt(0) }}</div>
-                    }
-                  </td>
-                  <td class="adm-td-main">
-                    <strong>{{ brand.name }}</strong>
-                  </td>
-                  <td>{{ brand.countryOfOrigin }}</td>
-                  <td class="adm-td-actions">
-                    <button class="adm-icon-btn edit" (click)="editBrand(brand)" title="Editar">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                    </button>
-                    <button class="adm-icon-btn delete" (click)="deleteBrand(brand.id)" title="Eliminar">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
+  } @else if (brands().length === 0) {
+    <div class="adm-empty-state"><p>No hay marcas registradas. Usa el botón "Añadir Marca" para empezar.</p></div>
+  } @else {
+    <div class="adm-table-container">
+      <table class="adm-table">
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Nombre</th>
+            <th>Origen</th>
+            <th class="text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (brand of brands(); track brand.id) {
+            <tr>
+              <td class="adm-td-image">
+                @if (brand.logoUrl) {
+                  <img [src]="brand.logoUrl" [alt]="brand.name" class="adm-tiny-img">
+                } @else {
+                  <div class="adm-img-placeholder">{{ brand.name.charAt(0) }}</div>
+                }
+              </td>
+              <td class="adm-td-main"><strong>{{ brand.name }}</strong></td>
+              <td>{{ brand.countryOfOrigin }}</td>
+              <td class="adm-td-actions">
+                <button class="adm-icon-btn edit" (click)="editBrand(brand)" title="Editar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </button>
+                <button class="adm-icon-btn delete" (click)="deleteBrand(brand.id)" title="Eliminar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
-  </div>
+  }
 </div>
+
+<!-- Modal -->
+@if (isModalOpen()) {
+  <div class="modal-overlay" (click)="closeModal()"></div>
+  <div class="modal-box" role="dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">{{ isEditing() ? 'Editar Marca' : 'Nueva Marca' }}</h3>
+      <button class="modal-close-btn" (click)="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()" class="modal-form">
+      <label class="adm-field">
+        <span class="adm-label">Nombre *</span>
+        <input type="text" formControlName="name" placeholder="Ej. Manduka" class="adm-input"
+               [class.error]="brandForm.get('name')?.invalid && brandForm.get('name')?.touched">
+      </label>
+      <label class="adm-field">
+        <span class="adm-label">País de Origen *</span>
+        <input type="text" formControlName="countryOfOrigin" placeholder="Ej. Alemania" class="adm-input"
+               [class.error]="brandForm.get('countryOfOrigin')?.invalid && brandForm.get('countryOfOrigin')?.touched">
+      </label>
+      <label class="adm-field">
+        <span class="adm-label">Descripción *</span>
+        <textarea formControlName="description" rows="2" placeholder="Breve descripción..." class="adm-input"
+                  [class.error]="brandForm.get('description')?.invalid && brandForm.get('description')?.touched"></textarea>
+      </label>
+      <label class="adm-field">
+        <span class="adm-label">URL del Logo</span>
+        <input type="url" formControlName="logoUrl" placeholder="https://..." class="adm-input">
+      </label>
+      <div class="modal-footer">
+        <button type="button" class="ys-btn ys-btn-outline" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="ys-btn ys-btn-primary" [disabled]="brandForm.invalid">
+          {{ isEditing() ? 'Actualizar' : 'Crear Marca' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}

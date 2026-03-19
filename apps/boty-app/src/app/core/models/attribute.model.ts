@@ -1,11 +1,13 @@
 export interface ProductAttribute {
-  name: string; // e.g., 'Color', 'Talla', 'Material'
-  values: string[]; // e.g., ['Rojo', 'Azul'], ['S', 'M', 'L']
+  name: string;
+  values: string[];
 }
 
-// Global attribute definition for the store
+export type AttributeType = 'text' | 'color';
+
 export interface GlobalAttribute {
   id: string;
   name: string;
+  type: AttributeType;
   options: string[];
 }

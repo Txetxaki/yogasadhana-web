@@ -105,3 +105,32 @@
 }
 .usr-quick-icon .usr-nav-icon { width: 20px; height: 20px; }
 .usr-quick-arrow { width: 16px; height: 16px; color: #87736b; margin-left: auto; }
+.usr-tabs-nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #edede8;
+}
+
+.usr-tab-btn {
+  background: none;
+  border: none;
+  padding: 0.75rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6d6b67;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s ease;
+}
+
+.usr-tab-btn:hover {
+  color: #c9aa82;
+}
+
+.usr-tab-btn.active {
+  color: #3b3a38;
+  font-weight: 600;
+  border-bottom-color: #c9aa82;
+}

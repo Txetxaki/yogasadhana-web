@@ -1,3 +1,4 @@
+<!-- Desktop sidebar layout -->
 <div class="usr-shell" [class.usr-collapsed]="sidebarCollapsed">
   <aside class="usr-sidebar">
     <div class="usr-sidebar-header">
@@ -8,15 +9,13 @@
           <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="#924a28" stroke-width="1.6" fill="rgba(146,74,40,0.07)"/>
           <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="#924a28" stroke-width="1.8" fill="rgba(146,74,40,0.15)"/>
         </svg>
-        @if (!sidebarCollapsed) {
-          <span>YogaSadhana</span>
-        }
+        @if (!sidebarCollapsed) { <span>YogaSadhana</span> }
       </a>
     </div>
 
     <div class="usr-profile-mini" [class.usr-collapsed-user]="sidebarCollapsed">
-      <div class="usr-avatar">{{ auth.currentUser()?.avatar ?? 'A' }}</div>
-      @if (!sidebarCollapsed || isMobile()) {
+      <div class="usr-avatar">{{ auth.currentUser()?.avatar ?? 'U' }}</div>
+      @if (!sidebarCollapsed) {
         <div class="usr-user-details">
           <span class="usr-p-name" [title]="auth.currentUser()?.name">{{ auth.currentUser()?.name }}</span>
           <span class="usr-p-email" [title]="auth.currentUser()?.email">{{ auth.currentUser()?.email }}</span>
@@ -25,85 +24,77 @@
     </div>
 
     <nav class="usr-nav">
-      <!-- Mi Área -->
       <a routerLink="/yoga-sadhana/dashboard" routerLinkActive="usr-nav-active"
-         [routerLinkActiveOptions]="{exact: true}" class="usr-nav-item" (click)="closeSidebarOnMobile()">
+         [routerLinkActiveOptions]="{exact: true}" class="usr-nav-item">
         <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
           <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
         </svg>
-        @if (!sidebarCollapsed || isMobile()) { <span>Mi Área</span> }
+        @if (!sidebarCollapsed) { <span>Mi Área</span> }
       </a>
-      <!-- Mis Reservas -->
       <a routerLink="/yoga-sadhana/dashboard/reservas" routerLinkActive="usr-nav-active"
-         [routerLinkActiveOptions]="{exact: false}" class="usr-nav-item" (click)="closeSidebarOnMobile()">
+         [routerLinkActiveOptions]="{exact: false}" class="usr-nav-item">
         <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none">
           <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/>
           <path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/>
           <path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M8 15l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        @if (!sidebarCollapsed || isMobile()) { <span>Mis Reservas</span> }
+        @if (!sidebarCollapsed) { <span>Mis Reservas</span> }
       </a>
-      <!-- Mi Perfil -->
       <a routerLink="/yoga-sadhana/dashboard/perfil" routerLinkActive="usr-nav-active"
-         [routerLinkActiveOptions]="{exact: false}" class="usr-nav-item" (click)="closeSidebarOnMobile()">
+         [routerLinkActiveOptions]="{exact: false}" class="usr-nav-item">
         <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/>
           <path d="M4 20c0-3.866 3.582-7 8-7s8 3.134 8 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
-        @if (!sidebarCollapsed || isMobile()) { <span>Mi Perfil</span> }
+        @if (!sidebarCollapsed) { <span>Mi Perfil</span> }
       </a>
-
       <div class="usr-nav-divider"></div>
-
-      <!-- Ver la web -->
       <a routerLink="/yoga-sadhana" class="usr-nav-item usr-nav-web">
         <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <polyline points="15 3 21 3 21 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           <line x1="10" y1="14" x2="21" y2="3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
-        @if (!sidebarCollapsed || isMobile()) { <span>Ver la web</span> }
+        @if (!sidebarCollapsed) { <span>Ver la web</span> }
       </a>
     </nav>
 
     <div class="usr-sidebar-footer">
-      <button class="usr-logout-btn" (click)="logout()" [title]="sidebarCollapsed ? 'Cerrar sesión' : ''">
+      <button class="usr-logout-btn" (click)="logout()">
         <svg class="usr-nav-icon" viewBox="0 0 24 24" fill="none">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
-        @if (!sidebarCollapsed || isMobile()) { <span>Cerrar Sesión</span> }
+        @if (!sidebarCollapsed) { <span>Cerrar Sesión</span> }
       </button>
     </div>
   </aside>
 
-  <!-- Mobile Overlay -->
-  @if (!sidebarCollapsed && isMobile()) {
-    <div class="usr-mobile-overlay" (click)="closeSidebarOnMobile()"></div>
-  }
-
   <div class="usr-main">
     <header class="usr-topbar">
       <button class="usr-collapse-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-        @if (sidebarCollapsed) {
-          <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
-            <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        } @else {
-          <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
-            <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        }
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+          <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
       </button>
-      <!-- We keep the "Ver web" link here as requested by UX sync, though it's also in the nav list. We'll leave it in the topbar matching the admin. -->
+
+      <!-- Brand mobile -->
+      <a routerLink="/yoga-sadhana" class="usr-topbar-brand">
+        <svg viewBox="0 0 64 64" fill="none" width="26" height="26">
+          <path d="M32 40 C22 38 12 30 16 20 C22 28 28 34 32 40Z" stroke="#924a28" stroke-width="1.8" fill="rgba(146,74,40,0.1)"/>
+          <path d="M32 40 C42 38 52 30 48 20 C42 28 36 34 32 40Z" stroke="#924a28" stroke-width="1.8" fill="rgba(146,74,40,0.1)"/>
+          <path d="M32 40 C32 30 28 18 32 10 C36 18 32 30 32 40Z" stroke="#924a28" stroke-width="2" fill="rgba(146,74,40,0.18)"/>
+        </svg>
+        <span>Mi Área</span>
+      </a>
+
       <a routerLink="/yoga-sadhana" class="usr-topbar-link">
-        <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+        <svg viewBox="0 0 24 24" fill="none" width="15" height="15">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <polyline points="15 3 21 3 21 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           <line x1="10" y1="14" x2="21" y2="3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -116,3 +107,39 @@
     </div>
   </div>
 </div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="usr-bottom-nav">
+  <a routerLink="/yoga-sadhana/dashboard" routerLinkActive="usr-bottom-active"
+     [routerLinkActiveOptions]="{exact: true}" class="usr-bottom-item">
+    <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+    </svg>
+    <span>Inicio</span>
+  </a>
+  <a routerLink="/yoga-sadhana/dashboard/reservas" routerLinkActive="usr-bottom-active" class="usr-bottom-item">
+    <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+      <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/>
+      <path d="M3 10h18" stroke="currentColor" stroke-width="1.7"/>
+      <path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M8 15l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Reservas</span>
+  </a>
+  <a routerLink="/yoga-sadhana/dashboard/perfil" routerLinkActive="usr-bottom-active" class="usr-bottom-item">
+    <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/>
+      <path d="M4 20c0-3.866 3.582-7 8-7s8 3.134 8 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </svg>
+    <span>Perfil</span>
+  </a>
+  <button class="usr-bottom-item usr-bottom-logout" (click)="logout()">
+    <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      <polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </svg>
+    <span>Salir</span>
+  </button>
+</nav>

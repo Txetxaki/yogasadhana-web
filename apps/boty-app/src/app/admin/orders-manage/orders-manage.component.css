@@ -8,6 +8,34 @@
 .adm-title { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: var(--on-surface); margin-bottom: 0.5rem; }
 .adm-subtitle { color: var(--text-muted); font-size: 1rem; }
 
+/* Status Filters */
+.status-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.filter-btn {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.1);
+  color: var(--on-surface-variant);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.filter-btn:hover {
+  background: rgba(0,0,0,0.03);
+}
+.filter-btn.active {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+
 .adm-content-grid {
   display: grid;
   grid-template-columns: 1.2fr 1.8fr;

@@ -1,46 +1,87 @@
 <div class="adm-section">
   <div class="adm-header">
-    <h2 class="adm-title">Gestión de Pedidos</h2>
-    <p class="adm-subtitle">Monitoriza, actualiza y gestiona el envío de todos los pedidos de la tienda.</p>
+    <div>
+      <h2 class="adm-title">Gestión de Pedidos</h2>
+      <p class="adm-subtitle">{{ allOrders().length }} pedidos en total</p>
+    </div>
+    <!-- Filtros por estado -->
+    <div class="status-filters">
+      @for (s of ['Todos','Pendiente_Pago','Pagado','Enviado','Entregado','Cancelado']; track s) {
+        <button class="filter-btn" [class.active]="statusFilter() === s" (click)="statusFilter.set(s)">
+          {{ s === 'Todos' ? 'Todos' : getStatusLabel(s) }}
+        </button>
+      }
+    </div>
   </div>
 
   <div class="adm-content-grid" [class.single-col]="!selectedOrder()">
-    <!-- Detalles del Pedido Seleccionado -->
+
+    <!-- ── DETALLE DEL PEDIDO ──────────────────────────────────────────── -->
     @if (selectedOrder(); as order) {
       <div class="adm-form-card ord-detail-card">
         <div class="ord-detail-header">
           <div>
-            <h3 class="adm-card-title no-margin">Pedido #{{ order.id | slice:0:8 | uppercase }}</h3>
+            <h3 class="adm-card-title no-margin">{{ order.invoiceNumber }}</h3>
             <span class="ord-date">{{ formatDate(order.createdAt) }}</span>
           </div>
-          <button class="adm-icon-btn" (click)="closeOrder()" title="Cerrar detalles">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
+          <div class="ord-header-actions">
+            <button class="ys-btn ys-btn-outline ys-btn-sm" (click)="openInvoice()" title="Ver factura">
+              📄 Ver factura
+            </button>
+            <button class="ys-btn ys-btn-outline ys-btn-sm" (click)="resendEmail()" title="Reenviar email">
+              📧 Reenviar
+            </button>
+            <button class="adm-icon-btn" (click)="closeOrder()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
         </div>
 
+        <!-- Acción rápida: Marcar como Pagado -->
+        @if (order.status === 'Pendiente_Pago') {
+          <div class="quick-action-bar">
+            <div class="quick-ref">
+              <span class="quick-ref-label">Referencia esperada:</span>
+              <code>{{ order.bankTransferInfo.reference }}</code>
+            </div>
+            <button class="ys-btn ys-btn-primary ys-btn-sm" (click)="markAsPaid()">
+              ✓ Confirmar Pago
+            </button>
+          </div>
+        }
+
+        <!-- Editor de estado -->
         <div class="ord-status-editor">
           <div class="adm-field">
             <span class="adm-label">Estado del Pedido</span>
-            <select [(ngModel)]="editStatus" class="adm-input">
-              <option value="Pendiente">Pendiente</option>
-              <option value="Pagado">Pagado</option>
-              <option value="Enviado">Enviado</option>
-              <option value="Entregado">Entregado</option>
-              <option value="Cancelado">Cancelado</option>
+            <select [(ngModel)]="editStatus" [ngModel]="editStatus()" (ngModelChange)="editStatus.set($event)" class="adm-input">
+              @for (s of STATUS_OPTIONS; track s) {
+                <option [value]="s">{{ STATUS_LABELS[s] }}</option>
+              }
             </select>
           </div>
-          
+
           <div class="adm-field">
-            <span class="adm-label">Número de Seguimiento (Tracking)</span>
-            <input type="text" [(ngModel)]="editTracking" placeholder="Ej. 1Z999999999" class="adm-input">
+            <span class="adm-label">Tracking / Seguimiento</span>
+            <input type="text" [(ngModel)]="editTracking" [ngModel]="editTracking()" (ngModelChange)="editTracking.set($event)" placeholder="Ej. 1Z999999999" class="adm-input">
           </div>
 
-          <button class="ys-btn ys-btn-primary full-width mt-2" (click)="updateOrder()" 
-                  [disabled]="editStatus() === order.status && editTracking() === (order.trackingNumber || '')">
-            Guardar Cambios
+          <div class="adm-field">
+            <span class="adm-label">Notas internas (solo admin)</span>
+            <textarea [(ngModel)]="editNotes" [ngModel]="editNotes()" (ngModelChange)="editNotes.set($event)" rows="2" class="adm-input" placeholder="Notas sobre el pedido..."></textarea>
+          </div>
+
+          <label class="email-toggle">
+            <input type="checkbox" [ngModel]="sendEmailOnStatusChange()" (ngModelChange)="sendEmailOnStatusChange.set($event)">
+            <span>Enviar email al cliente al guardar cambios</span>
+          </label>
+
+          <button class="ys-btn ys-btn-primary full-width mt-2" (click)="updateOrder()" [disabled]="isSaving()">
+            @if (isSaving()) { Guardando... } @else { Guardar cambios }
           </button>
         </div>
 
+        <!-- Datos cliente -->
         <div class="ord-customer-info">
           <h4 class="ord-subheading">Datos del Cliente</h4>
           <p><strong>Nombre:</strong> {{ order.customerInfo.firstName }} {{ order.customerInfo.lastName }}</p>
@@ -49,28 +90,19 @@
           <p><strong>Dirección:</strong> {{ order.customerInfo.address }}, {{ order.customerInfo.postalCode }}, {{ order.customerInfo.city }} ({{ order.customerInfo.country }})</p>
         </div>
 
+        <!-- Artículos -->
         <div class="ord-items-list">
           <h4 class="ord-subheading">Artículos</h4>
           @for (item of order.items; track item.productId) {
             <div class="ord-item">
               <div class="ord-item-img">
-                @if (item.thumbnail) {
-                  <img [src]="item.thumbnail" [alt]="item.productName">
-                } @else {
-                  <div class="img-placeholder"></div>
-                }
+                @if (item.thumbnail) { <img [src]="item.thumbnail" [alt]="item.productName"> }
+                @else { <div class="img-placeholder"></div> }
               </div>
               <div class="ord-item-details">
                 <span class="ord-item-name">{{ item.productName }}</span>
-                @if (item.selectedAttributes) {
-                  <div class="ord-item-attrs">
-                    @for (attr of item.selectedAttributes | keyvalue; track attr.key) {
-                      <span class="attr-tag">{{ attr.key }}: {{ attr.value }}</span>
-                    }
-                  </div>
-                }
                 <div class="ord-item-price-qty">
-                  <span>{{ item.quantity }} x {{ item.price | currency:'EUR' }}</span>
+                  <span>{{ item.quantity }} × {{ item.price | currency:'EUR' }}</span>
                   <strong>{{ (item.quantity * item.price) | currency:'EUR' }}</strong>
                 </div>
               </div>
@@ -78,29 +110,69 @@
           }
         </div>
 
+        <!-- Resumen económico -->
         <div class="ord-summary">
-          <div class="summary-line"><span>Subtotal:</span> <span>{{ order.subtotal | currency:'EUR' }}</span></div>
-          <div class="summary-line"><span>Envío:</span> <span>{{ order.shippingCost === 0 ? 'Gratis' : (order.shippingCost | currency:'EUR') }}</span></div>
-          <div class="summary-line total"><span>Total Pagado:</span> <span>{{ order.total | currency:'EUR' }}</span></div>
-          <div class="summary-line mt-1"><span>Método:</span> <span class="method-badge">{{ order.paymentMethod }}</span></div>
+          <div class="summary-line"><span>Subtotal:</span><span>{{ order.subtotal | currency:'EUR' }}</span></div>
+          <div class="summary-line"><span>IVA (21%):</span><span>{{ order.tax | currency:'EUR' }}</span></div>
+          <div class="summary-line"><span>Envío:</span><span>{{ order.shippingCost === 0 ? 'Gratis' : (order.shippingCost | currency:'EUR') }}</span></div>
+          <div class="summary-line total"><span>Total:</span><span>{{ order.total | currency:'EUR' }}</span></div>
+          <div class="summary-line mt-1"><span>Método:</span><span class="method-badge">Transferencia Bancaria</span></div>
+          @if (order.bankTransferInfo) {
+            <div class="summary-line"><span>Referencia:</span><code style="font-size:0.8rem;">{{ order.bankTransferInfo.reference }}</code></div>
+          }
         </div>
       </div>
     }
 
-    <!-- Lista -->
+    <!-- ── TABLA DE PEDIDOS ────────────────────────────────────────────── -->
     <div class="adm-list-card">
-      <h3 class="adm-card-title">Todos los Pedidos ({{ orders().length }})</h3>
-      
-      @if (orders().length === 0) {
+      <h3 class="adm-card-title">Pedidos ({{ orders().length }})</h3>
+
+      @if (loading()) {
+        <div class="adm-table-container">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Factura</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th class="text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (i of [1,2,3,4]; track i) {
+                <tr>
+                  <td class="adm-td-main">
+                    <div class="skeleton-text" style="width: 100px; margin-bottom: 4px;"></div>
+                    <div class="skeleton-text" style="width: 140px; height: 12px;"></div>
+                  </td>
+                  <td><div class="skeleton-text" style="width: 80px;"></div></td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:0.2rem;">
+                      <div class="skeleton-text" style="width: 120px;"></div>
+                      <div class="skeleton-text" style="width: 80px; height: 12px;"></div>
+                    </div>
+                  </td>
+                  <td><div class="skeleton-text" style="width: 60px;"></div></td>
+                  <td><div class="skeleton-text" style="width: 80px; border-radius: 99px;"></div></td>
+                  <td class="adm-td-actions"><div class="skeleton-text" style="width: 60px; float: right;"></div></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else if (orders().length === 0) {
         <div class="adm-empty-state">
-          <p>La tienda no ha recibido pedidos aún.</p>
+          <p>No hay pedidos para este estado.</p>
         </div>
       } @else {
         <div class="adm-table-container">
           <table class="adm-table">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Factura</th>
                 <th>Fecha</th>
                 <th>Cliente</th>
                 <th>Total</th>
@@ -112,26 +184,25 @@
               @for (order of orders(); track order.id) {
                 <tr [class.selected-row]="selectedOrder()?.id === order.id">
                   <td class="adm-td-main">
-                    <strong>#{{ order.id | slice:0:8 | uppercase }}</strong>
+                    <strong>{{ order.invoiceNumber }}</strong>
+                    <div class="adm-text-sm" style="font-family:monospace;">{{ order.bankTransferInfo?.reference }}</div>
                   </td>
                   <td>{{ formatDate(order.createdAt) }}</td>
                   <td>
-                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                    <div style="display:flex;flex-direction:column;gap:0.2rem;">
                       <span>{{ order.customerInfo.firstName }} {{ order.customerInfo.lastName }}</span>
                       <span class="adm-text-sm">{{ order.customerInfo.city }}</span>
                     </div>
                   </td>
                   <td><strong>{{ order.total | currency:'EUR' }}</strong></td>
                   <td>
-                    <span class="ord-status-badge" [ngClass]="getStatusColor(order.status)">
-                      {{ order.status }}
+                    <span class="ord-status-badge" [ngClass]="getStatusClass(order.status)">
+                      {{ getStatusLabel(order.status) }}
                     </span>
                   </td>
                   <td class="adm-td-actions">
-                    <button class="ys-btn ys-btn-outline ys-btn-sm" (click)="selectOrder(order)">
-                      Ver Detalles
-                    </button>
-                    <button class="adm-icon-btn delete ml-2" (click)="deleteOrder(order.id)" title="Eliminar Permanente">
+                    <button class="ys-btn ys-btn-outline ys-btn-sm" (click)="selectOrder(order)">Ver</button>
+                    <button class="adm-icon-btn delete ml-2" (click)="deleteOrder(order.id)" title="Eliminar">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     </button>
                   </td>

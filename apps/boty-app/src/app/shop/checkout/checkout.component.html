@@ -1,0 +1,327 @@
+<div class="checkout-page">
+
+  <!-- ═══ STEP: AUTH ═══════════════════════════════════════════════════════ -->
+  @if (step() === 'auth') {
+    <div class="checkout-layout">
+      <div class="checkout-main">
+        <h1 class="checkout-title">¿Cómo prefieres comprar?</h1>
+        
+        <div class="auth-split">
+          <div class="auth-option user-option">
+            <div class="auth-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <h3>Ya soy cliente</h3>
+            <p>Inicia sesión ahora para completar el pago más rápido usando tus datos guardados y acceder a tu historial.</p>
+            <button class="btn-primary" (click)="loginAndReturn()">Iniciar Sesión</button>
+          </div>
+          
+          <div class="auth-option guest-option">
+            <div class="auth-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+            <h3>Comprar como invitado</h3>
+            <p>No necesitas cuenta para comprar. Podrás proporcionar tu email y datos de entrega al confirmar el pedido.</p>
+            <button class="btn-outline" (click)="continueAsGuest()">Continuar como invitado</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar resumen -->
+      <aside class="order-summary">
+        <h2 class="section-title">Tu pedido</h2>
+        @for (item of cartItems(); track item.product.id) {
+          <div class="summary-item">
+            <div class="item-img">
+              <img [src]="item.product.thumbnail" [alt]="item.product.name">
+              <span class="qty-badge">{{ item.quantity }}</span>
+            </div>
+            <div class="item-info">
+              <span class="item-name">{{ item.product.name }}</span>
+            </div>
+            <span class="item-price">{{ (item.product.price * item.quantity) | currency:'EUR' }}</span>
+          </div>
+        }
+        <div class="summary-divider"></div>
+        <div class="summary-line"><span>Subtotal</span><span>{{ subtotal() | currency:'EUR' }}</span></div>
+        <div class="summary-line"><span>Envío</span><span>{{ shippingCost() === 0 ? 'Gratis' : (shippingCost() | currency:'EUR') }}</span></div>
+        @if (shippingCost() > 0) {
+          <p class="free-shipping-hint">¡Añade {{ (60 - subtotal()) | currency:'EUR' }} más para envío gratuito!</p>
+        }
+        <div class="summary-divider"></div>
+        <div class="summary-total"><span>Total</span><span>{{ total() | currency:'EUR' }}</span></div>
+      </aside>
+    </div>
+  }
+
+  <!-- ═══ STEP: FORM ═══════════════════════════════════════════════════════ -->
+  @if (step() === 'form') {
+    <div class="checkout-layout">
+      <div class="checkout-main">
+        <h1 class="checkout-title">Finalizar Pedido</h1>
+
+        <form [formGroup]="customerForm" class="customer-form">
+          <h2 class="section-title">Datos de envío</h2>
+
+          @if (savedAddresses().length > 0) {
+            <div class="saved-addresses-selector">
+              <p style="margin-bottom:0.5rem;font-weight:600;color:#2b3a42;">Mis direcciones guardadas:</p>
+              <div class="saved-addresses-list" style="display:flex;gap:1.5rem;margin-bottom:1.5rem;overflow-x:auto;padding-bottom:1rem;scrollbar-width:thin;">
+                @for (addr of savedAddresses(); track addr.id) {
+                  <div class="saved-address-card" (click)="selectAddress(addr)" 
+                       style="min-width:240px;border:1px solid #e0dfd9;border-radius:12px;padding:1.25rem;cursor:pointer;background:#faf9f6;transition:all 0.2s;"
+                       onmouseover="this.style.borderColor='#c9aa82'; this.style.background='#fff'" 
+                       onmouseout="this.style.borderColor='#e0dfd9'; this.style.background='#faf9f6'">
+                    <div style="font-weight:600;margin-bottom:0.5rem;color:#3b3a38;">
+                       @if (addr.name) {
+                         <span class="badge" style="background:#e0d6cc;color:#54433c;font-size:0.75rem;padding:0.2rem 0.5rem;margin-right:0.5rem;text-transform:uppercase;">{{ addr.name }}</span>
+                       }
+                       {{ addr.firstName }} {{ addr.lastName }}
+                       @if (addr.isDefault) { <span class="badge" style="background:#f4f4f4;font-size:0.7rem;padding:0.15rem 0.4rem;margin-left:0.5rem;">Default</span> }
+                    </div>
+                    <div style="font-size:0.9rem;color:#6d6b67;line-height:1.4;">{{ addr.street }}</div>
+                    <div style="font-size:0.9rem;color:#6d6b67;line-height:1.4;">{{ addr.postalCode }} {{ addr.city }}, {{ addr.country }}</div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="form-grid-2">
+            <label class="field">
+              <span class="label">Nombre *</span>
+              <input type="text" formControlName="firstName" class="input" [class.error]="getControlError('firstName')" placeholder="Ana">
+            </label>
+            <label class="field">
+              <span class="label">Apellidos *</span>
+              <input type="text" formControlName="lastName" class="input" [class.error]="getControlError('lastName')" placeholder="García">
+            </label>
+          </div>
+
+          <div class="form-grid-2">
+            <label class="field">
+              <span class="label">Email *</span>
+              <input type="email" formControlName="email" class="input" [class.error]="getControlError('email')" placeholder="ana@ejemplo.com">
+            </label>
+            <label class="field">
+              <span class="label">Teléfono *</span>
+              <input type="tel" formControlName="phone" class="input" [class.error]="getControlError('phone')" placeholder="+34 612 345 678">
+            </label>
+          </div>
+
+          <label class="field">
+            <span class="label">DNI / NIE / CIF (Opcional)</span>
+            <input type="text" formControlName="dni" class="input" placeholder="12345678X">
+            <span style="font-size:0.8rem; color:#888; margin-top:0.25rem; display:block;">⚠️ <strong>¿Necesitas factura?</strong> Asegúrate de rellenar este campo para que podamos emitirla correctamente.</span>
+          </label>
+
+          <label class="field">
+            <span class="label">Dirección de entrega *</span>
+            <input type="text" formControlName="address" class="input" [class.error]="getControlError('address')" placeholder="Calle, número, piso">
+          </label>
+
+          <div class="form-grid-3">
+            <label class="field">
+              <span class="label">Código Postal *</span>
+              <input type="text" formControlName="postalCode" class="input" [class.error]="getControlError('postalCode')" placeholder="28001">
+            </label>
+            <label class="field" style="grid-column: span 2;">
+              <span class="label">Ciudad *</span>
+              <input type="text" formControlName="city" class="input" [class.error]="getControlError('city')" placeholder="Madrid">
+            </label>
+          </div>
+
+          <label class="field">
+            <span class="label">País *</span>
+            <select formControlName="country" class="input">
+              <option>España</option>
+              <option>Portugal</option>
+              <option>México</option>
+              <option>Argentina</option>
+              <option>Colombia</option>
+            </select>
+          </label>
+
+          @if (authService.isLoggedIn() && !selectedSavedAddressId()) {
+            <div class="save-address-section" style="margin-top: 1.5rem; padding: 1rem; background: #faf9f6; border: 1px solid #e0dfd9; border-radius: 8px;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; cursor: pointer; color: #3b3a38;">
+                <input type="checkbox" formControlName="saveAddressControl" style="accent-color: #c9aa82; width: 1.2rem; height: 1.2rem;">
+                Guardar esta dirección en mi libreta de direcciones
+              </label>
+              
+              @if (customerForm.get('saveAddressControl')?.value) {
+                <div style="margin-top: 1rem;">
+                  <label class="field" style="margin-bottom: 0;">
+                    <span class="label">Nombre para esta dirección (ej. Casa, Trabajo)</span>
+                    <input type="text" formControlName="addressName" class="input" placeholder="Dirección 1">
+                  </label>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Método de pago (solo transferencia) -->
+          <div class="payment-section">
+            <h2 class="section-title">Método de pago</h2>
+            <div class="payment-option selected">
+              <div class="payment-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-landmark"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div>
+              <div>
+                <strong>Transferencia bancaria</strong>
+                <p>Recibirás los datos bancarios y una referencia única tras confirmar tu pedido. El pedido se procesará al recibir el pago.</p>
+              </div>
+              <span class="check"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg></span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary" (click)="goToReview()">
+            Revisar pedido →
+          </button>
+        </form>
+      </div>
+
+      <!-- Sidebar resumen -->
+      <aside class="order-summary">
+        <h2 class="section-title">Tu pedido</h2>
+        @for (item of cartItems(); track item.product.id) {
+          <div class="summary-item">
+            <div class="item-img">
+              <img [src]="item.product.thumbnail" [alt]="item.product.name">
+              <span class="qty-badge">{{ item.quantity }}</span>
+            </div>
+            <div class="item-info">
+              <span class="item-name">{{ item.product.name }}</span>
+            </div>
+            <span class="item-price">{{ (item.product.price * item.quantity) | currency:'EUR' }}</span>
+          </div>
+        }
+        <div class="summary-divider"></div>
+        <div class="summary-line"><span>Subtotal</span><span>{{ subtotal() | currency:'EUR' }}</span></div>
+        <div class="summary-line"><span>Envío</span><span>{{ shippingCost() === 0 ? 'Gratis' : (shippingCost() | currency:'EUR') }}</span></div>
+        @if (shippingCost() > 0) {
+          <p class="free-shipping-hint">¡Añade {{ (60 - subtotal()) | currency:'EUR' }} más para envío gratuito!</p>
+        }
+        <div class="summary-divider"></div>
+        <div class="summary-total"><span>Total</span><span>{{ total() | currency:'EUR' }}</span></div>
+      </aside>
+    </div>
+  }
+
+  <!-- ═══ STEP: REVIEW ══════════════════════════════════════════════════════ -->
+  @if (step() === 'review') {
+    <div class="review-layout">
+      <h1 class="checkout-title">Revisar y confirmar</h1>
+
+      <div class="review-grid">
+        <!-- Datos cliente -->
+        <div class="review-card">
+          <h3 class="review-card-title">Datos de envío</h3>
+          <div class="review-data">
+            <p><strong>{{ customerForm.value.firstName }} {{ customerForm.value.lastName }}</strong></p>
+            <p>{{ customerForm.value.address }}</p>
+            <p>{{ customerForm.value.postalCode }} {{ customerForm.value.city }}, {{ customerForm.value.country }}</p>
+            <p>{{ customerForm.value.email }}</p>
+            <p>{{ customerForm.value.phone }}</p>
+          </div>
+          <button class="btn-link" (click)="step.set('form')">← Editar datos</button>
+        </div>
+
+        <!-- Artículos -->
+        <div class="review-card">
+          <h3 class="review-card-title">Artículos ({{ cartItems().length }})</h3>
+          @for (item of cartItems(); track item.product.id) {
+            <div class="review-item">
+              <img [src]="item.product.thumbnail" [alt]="item.product.name" class="review-item-img">
+              <div class="review-item-info">
+                <span>{{ item.product.name }}</span>
+                <span class="review-item-qty">× {{ item.quantity }}</span>
+              </div>
+              <span>{{ (item.product.price * item.quantity) | currency:'EUR' }}</span>
+            </div>
+          }
+          <div style="margin-top:1rem;border-top:1px solid #f0ece6;padding-top:1rem;">
+            <div class="summary-line"><span>Subtotal:</span><span>{{ subtotal() | currency:'EUR' }}</span></div>
+            <div class="summary-line"><span>Envío:</span><span>{{ shippingCost() === 0 ? 'Gratis' : (shippingCost() | currency:'EUR') }}</span></div>
+            <div class="summary-total"><span>Total:</span><span>{{ total() | currency:'EUR' }}</span></div>
+          </div>
+        </div>
+
+        <!-- Pago -->
+        <div class="review-card payment-info-card">
+          <h3 class="review-card-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 0.25rem;"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+            Pago por transferencia bancaria
+          </h3>
+          <p class="payment-desc">Tras confirmar el pedido, recibirás en tu email los datos bancarios y una referencia única. El pedido se procesará en 1-2 días hábiles tras confirmar la recepción del pago.</p>
+          <div class="payment-steps">
+            <div class="step-item"><span class="step-num">1</span><span>Realiza la transferencia con la referencia recibida</span></div>
+            <div class="step-item"><span class="step-num">2</span><span>Confirmamos el pago y preparamos tu pedido</span></div>
+            <div class="step-item"><span class="step-num">3</span><span>Recibes la factura y el seguimiento del envío</span></div>
+          </div>
+          <button class="btn-primary" (click)="placeOrder()" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="spinner"></span> Procesando...
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg> Confirmar Pedido — {{ total() | currency:'EUR' }}
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ═══ STEP: CONFIRMED ═══════════════════════════════════════════════════ -->
+  @if (step() === 'confirmed' && confirmedOrder(); as order) {
+    <div class="confirmed-page">
+      <div class="success-hero" style="background: url('images/yoga/hero-bg.png') center/cover no-repeat; padding: 4rem 2rem; border-radius: 1rem; margin-bottom: 2.5rem; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
+        <div style="position: absolute; inset: 0; background: rgba(84, 67, 60, 0.85);"></div>
+        <div style="position: relative; z-index: 1; text-align: center;">
+          <div style="background: rgba(255,255,255,0.15); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; backdrop-filter: blur(4px);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; color: white;">¡Pedido Confirmado!</h1>
+          <p style="font-size: 1.1rem; opacity: 0.9;">Hemos enviado los detalles a <strong style="color: white; font-weight: 600;">{{ order.customerInfo.email }}</strong></p>
+        </div>
+      </div>
+
+      <div class="confirmed-card">
+        <div class="confirmed-row">
+          <span>Nº Pedido</span>
+          <strong>{{ order.invoiceNumber }}</strong>
+        </div>
+        <div class="confirmed-row">
+          <span>Total</span>
+          <strong style="color:#924a28;">{{ order.total | currency:'EUR' }}</strong>
+        </div>
+        <div class="confirmed-row">
+          <span>Estado</span>
+          <span class="status-badge" style="display:inline-flex;align-items:center;gap:0.3rem;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pendiente de pago</span>
+        </div>
+      </div>
+
+      <!-- Datos bancarios -->
+      <div class="bank-details-card">
+        <h2 style="display:flex;align-items:center;gap:0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg> Datos para la transferencia</h2>
+        <div class="bank-row">
+          <span>Beneficiario:</span>
+          <strong>{{ order.bankTransferInfo.beneficiary }}</strong>
+        </div>
+        <div class="bank-row">
+          <span>IBAN:</span>
+          <code>{{ order.bankTransferInfo.iban }}</code>
+        </div>
+        <div class="bank-row highlight">
+          <span>Referencia (obligatoria):</span>
+          <code>{{ order.bankTransferInfo.reference }}</code>
+        </div>
+        <div class="bank-row">
+          <span>Importe exacto:</span>
+          <strong>{{ order.total | currency:'EUR' }}</strong>
+        </div>
+        <div class="bank-hint">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:text-bottom;margin-right:0.2rem;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Realiza la transferencia antes del <strong>{{ order.bankTransferInfo.deadline | date:'dd/MM/yyyy' }}</strong>. Incluye siempre la referencia para que podamos identificar tu pago.
+        </div>
+      </div>
+
+      <div class="confirmed-actions">
+        <a routerLink="/yoga-sadhana/tienda" class="btn-outline">Seguir comprando</a>
+        <a routerLink="/yoga-sadhana/dashboard" [queryParams]="{tab: 'orders'}" class="btn-primary">Ver mis pedidos</a>
+      </div>
+    </div>
+  }
+</div>

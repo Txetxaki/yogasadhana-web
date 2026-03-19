@@ -44,6 +44,9 @@
     <!-- MODO LISTA -->
     @if (viewMode === 'list') {
       <div class="adm-users-summary">
+        @if (debugError) {
+          <span style="color: red; padding-right: 1rem; font-weight: bold;">{{ debugError }}</span>
+        }
         <span>{{ filtered.length }} alumnos encontrados</span>
       </div>
       <div class="adm-table-wrap">

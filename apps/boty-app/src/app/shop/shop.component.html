@@ -3,69 +3,85 @@
   <header class="shop-hero">
     <span class="shop-hero-subtitle">Editorial Curated</span>
     <h1 class="shop-hero-title">
-        Objetos para la <i>consciencia</i> y el bienestar.
+      Objetos para la <i>consciencia</i> y el bienestar.
     </h1>
   </header>
+
+  <!-- ═══ MOBILE: Category chips (scroll horizontal) ═══ -->
+  <div class="shop-chips-bar">
+    @for (cat of categories; track cat) {
+      <button
+        (click)="filterByCategory(cat)"
+        [class.chip-active]="activeCategory() === cat"
+        class="shop-chip">
+        {{ cat }}
+        @if (categoryCounts()[cat]) {
+          <span class="chip-count">{{ categoryCounts()[cat] }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- ═══ Layout (desktop: sidebar + grid) ═══ -->
   <div class="shop-layout">
-    <!-- Soft Sidebar Filters -->
-    <aside class="shop-sidebar">
-      <div class="sidebar-section">
-        <h3 class="sidebar-title">Categoría</h3>
-        <ul class="category-list">
-          @for (cat of categories; track cat) {
-          <li>
-            <button 
-              (click)="filterByCategory(cat)"
-              [class.active]="activeCategory() === cat"
-              class="category-btn">
-              <span>{{cat}}</span>
-            </button>
-          </li>
+    <!-- Sidebar removed, using chips bar for filter on all devices -->
+
+    <!-- Product Grid -->
+    <section class="shop-main">
+      @if (loading()) {
+        <div class="product-grid">
+          @for (i of [1,2,3,4,5,6]; track i) {
+            <div class="product-card skeleton-card">
+              <div class="skeleton-img"></div>
+              <div class="skeleton-text skeleton-title"></div>
+              <div class="skeleton-text skeleton-desc"></div>
+              <div class="skeleton-text skeleton-price"></div>
+            </div>
           }
-        </ul>
-      </div>
+        </div>
+      } @else {
+        <div class="product-grid">
+          @for (product of products(); track product.id; let i = $index) {
+            @defer (on viewport) {
+              <div [routerLink]="['/yoga-sadhana/tienda', product.id]"
+                   class="product-card" [style.animation-delay.ms]="i * 80">
+                <div class="product-image-wrap">
+                  <img [alt]="product.name" class="product-image" [src]="product.thumbnail" loading="lazy"/>
+                  @if (product.isBestSeller || product.isEcoFriendly) {
+                    <div class="product-badges">
+                      @if (product.isEcoFriendly) {
+                        <span class="badge badge-eco">Sostenible</span>
+                      }
+                      @if (product.isBestSeller) {
+                        <span class="badge badge-best">Best Seller</span>
+                      }
+                    </div>
+                  }
+                </div>
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-desc">{{ product.description }}</p>
+                <span class="product-price">{{ product.price | currency:'EUR' }}</span>
+              </div>
+            } @placeholder {
+              <div class="product-card skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text skeleton-title"></div>
+                <div class="skeleton-text skeleton-desc"></div>
+                <div class="skeleton-text skeleton-price"></div>
+              </div>
+            }
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Newsletter (Moved to bottom) -->
+    <div class="newsletter-bottom">
       <div class="newsletter-box">
         <h3 class="newsletter-title">Suscripción Wellness</h3>
         <p class="newsletter-desc">Recibe guías de meditación y ofertas exclusivas cada mes.</p>
         <button class="btn-subscribe">Unirme</button>
       </div>
-    </aside>
-
-    <!-- Product Grid -->
-    <section class="shop-main">
-      @if (loading()) {
-      <div class="loading-container">
-        <div class="spinner"></div>
-      </div>
-      } @else {
-      <div class="product-grid">
-        <!-- Product Item -->
-        @for (product of products(); track product.id; let i = $index) {
-        <div [routerLink]="['/yoga-sadhana/tienda', product.id]"
-             class="product-card" [style.animation-delay.ms]="i * 100">
-             
-          <div class="product-image-wrap">
-            <img [alt]="product.name" 
-                 class="product-image" 
-                 [src]="product.thumbnail"/>
-            @if (product.isBestSeller || product.isEcoFriendly) {
-            <div class="product-badges">
-              @if (product.isEcoFriendly) {
-              <span class="badge badge-eco">Sostenible</span>
-              }
-              @if (product.isBestSeller) {
-              <span class="badge badge-best">Best Seller</span>
-              }
-            </div>
-            }
-          </div>
-          <h3 class="product-title">{{product.name}}</h3>
-          <p class="product-desc">{{product.description}}</p>
-          <span class="product-price">{{product.price | currency:'EUR'}}</span>
-        </div>
-        }
-      </div>
-      }
-    </section>
+    </div>
   </div>
 </main>

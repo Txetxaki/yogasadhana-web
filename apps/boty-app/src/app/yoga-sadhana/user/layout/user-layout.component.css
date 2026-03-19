@@ -4,14 +4,12 @@
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  transition: grid-template-columns 0.3s ease;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  transition: grid-template-columns 0.28s ease;
 }
-.usr-shell.usr-collapsed {
-  grid-template-columns: 72px 1fr;
-}
+.usr-shell.usr-collapsed { grid-template-columns: 72px 1fr; }
 
-/* ── Sidebar ── */
+/* ════ SIDEBAR (desktop only) ════ */
 .usr-sidebar {
   background: #fdf9f4;
   border-right: 1px solid #ebe8e3;
@@ -23,19 +21,16 @@
   overflow: hidden;
   z-index: 20;
 }
-
 .usr-sidebar-header {
   padding: 1.5rem 1.25rem 1rem;
   border-bottom: 1px solid #ebe8e3;
 }
-
 .usr-brand {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
   color: #924a28;
-  font-family: 'Noto Serif', serif;
   font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
@@ -53,7 +48,7 @@
 }
 .usr-profile-mini.usr-collapsed-user { justify-content: center; padding: 1rem 0.25rem; }
 .usr-avatar {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: 50%;
   background: linear-gradient(135deg, #924a28, #d27d56);
   color: #fff;
@@ -64,9 +59,8 @@
 }
 .usr-user-details { display: flex; flex-direction: column; overflow: hidden; }
 .usr-p-name { display: block; font-size: 0.85rem; font-weight: 600; color: #1c1c19; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.usr-p-role { display: block; font-size: 0.72rem; color: #924a28; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.usr-p-email { display: block; font-size: 0.7rem; color: #87736b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Nav */
 .usr-nav {
   flex: 1;
   display: flex;
@@ -74,13 +68,12 @@
   padding: 1rem 0.75rem;
   gap: 0.2rem;
 }
-
 .usr-nav-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.7rem 0.875rem;
-  border-radius: 0.875rem;
+  border-radius: 0.75rem;
   color: #54433c;
   text-decoration: none;
   font-size: 0.875rem;
@@ -90,21 +83,11 @@
   overflow: hidden;
 }
 .usr-nav-item:hover { background: #f1ede8; color: #1c1c19; }
-.usr-nav-item.usr-nav-active {
-  background: rgba(146,74,40,0.1);
-  color: #924a28;
-  font-weight: 600;
-}
-.usr-nav-icon {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-}
+.usr-nav-item.usr-nav-active { background: rgba(146,74,40,0.1); color: #924a28; font-weight: 600; }
+.usr-nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
 .usr-nav-web { color: #87736b; font-size: 0.8rem; }
+.usr-nav-divider { border-top: 1px solid #ebe8e3; margin: 0.4rem 0; }
 
-.usr-nav-divider { border-top: 1px solid #ebe8e3; margin: 0.5rem 0; }
-
-/* Footer */
 .usr-sidebar-footer {
   padding: 0.75rem 0.75rem 1.25rem;
   border-top: 1px solid #ebe8e3;
@@ -113,39 +96,46 @@
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   background: none;
   border: 1px solid #dac2b8;
   border-radius: 0.75rem;
   padding: 0.6rem 1rem;
   color: #54433c;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: inherit;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
-  justify-content: center;
   white-space: nowrap;
 }
 .usr-logout-btn:hover { background: #f1ede8; color: #924a28; }
-.usr-logout-btn .usr-nav-icon { margin-right: 2px; }
 
-/* Main */
+/* ════ MAIN ════ */
 .usr-main { display: flex; flex-direction: column; background: #f7f3ee; min-height: 100vh; }
 
 .usr-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.875rem 2rem;
-  background: rgba(253,249,244,0.9);
+  padding: 0.8rem 1.5rem;
+  background: rgba(253,249,244,0.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid #ebe8e3;
   position: sticky;
   top: 0;
   z-index: 10;
 }
-
+.usr-topbar-brand {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  color: #1a1209;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
 .usr-collapse-btn {
   background: none;
   border: none;
@@ -158,7 +148,6 @@
   transition: background 0.2s;
 }
 .usr-collapse-btn:hover { background: #ebe8e3; }
-
 .usr-topbar-link {
   display: flex;
   align-items: center;
@@ -169,31 +158,72 @@
   font-weight: 500;
 }
 .usr-topbar-link:hover { text-decoration: underline; }
+.usr-content { flex: 1; padding: 1.75rem 2rem; }
 
-.usr-content { flex: 1; padding: 2rem; }
+/* ════════════════════════════════════
+   BOTTOM NAV (mobile only)
+════════════════════════════════════ */
+.usr-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  border-top: 1px solid #e8e1da;
+  box-shadow: 0 -4px 20px rgba(28,18,6,0.08);
+  padding: 0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
+}
+.usr-bottom-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  color: #9b8b82;
+  text-decoration: none;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.5rem;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  flex: 1;
+}
+.usr-bottom-item:hover { color: #924a28; }
+.usr-bottom-item.usr-bottom-active { color: #924a28; }
+.usr-bottom-logout { color: #c0392b; }
 
+/* ════ RESPONSIVE ════ */
 @media (max-width: 768px) {
-  .usr-shell,
-  .usr-shell.usr-collapsed { 
-    display: block; 
-  }
-  .usr-sidebar {
+  .usr-shell { display: block; }
+  .usr-sidebar { display: none; }
+
+  .usr-topbar { padding: 0.7rem 1rem; }
+  .usr-collapse-btn { display: none; }
+  .usr-topbar-brand { display: flex; }
+
+  .usr-content { padding: 1.25rem 1rem 5.5rem; }
+
+  .usr-bottom-nav {
     display: flex;
-    position: fixed;
-    top: 0; bottom: 0; left: 0;
-    width: 240px;
-    z-index: 100;
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    align-items: stretch;
   }
-  .usr-shell:not(.usr-collapsed) .usr-sidebar {
-    transform: translateX(0);
+
+  .usr-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    width: 100%;
   }
-  .usr-mobile-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 90;
-    backdrop-filter: blur(2px);
-  }
+}
+
+@media (min-width: 769px) {
+  .usr-bottom-nav { display: none !important; }
 }

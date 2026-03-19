@@ -16,6 +16,11 @@
   --accent-glow: rgba(146, 74, 40, 0.25);
   --accent-bg: #ffdbcd; /* Primary fixed */
   
+  /* Alias para componentes del admin (ys-btn) */
+  --primary: var(--accent);
+  --on-primary: #ffffff;
+  
+  
   --accent-2: #4e635a; /* Secondary Green */
   --accent-3: #d27d56; /* Tertiary container / Orange */
   
@@ -64,3 +69,25 @@ h1, h2, h3, h4, .font-serif, .font-headline {
 ::-webkit-scrollbar-track { background: var(--bg-base); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Global Skeleton ── */
+.skeleton-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  animation: skel-pulse 1.5s infinite ease-in-out;
+}
+.skeleton-text {
+  height: 1rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  animation: skel-pulse 1.5s infinite ease-in-out;
+}
+.skeleton-img {
+  background: var(--bg-card);
+  animation: skel-pulse 1.5s infinite ease-in-out;
+}
+@keyframes skel-pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 0.4; }
+  100% { opacity: 0.7; }
+}

@@ -1,15 +1,22 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { CommonModule } from '@angular/common';
+import { AddressManager } from './address-manager';
+import { StudentOrders } from './student-orders';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule, AddressManager, StudentOrders],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.css',
 })
-export class UserDashboardComponent {
+export class UserDashboardComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  
+  activeTab = signal<'overview' | 'addresses' | 'orders'>('overview');
+
   upcomingClasses = [
     { name: 'Hatha Yoga', day: 'Lunes', date: '17 Mar', time: '09:00', teacher: 'Raquel García', style: 'hatha', confirmed: true },
     { name: 'Vinyasa Flow', day: 'Lunes', date: '17 Mar', time: '18:30', teacher: 'Raquel García', style: 'vinyasa', confirmed: true },
@@ -28,4 +35,14 @@ export class UserDashboardComponent {
   nextClass = 'Hoy a las 09:00';
 
   constructor(public auth: AuthService) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['tab'] === 'orders') {
+        this.activeTab.set('orders');
+      } else if (params['tab'] === 'addresses') {
+        this.activeTab.set('addresses');
+      }
+    });
+  }
 }

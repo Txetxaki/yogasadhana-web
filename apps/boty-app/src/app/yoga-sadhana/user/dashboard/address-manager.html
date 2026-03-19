@@ -1,0 +1,155 @@
+<div class="user-dashboard-section" style="max-width:900px;margin:0 auto;animation:fadeIn 0.4s ease-out;">
+  <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;border-bottom:1px solid #e8e1da;padding-bottom:1rem;">
+    <h2 class="section-title" style="font-family:'Cormorant Garamond', serif;font-size:2rem;font-weight:700;color:#1c1c19;margin:0;">Mis Direcciones</h2>
+    @if (!isEditing()) {
+      <button style="display:flex;align-items:center;background:#924a28;color:#fff;border:none;border-radius:2rem;padding:0.6rem 1.25rem;font-weight:600;font-size:0.9rem;cursor:pointer;transition:transform 0.1s;" (click)="addNew()" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.4rem;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Nueva Dirección
+      </button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div style="text-align:center;padding:4rem;color:#9b8b82;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+      <p style="margin-top:1rem;font-size:0.95rem;">Cargando direcciones...</p>
+    </div>
+  } @else {
+    
+    @if (!isEditing()) {
+      @if (addresses().length === 0) {
+        <div class="empty-state" style="text-align:center;padding:5rem 2rem;background:#faf9f6;border-radius:1rem;border:1px dashed #c9aa82;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c9aa82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:1.5rem;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#54433c;margin-bottom:0.5rem;">No tienes direcciones guardadas</h3>
+          <p style="color:#9b8b82;font-size:0.95rem;max-width:400px;margin:0 auto;">Tener direcciones guardadas te permite tramitar tus pedidos mucho más rápido.</p>
+        </div>
+      } @else {
+        <div class="address-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:1.5rem;">
+          @for (addr of addresses(); track addr.id) {
+            <div class="address-card" 
+                 [style.borderColor]="addr.isDefault ? '#924a28' : '#e8e1da'"
+                 [style.borderWidth]="addr.isDefault ? '2px' : '1px'"
+                 style="background:#fff;border-radius:1rem;padding:1.5rem;transition:all 0.2s;display:flex;flex-direction:column;position:relative;border-style:solid;"
+                 onmouseover="this.style.boxShadow='0 8px 24px -8px rgba(146,74,40,0.15)'" 
+                 onmouseout="this.style.boxShadow='none'">
+              
+              <div style="position:absolute;top:1rem;right:1rem;display:flex;gap:0.2rem;">
+                 <button (click)="edit(addr)" style="background:transparent;border:none;cursor:pointer;color:#9b8b82;padding:0.4rem;border-radius:0.4rem;transition:background 0.2s;" onmouseover="this.style.background='#f0ece6'" onmouseout="this.style.background='transparent'" title="Editar">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                 </button>
+                 <button (click)="deleteAddress(addr.id)" style="background:transparent;border:none;cursor:pointer;color:#dc2626;padding:0.4rem;border-radius:0.4rem;transition:background 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'" title="Eliminar">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                 </button>
+              </div>
+
+              <div style="font-weight:600;font-size:1.1rem;color:#1c1c19;margin-bottom:0.75rem;padding-right:4rem;line-height:1.4;">
+                @if(addr.name) {
+                  <span style="display:inline-block;background:#fdf6f0;color:#924a28;padding:0.2rem 0.6rem;border-radius:0.4rem;font-size:0.75rem;text-transform:uppercase;margin-bottom:0.5rem;font-weight:700;letter-spacing:0.02em;">{{ addr.name }}</span><br>
+                }
+                {{ addr.firstName }} {{ addr.lastName }}
+              </div>
+              
+              <div style="color:#54433c;font-size:0.9rem;line-height:1.6;margin-bottom:1.5rem;flex:1;">
+                <p style="margin:0;">{{ addr.street }} {{ addr.apartment || '' }}</p>
+                <p style="margin:0;">{{ addr.postalCode }} {{ addr.city }}, {{ addr.country }}</p>
+                <p style="margin:0.75rem 0 0 0;display:flex;align-items:center;gap:0.4rem;color:#1c1c19;font-weight:500;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  {{ addr.phone }}
+                </p>
+              </div>
+
+              <div style="border-top:1px solid #f0ece6;padding-top:1rem;display:flex;justify-content:space-between;align-items:center;">
+                @if (addr.isDefault) {
+                  <span style="font-size:0.8rem;font-weight:700;color:#924a28;display:flex;align-items:center;gap:0.3rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><path d="M12 2v20"/><path d="m17 19-5 3-5-3v-7c0-3.5 3-6.5 5-8 2 1.5 5 4.5 5 8z"/></svg>
+                    Dirección Principal
+                  </span>
+                } @else {
+                  <button style="background:none;border:none;font-size:0.85rem;font-weight:600;color:#9b8b82;text-decoration:underline;text-underline-offset:2px;cursor:pointer;padding:0;" (click)="setAsDefault(addr.id)">Establecer como principal</button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    } @else {
+      <!-- Editor -->
+      <div class="address-form-box" style="background:#fff;border:1px solid #e8e1da;border-radius:1rem;padding:2.5rem;box-shadow:0 10px 30px -10px rgba(0,0,0,0.05);animation:fadeIn 0.3s ease-out;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:#1c1c19;margin-bottom:1.5rem;font-weight:700;border-bottom:1px solid #f0ece6;padding-bottom:1rem;">
+          {{ editingAddress().id ? 'Editar Dirección' : 'Añadir Nueva Dirección' }}
+        </h3>
+        
+        <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+          
+          <div class="form-group" style="grid-column:1/-1;">
+            <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Nombre para esta dirección (ej. Casa, Trabajo)
+            </label>
+            <input type="text" [(ngModel)]="editingAddress().name" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;transition:border-color 0.2s;" placeholder="Casa" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">Nombre *</label>
+            <input type="text" [(ngModel)]="editingAddress().firstName" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">Apellidos *</label>
+            <input type="text" [(ngModel)]="editingAddress().lastName" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group" style="grid-column:1/-1;">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">Calle y Número *</label>
+            <input type="text" [(ngModel)]="editingAddress().street" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">Piso, Puerta, etc (Opcional)</label>
+            <input type="text" [(ngModel)]="editingAddress().apartment" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">Código Postal *</label>
+            <input type="text" [(ngModel)]="editingAddress().postalCode" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">Ciudad *</label>
+            <input type="text" [(ngModel)]="editingAddress().city" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">País *</label>
+            <select [(ngModel)]="editingAddress().country" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;background:#fff;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+              <option value="España">España</option>
+              <option value="Portugal">Portugal</option>
+              <option value="México">México</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Colombia">Colombia</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">Teléfono *</label>
+            <input type="text" [(ngModel)]="editingAddress().phone" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:0.8rem;font-weight:600;color:#54433c;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;">DNI / NIE / CIF (Opcional)</label>
+            <input type="text" [(ngModel)]="editingAddress().dni" placeholder="12345678X" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e0d6cc;border-radius:0.5rem;font-size:0.95rem;" onfocus="this.style.borderColor='#924a28'" onblur="this.style.borderColor='#e0d6cc'">
+          </div>
+          <div class="form-group" style="grid-column:1/-1;margin-top:0.5rem;">
+            <label style="display:flex;align-items:center;gap:0.75rem;font-weight:600;cursor:pointer;color:#3b3a38;background:#faf9f6;padding:1.25rem;border-radius:0.75rem;border:1px solid #e0dfd9;transition:background 0.2s;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#faf9f6'">
+              <input type="checkbox" [(ngModel)]="editingAddress().isDefault" style="accent-color:#924a28;width:1.2rem;height:1.2rem;cursor:pointer;"> 
+              Usar como dirección principal
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-actions" style="display:flex;justify-content:flex-end;gap:1rem;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid #f0ece6;">
+          <button style="background:transparent;border:2px solid #e0d6cc;color:#54433c;border-radius:0.75rem;padding:0.85rem 1.5rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-size:0.95rem;" onmouseover="this.style.background='#f0ece6';this.style.borderColor='#d4cdc4'" onmouseout="this.style.background='transparent';this.style.borderColor='#e0d6cc'" (click)="cancel()">Cancelar</button>
+          <button style="display:flex;align-items:center;gap:0.5rem;background:#924a28;color:#fff;border:none;border-radius:0.75rem;padding:0.85rem 2rem;font-weight:600;cursor:pointer;transition:background 0.2s;font-size:0.95rem;" onmouseover="this.style.background='#7a3d21'" onmouseout="this.style.background='#924a28'" (click)="save()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Guardar Dirección
+          </button>
+        </div>
+      </div>
+    }
+  }
+</div>
+<style>
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+</style>

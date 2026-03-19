@@ -27,12 +27,36 @@ export class ShopManage implements OnInit {
   products = signal<Product[]>([]);
   totalProducts = computed(() => this.products().length);
   lowStockCount = computed(() => this.products().filter(p => !p.stock || p.stock < 5).length);
+  lowStockProducts = computed(() => this.products().filter(p => !p.stock || p.stock < 5));
+  avgPrice = computed(() => {
+    const prods = this.products();
+    if (!prods.length) return null;
+    const sum = prods.reduce((acc, p) => acc + (Number(p.price) || 0), 0);
+    return sum / prods.length;
+  });
   brands = signal<Brand[]>([]);
   suppliers = signal<Supplier[]>([]);
   globalAttributes = signal<GlobalAttribute[]>([]);
-  
+
   loading = signal(true);
   isDrawerOpen = signal(false);
+  showLowStock = signal(false);
+  searchQuery = signal('');
+
+  filteredProducts = computed(() => {
+    let list = this.products();
+    if (this.showLowStock()) {
+      list = list.filter(p => !p.stock || p.stock < 5);
+    }
+    const q = this.searchQuery().toLowerCase().trim();
+    if (q) {
+      list = list.filter(p => 
+        p.name.toLowerCase().includes(q) || 
+        (p.sku && p.sku.toLowerCase().includes(q))
+      );
+    }
+    return list;
+  });
   
   // Form State
   editingProduct = signal<Partial<Product> | null>(null);

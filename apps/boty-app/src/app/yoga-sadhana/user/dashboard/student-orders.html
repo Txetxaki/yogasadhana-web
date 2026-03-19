@@ -1,0 +1,69 @@
+<div class="orders-container">
+  <div class="orders-header">
+    <h2 class="orders-title">Mi Historial de Pedidos</h2>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">Cargando tus pedidos...</div>
+  } @else {
+    @if (orders().length === 0) {
+      <div class="empty-state">
+        Aún no has realizado ninguna compra en nuestra tienda.
+      </div>
+    } @else {
+      <div class="orders-list">
+        @for (order of orders(); track order.id) {
+          <div class="order-card">
+            <div class="order-card-header">
+              <div>
+                <span class="order-id">Pedido #{{ order.invoiceNumber }}</span>
+                <span class="order-date">{{ order.createdAt | date:'longDate' }}</span>
+              </div>
+              <span class="order-status badge" [class]="'status-' + order.status.toLowerCase()">
+                {{ order.status.replace('_', ' ') }}
+              </span>
+            </div>
+            
+            <div class="order-card-body">
+              <div class="order-items">
+                @for (item of order.items; track item.productId) {
+                  <div class="order-item-row">
+                    <span class="item-qty">{{ item.quantity }}x</span>
+                    <span class="item-name">{{ item.productName }}</span>
+                    <span class="item-price">{{ item.price | currency:'EUR' }}</span>
+                  </div>
+                }
+              </div>
+              
+              <div class="order-summary">
+                <div class="summary-row total-row">
+                  <span>Total Pagado</span>
+                  <strong>{{ order.total | currency:'EUR' }}</strong>
+                </div>
+                <div class="summary-method">
+                  Método: {{ order.paymentMethod }}
+                </div>
+              </div>
+            </div>
+            
+            @if (order.status === 'Pendiente_Pago' && order.paymentMethod === 'Transferencia') {
+              <div class="order-card-footer transfer-info">
+                <strong>Pendiente de Transferencia</strong>
+                <p>Por favor, transfiere {{ order.total | currency:'EUR' }} a {{ order.bankTransferInfo.iban }} indicando la referencia <strong>{{ order.paymentReference }}</strong>.</p>
+              </div>
+            }
+            
+            <div class="order-card-actions" style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid #eee; display:flex; gap:1rem;">
+              <button class="btn-outline" (click)="downloadInvoice(order)" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                 Descargar Factura
+              </button>
+              <button class="btn-text" (click)="requestChange(order)" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                 Ayuda / Cambios
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

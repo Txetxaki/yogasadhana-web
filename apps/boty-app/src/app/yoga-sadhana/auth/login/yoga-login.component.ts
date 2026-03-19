@@ -43,7 +43,10 @@ export class YogaLoginComponent {
       this.error.set(result.error || 'Error al iniciar sesión.');
       return;
     }
-    if (this.auth.isAdmin()) {
+    const explicitReturnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (explicitReturnUrl) {
+      this.router.navigateByUrl(explicitReturnUrl);
+    } else if (this.auth.isAdmin()) {
       this.router.navigate(['/yoga-sadhana/admin/dashboard']);
     } else {
       this.router.navigateByUrl(this.returnUrl);
@@ -64,7 +67,10 @@ export class YogaLoginComponent {
       return;
     }
     if (!result.success) return; // cerró el popup, silencioso
-    if (this.auth.isAdmin()) {
+    const explicitReturnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (explicitReturnUrl) {
+      this.router.navigateByUrl(explicitReturnUrl);
+    } else if (this.auth.isAdmin()) {
       this.router.navigate(['/yoga-sadhana/admin/dashboard']);
     } else {
       this.router.navigateByUrl(this.returnUrl);

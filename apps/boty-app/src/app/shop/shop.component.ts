@@ -1,5 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, signal, PLATFORM_ID, computed } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { ShopService } from '../core/services/shop/shop.service';
@@ -16,62 +16,61 @@ export class ShopComponent implements OnInit {
   private shopService = inject(ShopService);
   private meta = inject(Meta);
   private title = inject(Title);
+  private platformId = inject(PLATFORM_ID);
 
+  allProducts = signal<Product[]>([]);
   products = signal<Product[]>([]);
   loading = signal(true);
-  categories = ['Todos', 'Esenciales', 'Ambiente', 'Vida', 'Digital'];
+  categories = ['Todos', 'Esterillas', 'Zafus & Cojines', 'Aceites Esenciales', 'Libros & Diarios'];
   activeCategory = signal('Todos');
+
+  categoryCounts = computed(() => {
+    const all = this.allProducts();
+    const counts: Record<string, number> = { 'Todos': all.length };
+    this.categories.slice(1).forEach(cat => {
+      counts[cat] = all.filter(p => p.category === cat).length;
+    });
+    return counts;
+  });
 
   ngOnInit() {
     this.title.setTitle('Tienda Online | YogaSadhana');
     this.meta.updateTag({ name: 'description', content: 'Descubre nuestros productos esenciales de Yoga y Sadhana. Esterillas de corcho ecológico, zafus de meditación, inciensos naturales y mucho más.' });
-    
-    // SEO Structured Data (JSON-LD)
-    const jsonLd = {
-      "@context": "https://schema.org",
-      "@type": "Store",
-      "name": "YogaSadhana Shop",
-      "description": "Artículos para yoga, meditación y bienestar.",
-      "url": "https://yogasadhana.com/tienda"
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(jsonLd);
-    document.head.appendChild(script);
 
-    // Call seedDatabase once to populate Firestore
-    // Remove or comment out after first run!
-    this.shopService.seedDatabase().then(() => {
-      this.loadProducts();
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Store',
+        'name': 'YogaSadhana Shop',
+        'description': 'Artículos para yoga, meditación y bienestar.',
+        'url': 'https://yogasadhana.com/tienda'
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(jsonLd);
+      document.head.appendChild(script);
+    }
+
+    this.loadProducts();
   }
 
   loadProducts() {
     this.loading.set(true);
-    // Temporary hardcoded seed if firestore is empty
     this.shopService.getProducts().subscribe(data => {
-      if (data && data.length > 0) {
-        this.products.set(data);
-      } else {
-        this.products.set([]);
-      }
+      const list = data?.length ? data : [];
+      this.allProducts.set(list);
+      this.products.set(list);
       this.loading.set(false);
     });
   }
 
   filterByCategory(category: string) {
     this.activeCategory.set(category);
-    // Real implementation would call shopService.getProductsByCategory if not "Todos"
-    // For now we filter locally to be fast
-    this.loading.set(true);
-    this.shopService.getProducts().subscribe(data => {
-      const all = (data && data.length > 0) ? data : [];
-      if (category === 'Todos') {
-        this.products.set(all);
-      } else {
-        this.products.set(all.filter(p => p.category === category));
-      }
-      this.loading.set(false);
-    });
+    const all = this.allProducts();
+    if (category === 'Todos') {
+      this.products.set(all);
+    } else {
+      this.products.set(all.filter(p => p.category === category));
+    }
   }
 }
