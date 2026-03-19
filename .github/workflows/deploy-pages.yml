@@ -32,7 +32,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Build with baseHref for GitHub Pages
         run: npx nx build boty-app --configuration=production --base-href=/yogasadhana-web/
